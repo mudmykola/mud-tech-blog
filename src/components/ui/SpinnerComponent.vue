@@ -1,0 +1,61 @@
+<script setup>
+defineProps({
+  loading: Boolean
+});
+</script>
+<template>
+  <div class="spinner-container">
+    <div class="spinner">
+      <div class="drop"></div>
+      <div class="drop"></div>
+      <div class="drop"></div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.spinner-container {
+display: flex;
+justify-content: center;
+align-items: center;
+flex-grow: 1;
+height: 100%;
+background-color: var(--primary-dark);
+}
+
+.spinner {
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 10px;
+}
+
+.spinner .drop {
+width: 10px;
+height: 10px;
+background: var(--primary-light);
+border-radius: 50%;
+animation: drop 1.5s infinite;
+}
+
+.spinner .drop:nth-child(2) {
+animation-delay: 0.2s;
+}
+
+.spinner .drop:nth-child(3) {
+animation-delay: 0.4s;
+}
+
+@keyframes drop {
+0%, 80%, 100% {
+transform: scale(1);
+opacity: 0.6;
+}
+50% {
+transform: scale(2);
+opacity: 1;
+}
+}
+</style>
+
+
