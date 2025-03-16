@@ -5,6 +5,9 @@
   --primary-light: #f5c757;
   --text-light: #f5f1e7;
 }
+html, body {
+  overflow-x: hidden;
+}
 
 * {
   margin: 0;
