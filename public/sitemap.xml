@@ -13,4 +13,51 @@
         <priority>0.8</priority>
     </url>
 
+    <url>
+        <loc>https://mud-tech-blog.web.app/blog/hmarni-obchyslennya-ta-kontejneryzatsiya-2025</loc>
+        <lastmod>2025-03-15T13:00:00Z</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <url>
+        <loc>https://mud-tech-blog.web.app/blog/nvidia-rtx-50-seriya-novyy-riven-produktyvnosti</loc>
+        <lastmod>2025-03-15T14:00:00Z</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <url>
+        <loc>https://mud-tech-blog.web.app/blog/yak-hakery-maskuyutsya-pid-pidtrymku-telegram</loc>
+        <lastmod>2025-03-15T15:00:00Z</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <url>
+        <loc>https://mud-tech-blog.web.app/blog/fpv-drony-z-ai-revolyutsiya-u-vijskovykh-tekhnologiyakh</loc>
+        <lastmod>2025-03-15T12:00:00Z</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <url>
+        <loc>https://mud-tech-blog.web.app/blog/amped-buds-navushnyky-z-zaryadnym-kejsom-qi2</loc>
+        <lastmod>2025-03-15T12:00:00Z</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <url>
+        <loc>https://mud-tech-blog.web.app/blog/yaki-profesii-znyknut-cherez-robotiv-ta-ai</loc>
+        <lastmod>2025-03-15T12:00:00Z</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://mud-tech-blog.web.app/blog/nasa-ukrayinski-roboty-doslidzhennya-misyatsya</loc>
+        <lastmod>2025-03-16T12:00:00Z</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
 </urlset>
