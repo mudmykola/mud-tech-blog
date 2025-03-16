@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Allow: /blog
+
+Disallow: /*.pdf$
+Disallow: /*.json$
+Disallow: /*.xml$
+Sitemap: https://mud-tech-blog.web.app/sitemap.xml
