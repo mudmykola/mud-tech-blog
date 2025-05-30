@@ -5,6 +5,7 @@ import router from './router';
 import { app as firebaseApp, analytics } from './firebase';
 
 
+
 console.log('Firebase App:', firebaseApp);
 console.log('Firebase Analytics:', analytics);
 
