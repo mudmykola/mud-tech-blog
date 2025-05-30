@@ -1,6 +1,7 @@
 <template>
   <DefaultLayout>
     <div class="home">
+
       <div class="header">
         <h1>Mud' Tech Blog</h1>
         <p class="subtitle">Читайте останні технологічні статті та новини!</p>
@@ -20,7 +21,9 @@
 
       <p v-if="loading" class="loading">Завантаження статей...</p>
       <p v-if="!loading && !filteredArticles.length" class="no-articles">Статті не знайдено.</p>
-
+      <section class="donation">
+        <DonationSection/>
+      </section>
       <!-- 📜 Відображення 8 статей -->
       <div class="articles-grid">
         <ArticleCard v-for="article in filteredArticles" :key="article.handle" :article="article" />
@@ -36,6 +39,7 @@ import {ref, computed, onMounted} from 'vue';
 import {getBlogArticles} from '@/services/shopifyApi';
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import ArticleCard from '@/components/article/ArticleCardComponent.vue';
+import DonationSection from "@/components/donation/DonationSection.vue";
 
 const articles = ref([]);
 const loading = ref(true);

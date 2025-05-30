@@ -31,6 +31,9 @@
       </div>
 
       <img :src="article.image?.url" v-if="article.image" class="article-image" />
+      <section class="donation">
+        <DonationSection/>
+      </section>
 
       <!-- 📖 Основний контент статті -->
       <div v-html="article.contentHtml" class="content"></div>
@@ -61,6 +64,7 @@ import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getBlogArticles } from '@/services/shopifyApi';
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
+import DonationSection from "@/components/donation/DonationSection.vue";
 
 const route = useRoute();
 const router = useRouter();
