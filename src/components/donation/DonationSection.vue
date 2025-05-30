@@ -7,7 +7,7 @@
     </p>
 
     <div class="donation-links">
-      <a :href="monobankUrl" target="_blank" rel="noopener">
+      <a class="donation-links__mono" :href="monobankUrl" target="_blank" rel="noopener">
         💳 Зарядити через Monobank
       </a>
       <a href="https://savelife.in.ua/donate/" target="_blank" rel="noopener">
@@ -24,6 +24,9 @@ const monobankUrl = "https://send.monobank.ua/jar/9BwUkcaT2j"
 </script>
 
 <style scoped lang="scss">
+.donation-links__mono{
+  display: none;
+}
 .donation-block {
   margin: 60px 0 40px;
   padding: 28px 24px;
