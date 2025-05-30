@@ -5,10 +5,17 @@
 </template>
 
 <script setup>
-import { watch } from "vue";
+import { watch, onMounted } from "vue";
 import { useRoute } from "vue-router";
+import { useAnalytics } from '@/composable/useAnalytics.js'
 
 const route = useRoute();
+
+const { loadGA } = useAnalytics()
+
+onMounted(() => {
+  loadGA()
+})
 
 // Дивимося на зміну маршруту і оновлюємо заголовок
 watch(route, () => {

@@ -7,10 +7,10 @@
     </p>
 
     <div class="donation-links">
-      <a :href="monobankUrl" target="_blank" rel="noopener">
+      <a class="donation-links__mono" :href="monobankUrl" target="_blank" rel="noopener" @click="trackDonate">
         💳 Зарядити через Monobank
       </a>
-      <a href="https://savelife.in.ua/donate/" target="_blank" rel="noopener">
+      <a href="https://savelife.in.ua/donate/" target="_blank" rel="noopener" @click="trackSupportFund">
         🎯 Підтримати “Повернись живим”
       </a>
     </div>
@@ -20,10 +20,33 @@
 </template>
 
 <script setup>
+import { useAnalytics } from '@/composable/useAnalytics.js'
 const monobankUrl = "https://send.monobank.ua/jar/9BwUkcaT2j"
+const { trackEvent } = useAnalytics()
+
+const trackDonate = () => {
+  trackEvent({
+    action: 'donate_click',
+    category: 'support',
+    label: 'donation_monobank',
+    value: 1
+  })
+}
+
+const trackSupportFund = () => {
+  trackEvent({
+    action: 'donate_click',
+    category: 'support',
+    label: 'donation_savelife',
+    value: 1
+  })
+}
 </script>
 
 <style scoped lang="scss">
+.donation-links__mono{
+  display: none;
+}
 .donation-block {
   margin: 60px 0 40px;
   padding: 28px 24px;
