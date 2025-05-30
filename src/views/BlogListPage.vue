@@ -50,7 +50,7 @@ const loading = ref(true);
 const selectedTag = ref(null);
 const isMobileFilterOpen = ref(false);
 const currentPage = ref(1);
-const itemsPerPage = 8; // 8 статей на сторінку
+const itemsPerPage = 12; // 8 статей на сторінку
 
 onMounted(async () => {
   articles.value = await getBlogArticles();

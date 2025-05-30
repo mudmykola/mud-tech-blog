@@ -78,7 +78,7 @@ const filteredArticles = computed(() => {
           article.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
           (article.excerpt && article.excerpt.toLowerCase().includes(searchQuery.value.toLowerCase()))
       )
-      .slice(0, 8); // Виводимо лише 8 статей
+      .slice(0, 12); // Виводимо лише 8 статей
 });
 </script>
 
