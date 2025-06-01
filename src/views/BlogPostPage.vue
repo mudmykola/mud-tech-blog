@@ -1,5 +1,6 @@
 <template>
   <DefaultLayout>
+    <ScrollProgressBar />
     <div class="blog-post" v-if="article">
       <!-- 🔗 Хлібні крихти -->
       <nav class="breadcrumbs">
@@ -65,11 +66,13 @@ import { useRoute, useRouter } from 'vue-router';
 import { getBlogArticles } from '@/services/shopifyApi';
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import DonationSection from "@/components/donation/DonationSection.vue";
+import ScrollProgressBar from '@/components/ui/ScrollProgressBar.vue';
 
 const route = useRoute();
 const router = useRouter();
 const articles = ref([]);
 const article = ref(null);
+
 
 const DISQUS_SHORTNAME = import.meta.env.VITE_DISQUS_SHORTNAME;
 
@@ -185,6 +188,8 @@ const copyLink = () => {
     console.error("❌ Не вдалося скопіювати лінк:", err);
   });
 };
+
+
 
 </script>
 
