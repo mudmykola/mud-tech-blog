@@ -1,6 +1,6 @@
 <template>
   <DefaultLayout>
-    <ScrollProgressBar />
+    <ScrollProgressBar ref="scrollBarRef" />
     <div class="blog-post" v-if="article">
       <!-- 🔗 Хлібні крихти -->
       <nav class="breadcrumbs">
@@ -72,6 +72,7 @@ const route = useRoute();
 const router = useRouter();
 const articles = ref([]);
 const article = ref(null);
+const scrollBarRef = ref(null)
 
 
 const DISQUS_SHORTNAME = import.meta.env.VITE_DISQUS_SHORTNAME;
@@ -94,6 +95,9 @@ const loadArticle = async () => {
 
   if (article.value) {
     updateMetaTags();
+    setTimeout(() => {
+  scrollBarRef.value?.updateScroll()
+}, 300)
   }
 
   // Прокрутка вгору після завантаження статті
