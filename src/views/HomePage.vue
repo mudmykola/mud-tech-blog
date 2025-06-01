@@ -62,7 +62,7 @@ onMounted(async () => {
   metaTag.content = metaDescription;
 
   // Оновлюємо заголовок вкладки
-  document.title = "📝 Головна | Дізнайтеся більше про останні технології";
+  document.title = "Головна | Дізнайтеся більше про останні технології";
 });
 
 
