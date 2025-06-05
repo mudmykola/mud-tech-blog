@@ -1,5 +1,6 @@
 <template>
   <DefaultLayout>
+    <ScrollProgressBar ref="scrollBarRef" />
     <div class="blog-post" v-if="article">
       <!-- 🔗 Хлібні крихти -->
       <nav class="breadcrumbs">
@@ -65,11 +66,20 @@ import { useRoute, useRouter } from 'vue-router';
 import { getBlogArticles } from '@/services/shopifyApi';
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import DonationSection from "@/components/donation/DonationSection.vue";
+import ScrollProgressBar from '@/components/ui/ScrollProgressBar.vue';
+import {
+  generateBlogPostJsonLd,
+  generateOrganizationJsonLd,
+  generateBreadcrumbJsonLd
+} from '@/utils/jsonld';
+import { useJsonLd } from '@/composables/useJsonLd'
 
 const route = useRoute();
 const router = useRouter();
 const articles = ref([]);
 const article = ref(null);
+const scrollBarRef = ref(null)
+
 
 const DISQUS_SHORTNAME = import.meta.env.VITE_DISQUS_SHORTNAME;
 
@@ -91,6 +101,9 @@ const loadArticle = async () => {
 
   if (article.value) {
     updateMetaTags();
+    setTimeout(() => {
+  scrollBarRef.value?.updateScroll()
+}, 300)
   }
 
   // Прокрутка вгору після завантаження статті
@@ -185,6 +198,19 @@ const copyLink = () => {
     console.error("❌ Не вдалося скопіювати лінк:", err);
   });
 };
+
+
+watch(article, (val) => {
+  if (!val) return
+
+  useJsonLd([
+    generateBlogPostJsonLd(val),
+    generateOrganizationJsonLd(),
+    generateBreadcrumbJsonLd(val)
+  ])
+})
+
+
 
 </script>
 

@@ -40,6 +40,8 @@ import {getBlogArticles} from '@/services/shopifyApi';
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import ArticleCard from '@/components/article/ArticleCardComponent.vue';
 import DonationSection from "@/components/donation/DonationSection.vue";
+import { generateOrganizationJsonLd, generateWebSiteJsonLd } from '@/utils/jsonld';
+import { useJsonLd } from '@/composables/useJsonLd';
 
 const articles = ref([]);
 const loading = ref(true);
@@ -62,7 +64,7 @@ onMounted(async () => {
   metaTag.content = metaDescription;
 
   // Оновлюємо заголовок вкладки
-  document.title = "📝 Головна | Дізнайтеся більше про останні технології";
+  document.title = "Головна | Дізнайтеся більше про останні технології";
 });
 
 
@@ -84,6 +86,14 @@ const filteredArticles = computed(() => {
       )
       .slice(0, 12); // Виводимо лише 8 статей
 });
+
+onMounted(() => {
+  useJsonLd([
+    generateOrganizationJsonLd(),
+    generateWebSiteJsonLd()
+  ])
+})
+
 </script>
 
 <style scoped>

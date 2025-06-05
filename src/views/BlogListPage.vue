@@ -44,6 +44,8 @@ import { ref, computed, onMounted } from 'vue';
 import { getBlogArticles } from '@/services/shopifyApi';
 import ArticleCard from '@/components/article/ArticleCardComponent.vue';
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
+import { generateOrganizationJsonLd, generateBlogIndexJsonLd } from '@/utils/jsonld';
+import { useJsonLd } from '@/composables/useJsonLd';
 
 const articles = ref([]);
 const loading = ref(true);
@@ -122,6 +124,14 @@ const resetFilter = () => {
 const toggleMobileFilter = () => {
   isMobileFilterOpen.value = !isMobileFilterOpen.value;
 };
+
+onMounted(() => {
+  useJsonLd([
+    generateOrganizationJsonLd(),
+    generateBlogIndexJsonLd()
+  ])
+})
+
 </script>
 
 <style scoped>
