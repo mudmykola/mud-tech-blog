@@ -67,6 +67,12 @@ import { getBlogArticles } from '@/services/shopifyApi';
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import DonationSection from "@/components/donation/DonationSection.vue";
 import ScrollProgressBar from '@/components/ui/ScrollProgressBar.vue';
+import {
+  generateBlogPostJsonLd,
+  generateOrganizationJsonLd,
+  generateBreadcrumbJsonLd
+} from '@/utils/jsonld';
+import { useJsonLd } from '@/composables/useJsonLd'
 
 const route = useRoute();
 const router = useRouter();
@@ -192,6 +198,17 @@ const copyLink = () => {
     console.error("❌ Не вдалося скопіювати лінк:", err);
   });
 };
+
+
+watch(article, (val) => {
+  if (!val) return
+
+  useJsonLd([
+    generateBlogPostJsonLd(val),
+    generateOrganizationJsonLd(),
+    generateBreadcrumbJsonLd(val)
+  ])
+})
 
 
 
