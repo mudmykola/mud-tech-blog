@@ -5,7 +5,8 @@
   --primary-light: #f5c757;
   --text-light: #f5f1e7;
 }
-html, body {
+html,
+body {
   overflow-x: hidden;
 }
 
@@ -18,7 +19,7 @@ html, body {
 body {
   background: var(--bg-dark);
   color: var(--text-light);
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .layout {
@@ -49,7 +50,9 @@ main {
   text-decoration: none;
   font-size: 16px;
   font-weight: 600;
-  transition: color 0.3s ease-in-out, transform 0.2s;
+  transition:
+    color 0.3s ease-in-out,
+    transform 0.2s;
   padding: 5px 10px;
   border-radius: 5px;
 }
@@ -74,7 +77,8 @@ footer {
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
 }
 
-button, .btn {
+button,
+.btn {
   background: var(--primary);
   color: var(--bg-dark);
   border: none;
@@ -85,7 +89,8 @@ button, .btn {
   border-radius: 5px;
 }
 
-button:hover, .btn:hover {
+button:hover,
+.btn:hover {
   background: var(--primary-light);
 }
 
