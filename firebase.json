@@ -8,11 +8,6 @@
         "destination": "/index.html"
       }
     ],
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      ".env",
-      "**/node_modules/**"
-    ]
+    "ignore": ["firebase.json", "**/.*", ".env", "**/node_modules/**"]
   }
 }

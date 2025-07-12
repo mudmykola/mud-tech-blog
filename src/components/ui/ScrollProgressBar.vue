@@ -1,38 +1,35 @@
 <template>
-    <Teleport to="body">
-      <div
-        class="scroll-progress-bar"
-        :style="{ width: scrollProgress + '%' }"
-      ></div>
-    </Teleport>
-  </template>
-  
-  <script setup>
-import { ref, onMounted, onUnmounted, defineExpose } from 'vue'
+  <Teleport to="body">
+    <div class="scroll-progress-bar" :style="{ width: scrollProgress + '%' }"></div>
+  </Teleport>
+</template>
 
-const scrollProgress = ref(0)
+<script setup>
+  import { ref, onMounted, onUnmounted, defineExpose } from 'vue'
 
-const updateScroll = () => {
-  const scrollTop = window.scrollY
-  const docHeight = document.documentElement.scrollHeight - window.innerHeight
-  scrollProgress.value = docHeight > 0 ? Math.min(100, Math.round((scrollTop / docHeight) * 100)) : 0
-}
+  const scrollProgress = ref(0)
 
-onMounted(() => {
-  updateScroll()
-  window.addEventListener('scroll', updateScroll)
-})
+  const updateScroll = () => {
+    const scrollTop = window.scrollY
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight
+    scrollProgress.value =
+      docHeight > 0 ? Math.min(100, Math.round((scrollTop / docHeight) * 100)) : 0
+  }
 
-onUnmounted(() => {
-  window.removeEventListener('scroll', updateScroll)
-})
+  onMounted(() => {
+    updateScroll()
+    window.addEventListener('scroll', updateScroll)
+  })
 
-// 💡 expose функцію
-defineExpose({ updateScroll })
+  onUnmounted(() => {
+    window.removeEventListener('scroll', updateScroll)
+  })
+
+  // 💡 expose функцію
+  defineExpose({ updateScroll })
 </script>
 
-  
-  <style>
+<style>
   .scroll-progress-bar {
     position: fixed;
     top: 0;
@@ -42,5 +39,4 @@ defineExpose({ updateScroll })
     z-index: 9999;
     transition: width 0.2s ease;
   }
-  </style>
-  
+</style>
