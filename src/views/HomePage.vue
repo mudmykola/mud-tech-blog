@@ -1,7 +1,6 @@
 <template>
   <DefaultLayout>
     <div class="home">
-
       <div class="header">
         <h1>Mud' Tech Blog</h1>
         <p class="subtitle">Читайте останні технологічні статті та новини!</p>
@@ -9,7 +8,12 @@
 
       <!-- 🔍 Поле пошуку та сортування -->
       <div class="filters">
-        <input type="text" v-model="searchQuery" placeholder="🔍 Пошук статей..." class="search-input" />
+        <input
+          type="text"
+          v-model="searchQuery"
+          placeholder="🔍 Пошук статей..."
+          class="search-input"
+        />
 
         <select v-model="sortBy" class="sort-select">
           <option value="date_desc">📅 Новіші</option>
@@ -20,28 +24,36 @@
       </div>
 
       <p v-if="loading" class="loading">Завантаження статей...</p>
-      <p v-if="!loading && !filteredArticles.length" class="no-articles">Статті не знайдено.</p>
-      <section class="donation">
-        <DonationSection/>
-      </section>
+      <p v-if="!loading && !filteredArticles.length" class="no-articles">
+        Статті не знайдено.
+      </p>
+      <section class="donation"></section>
       <!-- 📜 Відображення 8 статей -->
       <div class="articles-grid">
-        <ArticleCard v-for="article in filteredArticles" :key="article.handle" :article="article" />
+        <ArticleCard
+          v-for="article in filteredArticles"
+          :key="article.handle"
+          :article="article"
+        />
       </div>
 
       <router-link to="/blog" class="btn">Переглянути всі статті</router-link>
+      <DonationSection />
     </div>
   </DefaultLayout>
 </template>
 
 <script setup>
-import {ref, computed, onMounted} from 'vue';
-import {getBlogArticles} from '@/services/shopifyApi';
-import DefaultLayout from '@/layouts/DefaultLayout.vue';
-import ArticleCard from '@/components/article/ArticleCardComponent.vue';
+import { ref, computed, onMounted } from "vue";
+import { getBlogArticles } from "@/services/shopifyApi";
+import DefaultLayout from "@/layouts/DefaultLayout.vue";
+import ArticleCard from "@/components/article/ArticleCardComponent.vue";
 import DonationSection from "@/components/donation/DonationSection.vue";
-import { generateOrganizationJsonLd, generateWebSiteJsonLd } from '@/utils/jsonld';
-import { useJsonLd } from '@/composables/useJsonLd';
+import {
+  generateOrganizationJsonLd,
+  generateWebSiteJsonLd,
+} from "@/utils/jsonld";
+import { useJsonLd } from "@/composables/useJsonLd";
 
 const articles = ref([]);
 const loading = ref(true);
@@ -52,7 +64,8 @@ onMounted(async () => {
   articles.value = await getBlogArticles();
   loading.value = false;
 
-  const metaDescription = "Ласкаво просимо до Mud' Tech Blog! Дізнайтеся більше про останні технології, корисні статті, та новини. Переглядайте топові матеріали та отримуйте свіжі ідеї щодня.";
+  const metaDescription =
+    "Ласкаво просимо до Mud' Tech Blog! Дізнайтеся більше про останні технології, корисні статті, та новини. Переглядайте топові матеріали та отримуйте свіжі ідеї щодня.";
 
   // Встановлюємо мета-опис
   let metaTag = document.querySelector('meta[name="description"]');
@@ -67,33 +80,36 @@ onMounted(async () => {
   document.title = "Головна | Дізнайтеся більше про останні технології";
 });
 
-
 // Фільтруємо статті за пошуком та сортуємо
 const filteredArticles = computed(() => {
   let sorted = [...articles.value];
 
   // Сортування
-  if (sortBy.value === "date_desc") sorted.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
-  if (sortBy.value === "date_asc") sorted.sort((a, b) => new Date(a.publishedAt) - new Date(b.publishedAt));
-  if (sortBy.value === "title_asc") sorted.sort((a, b) => a.title.localeCompare(b.title));
-  if (sortBy.value === "title_desc") sorted.sort((a, b) => b.title.localeCompare(a.title));
+  if (sortBy.value === "date_desc")
+    sorted.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+  if (sortBy.value === "date_asc")
+    sorted.sort((a, b) => new Date(a.publishedAt) - new Date(b.publishedAt));
+  if (sortBy.value === "title_asc")
+    sorted.sort((a, b) => a.title.localeCompare(b.title));
+  if (sortBy.value === "title_desc")
+    sorted.sort((a, b) => b.title.localeCompare(a.title));
 
   // Пошук за заголовком або описом
   return sorted
-      .filter(article =>
-          article.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-          (article.excerpt && article.excerpt.toLowerCase().includes(searchQuery.value.toLowerCase()))
-      )
-      .slice(0, 12); // Виводимо лише 8 статей
+    .filter(
+      (article) =>
+        article.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+        (article.excerpt &&
+          article.excerpt
+            .toLowerCase()
+            .includes(searchQuery.value.toLowerCase()))
+    )
+    .slice(0, 12); // Виводимо лише 8 статей
 });
 
 onMounted(() => {
-  useJsonLd([
-    generateOrganizationJsonLd(),
-    generateWebSiteJsonLd()
-  ])
-})
-
+  useJsonLd([generateOrganizationJsonLd(), generateWebSiteJsonLd()]);
+});
 </script>
 
 <style scoped>
@@ -104,6 +120,7 @@ onMounted(() => {
 
 .header {
   margin-bottom: 20px;
+  margin-top: 40px;
 }
 
 h1 {
@@ -118,7 +135,8 @@ h1 {
   margin-bottom: 20px;
 }
 
-.loading, .no-articles {
+.loading,
+.no-articles {
   font-size: 1.2rem;
   color: var(--primary-light);
   margin: 20px 0;
@@ -172,7 +190,11 @@ h1 {
     grid-template-columns: repeat(4, 1fr);
   }
 }
-
+@media (max-width: 768px) {
+  .header {
+    margin-top: 60px;
+  }
+}
 /* 🟡 Кнопка перегляду всіх статей */
 .btn {
   display: inline-block;

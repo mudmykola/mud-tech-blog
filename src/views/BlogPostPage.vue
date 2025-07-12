@@ -209,19 +209,15 @@ watch(article, (val) => {
     generateBreadcrumbJsonLd(val)
   ])
 })
-
-
-
 </script>
-
-
 
 <style scoped>
 .comments-section{
   margin-top: 40px;
-  h2{
-    margin-bottom: 20px;
-  }
+}
+
+.comments-section h2{
+  margin-bottom: 20px;
 }
 .blog-post {
   max-width: 850px;
@@ -230,6 +226,7 @@ watch(article, (val) => {
   background: var(--primary-dark);
   border-radius: 12px;
   box-shadow: 0px 4px 10px rgba(255, 255, 100, 0.2);
+  margin-top: 80px;
 }
 
 /* 🔗 Хлібні крихти */

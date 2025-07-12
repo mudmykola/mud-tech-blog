@@ -7,32 +7,55 @@
         <p class="subtitle">Всі технологічні статті та новини</p>
 
         <p v-if="loading" class="loading">Завантаження...</p>
-        <p v-if="!loading && !paginatedArticles.length" class="no-articles">Статті не знайдено.</p>
+        <p v-if="!loading && !paginatedArticles.length" class="no-articles">
+          Статті не знайдено.
+        </p>
 
         <div v-if="paginatedArticles.length" class="articles">
-          <ArticleCard v-for="article in paginatedArticles" :key="article.handle" :article="article" />
+          <ArticleCard
+            v-for="article in paginatedArticles"
+            :key="article.handle"
+            :article="article"
+          />
         </div>
 
         <!-- 📄 Пагінація -->
         <div class="pagination" v-if="totalPages > 1">
-          <button @click="prevPage" :disabled="currentPage === 1">← Попередня</button>
+          <button @click="prevPage" :disabled="currentPage === 1">
+            ← Попередня
+          </button>
           <span>Сторінка {{ currentPage }} з {{ totalPages }}</span>
-          <button @click="nextPage" :disabled="currentPage === totalPages">Наступна →</button>
+          <button @click="nextPage" :disabled="currentPage === totalPages">
+            Наступна →
+          </button>
         </div>
       </div>
 
       <!-- 📱 Фіксований мобільний фільтр -->
-      <button class="mobile-filter-btn" @click="toggleMobileFilter">📌 Фільтр</button>
-      <div class="mobile-filter-overlay" v-if="isMobileFilterOpen" @click="toggleMobileFilter"></div>
+      <button class="mobile-filter-btn" @click="toggleMobileFilter">
+        📌 Фільтр
+      </button>
+      <div
+        class="mobile-filter-overlay"
+        v-if="isMobileFilterOpen"
+        @click="toggleMobileFilter"
+      ></div>
 
       <div class="mobile-filter" :class="{ open: isMobileFilterOpen }">
         <button class="close-filter" @click="toggleMobileFilter">✖</button>
         <h2>📌 Фільтр</h2>
         <div class="tags-container">
-          <button v-for="tag in tags" :key="tag" @click="toggleTagFilter(tag)" :class="{ active: selectedTag === tag }">
+          <button
+            v-for="tag in tags"
+            :key="tag"
+            @click="toggleTagFilter(tag)"
+            :class="{ active: selectedTag === tag }"
+          >
             {{ tag }}
           </button>
-          <button v-if="selectedTag" @click="resetFilter" class="reset-filter">Очистити</button>
+          <button v-if="selectedTag" @click="resetFilter" class="reset-filter">
+            Очистити
+          </button>
         </div>
       </div>
     </div>
@@ -40,12 +63,15 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
-import { getBlogArticles } from '@/services/shopifyApi';
-import ArticleCard from '@/components/article/ArticleCardComponent.vue';
-import DefaultLayout from '@/layouts/DefaultLayout.vue';
-import { generateOrganizationJsonLd, generateBlogIndexJsonLd } from '@/utils/jsonld';
-import { useJsonLd } from '@/composables/useJsonLd';
+import { ref, computed, onMounted } from "vue";
+import { getBlogArticles } from "@/services/shopifyApi";
+import ArticleCard from "@/components/article/ArticleCardComponent.vue";
+import DefaultLayout from "@/layouts/DefaultLayout.vue";
+import {
+  generateOrganizationJsonLd,
+  generateBlogIndexJsonLd,
+} from "@/utils/jsonld";
+import { useJsonLd } from "@/composables/useJsonLd";
 
 const articles = ref([]);
 const loading = ref(true);
@@ -58,7 +84,8 @@ onMounted(async () => {
   articles.value = await getBlogArticles();
   loading.value = false;
 
-  const metaDescription = "Дізнайтеся більше про найновіші статті та новини у Mud' Tech Blog. Залишайтеся в курсі актуальних технологій та отримуйте корисні поради й аналітику...";
+  const metaDescription =
+    "Дізнайтеся більше про найновіші статті та новини у Mud' Tech Blog. Залишайтеся в курсі актуальних технологій та отримуйте корисні поради й аналітику...";
 
   // Встановлюємо мета-опис
   let metaTag = document.querySelector('meta[name="description"]');
@@ -70,28 +97,33 @@ onMounted(async () => {
   metaTag.content = metaDescription;
 
   // Оновлюємо заголовок вкладки
-  document.title = "Блог | Дізнайтеся більше про найновіші статті у Mud' Tech Blog...";
+  document.title =
+    "Блог | Дізнайтеся більше про найновіші статті у Mud' Tech Blog...";
 });
-
-
 
 // Отримуємо унікальні теги
 const tags = computed(() => {
-  const allTags = articles.value.flatMap(article => article.tags || []);
+  const allTags = articles.value.flatMap((article) => article.tags || []);
   return [...new Set(allTags)];
 });
 
 // Фільтровані та відсортовані статті (найновіші першими)
 const filteredArticles = computed(() => {
-  let filtered = [...articles.value].sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+  let filtered = [...articles.value].sort(
+    (a, b) => new Date(b.publishedAt) - new Date(a.publishedAt)
+  );
   if (selectedTag.value) {
-    filtered = filtered.filter(article => article.tags.includes(selectedTag.value));
+    filtered = filtered.filter((article) =>
+      article.tags.includes(selectedTag.value)
+    );
   }
   return filtered;
 });
 
 // Загальна кількість сторінок
-const totalPages = computed(() => Math.ceil(filteredArticles.value.length / itemsPerPage));
+const totalPages = computed(() =>
+  Math.ceil(filteredArticles.value.length / itemsPerPage)
+);
 
 // Отримання статей для поточної сторінки
 const paginatedArticles = computed(() => {
@@ -126,12 +158,8 @@ const toggleMobileFilter = () => {
 };
 
 onMounted(() => {
-  useJsonLd([
-    generateOrganizationJsonLd(),
-    generateBlogIndexJsonLd()
-  ])
-})
-
+  useJsonLd([generateOrganizationJsonLd(), generateBlogIndexJsonLd()]);
+});
 </script>
 
 <style scoped>
@@ -140,6 +168,7 @@ onMounted(() => {
   align-items: flex-start;
   justify-content: center;
   padding: 40px 20px;
+  margin-top: 40px;
 }
 
 .blog-list {
@@ -160,7 +189,8 @@ h1 {
   margin-bottom: 20px;
 }
 
-.loading, .no-articles {
+.loading,
+.no-articles {
   font-size: 1.1rem;
   color: var(--primary-light);
   margin: 20px 0;
@@ -281,5 +311,13 @@ h1 {
   cursor: pointer;
   font-weight: bold;
   transition: background 0.3s, transform 0.2s;
+}
+@media (max-width: 768px) {
+  .blog-container {
+    margin-top: 50px;
+  }
+  .blog-list h1 {
+    font-size: 1.5rem;
+  }
 }
 </style>
