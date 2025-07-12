@@ -1,22 +1,67 @@
+<script setup>
+import { ref, onMounted, onUnmounted } from 'vue';
+import { useRoute } from 'vue-router';
+
+const isMenuOpen = ref(false);
+const route = useRoute();
+
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value;
+};
+
+const closeMenu = () => {
+  isMenuOpen.value = false;
+};
+
+
+const isActive = (path) => {
+  return route.path === path;
+};
+
+// === Логіка показу/приховання хедера ===
+const isHeaderVisible = ref(true);
+let lastScrollY = window.scrollY;
+
+const handleScroll = () => {
+  const currentScrollY = window.scrollY;
+  if (currentScrollY > lastScrollY && currentScrollY > 50) {
+    // скрол вниз
+    isHeaderVisible.value = false;
+  } else {
+    // скрол вгору
+    isHeaderVisible.value = true;
+  }
+  lastScrollY = currentScrollY;
+};
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll);
+});
+</script>
+
 <template>
-  <nav class="navbar">
+  <nav class="navbar" :class="{ hidden: !isHeaderVisible }">
     <div class="nav-container">
-      <!-- Текстовий логотип -->
+
       <a href="/" class="logo">
         <span class="mud">Mud'</span>
         <span class="tech">Tech</span>
         <span class="blog">Blog</span>
       </a>
 
-      <!-- Бургер-меню -->
+
       <button class="burger-menu" @click="toggleMenu">
         ☰
       </button>
 
-      <!-- Фон затемнення -->
+
       <div v-if="isMenuOpen" class="overlay" @click="closeMenu"></div>
 
-      <!-- Меню, що виїжджає -->
+
       <div class="mobile-menu" :class="{ open: isMenuOpen }">
         <button class="close-btn" @click="closeMenu">✖</button>
         <ul>
@@ -33,7 +78,6 @@
         </ul>
       </div>
 
-      <!-- Десктопне меню -->
       <ul class="nav-links">
         <li>
           <router-link to="/" :class="{ active: isActive('/') }">
@@ -50,31 +94,9 @@
   </nav>
 </template>
 
-<script setup>
-import { ref } from 'vue';
-import { useRoute } from 'vue-router';
-
-const isMenuOpen = ref(false);
-const route = useRoute();
-
-const toggleMenu = () => {
-  isMenuOpen.value = !isMenuOpen.value;
-};
-
-const closeMenu = () => {
-  isMenuOpen.value = false;
-};
-
-// Функція для визначення активного пункту
-const isActive = (path) => {
-  return route.path === path;
-};
-</script>
-
 <style scoped>
-/* 🔹 Головний навбар */
 .navbar {
-  position: sticky;
+  position: fixed;
   top: 0;
   z-index: 100;
   width: 100%;
@@ -84,6 +106,11 @@ const isActive = (path) => {
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: transform 0.3s ease-in-out;
+}
+
+.navbar.hidden {
+  transform: translateY(-100%);
 }
 
 /* 🔹 Контейнер */

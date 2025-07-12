@@ -10,8 +10,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import NavigationComponent from '@/components/navigation/NavigationComponent.vue';
+import { ref, onMounted } from "vue";
+import NavigationComponent from "@/components/navigation/NavigationComponent.vue";
 import SpinnerComponent from "@/components/ui/SpinnerComponent.vue";
 import FooterComponent from "@/components/footer/FooterComponent.vue";
 
@@ -44,9 +44,6 @@ footer {
   font-size: 14px;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
 }
-
-
-
 
 @media (max-width: 768px) {
   main {
