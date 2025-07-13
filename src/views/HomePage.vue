@@ -6,6 +6,7 @@
   import ArticleFilters from '@/components/home/ArticleFiltersComponent.vue'
   import ArticleGrid from '@/components/home/ArticleGridComponent.vue'
   import DonationSection from '@/components/donation/DonationSection.vue'
+  import RelatedPostsComponent from '@/components/related-posts/RelatedPostsComponent.vue'
 
   import { getBlogArticles } from '@/services/shopifyApi'
   import { useArticleFilters } from '@/composables/useArticleFilters'
@@ -60,6 +61,9 @@
       </router-link>
 
       <DonationSection />
+      <div class="related-post">
+        <RelatedPostsComponent :allArticles="articles" />
+      </div>
     </div>
   </DefaultLayout>
 </template>
