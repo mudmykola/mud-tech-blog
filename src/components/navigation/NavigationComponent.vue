@@ -1,20 +1,29 @@
 <script setup>
   import { ref, onMounted, onUnmounted, computed } from 'vue'
-  import { useRoute } from 'vue-router'
+  import { useRoute, useRouter } from 'vue-router'
 
   const isMenuOpen = ref(false)
   const isHeaderVisible = ref(true)
   const route = useRoute()
+  const router = useRouter()
 
   const toggleMenu = () => (isMenuOpen.value = !isMenuOpen.value)
   const closeMenu = () => (isMenuOpen.value = false)
 
-  const isActive = path => route.path === path
+  const isActive = path => {
+    if (path === '/') return route.path === '/'
+    return route.path.startsWith(path)
+  }
 
-  const navLinks = [
-    { path: '/', label: '🏠 Головна' },
-    { path: '/blog', label: '📝 Блог' },
-  ]
+  const navLinks = computed(() =>
+    router
+      .getRoutes()
+      .filter(r => r.meta?.showInNav)
+      .map(r => ({
+        path: r.path,
+        label: r.meta.label,
+      }))
+  )
 
   let lastScrollY = 0
   const handleScroll = () => {
