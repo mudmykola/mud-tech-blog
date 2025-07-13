@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '@/views/HomePage.vue'
 import BlogListPage from '@/views/BlogListPage.vue'
 import BlogPostPage from '@/views/BlogPostPage.vue'
+import AboutPage from '@/views/about/AboutPage.vue'
 import { setMetaTag, setCanonicalLink } from '@/utils/meta'
 
 const routes = [
@@ -12,9 +13,8 @@ const routes = [
     meta: {
       title: "Головна | Mud' Tech Blog",
       description: 'Опис для головної сторінки.',
-      generator: 'Vue.js + Vite + Shopify',
-      cms: 'Shopify Headless CMS',
-      ip: import.meta.env.VITE_SERVER_IP,
+      showInNav: true,
+      label: '🏠 Головна',
     },
   },
   {
@@ -24,9 +24,8 @@ const routes = [
     meta: {
       title: "Блог | Mud' Tech Blog",
       description: 'Опис для сторінки блогу.',
-      generator: 'Vue.js + Vite + Shopify',
-      cms: 'Shopify Headless CMS',
-      ip: import.meta.env.VITE_SERVER_IP,
+      showInNav: true,
+      label: '📝 Блог',
     },
   },
   {
@@ -36,9 +35,18 @@ const routes = [
     meta: {
       title: "Завантаження... – Mud' Tech Blog",
       description: 'Опис для статті.',
-      generator: 'Vue.js + Vite + Shopify',
-      cms: 'Shopify Headless CMS',
-      ip: import.meta.env.VITE_SERVER_IP,
+      showInNav: true,
+    },
+  },
+  {
+    path: '/about',
+    name: 'about',
+    component: () => import('@/views/about/AboutPage.vue'),
+    meta: {
+      title: "Про мене | Mud' Tech Blog",
+      description: 'Дізнайся більше про автора блогу: стек, досвід, проєкти та контакти.',
+      showInNav: true,
+      label: '🙋‍♂️ Про мене',
     },
   },
 ]
