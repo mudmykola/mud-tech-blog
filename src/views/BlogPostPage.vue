@@ -1,66 +1,3 @@
-<template>
-  <DefaultLayout>
-    <ScrollProgressBar ref="scrollBarRef" />
-    <div class="blog-post" v-if="article">
-      <!-- 🔗 Хлібні крихти -->
-      <nav class="breadcrumbs">
-        <router-link to="/">Головна</router-link>
-        ›
-        <router-link to="/blog">Блог</router-link>
-        ›
-        <span>{{ article.title }}</span>
-      </nav>
-
-      <!-- 📝 Заголовок статті -->
-      <h1 class="article-title">{{ article.title }}</h1>
-
-      <!-- ℹ️ Інформація про статтю -->
-      <div class="article-info">
-        <p class="author">
-          <strong>✍️ Автор:</strong>
-          {{ article.authorV2?.name || 'Невідомий' }}
-        </p>
-        <p class="date">
-          <strong>📅 Опубліковано:</strong>
-          {{ formatDate(article.publishedAt) }}
-        </p>
-        <p v-if="isUpdated" class="updated">🔄 Оновлено: {{ formatDate(article.updatedAt) }}</p>
-        <p class="tags">
-          <strong>🏷️ Теги:</strong>
-          {{ article.tags.join(', ') }}
-        </p>
-        <p class="reading-time">⏳ Час читання: ~{{ readingTime }} хв</p>
-      </div>
-
-      <img :src="article.image?.url" v-if="article.image" class="article-image" />
-      <section class="donation">
-        <DonationSection />
-      </section>
-
-      <!-- 📖 Основний контент статті -->
-      <div v-html="article.contentHtml" class="content"></div>
-
-      <!-- 📢 Поширення статті -->
-      <div class="share-buttons">
-        <button @click="shareOnFacebook">📘 Facebook</button>
-        <button @click="shareOnTwitter">🐦 Twitter</button>
-        <button @click="shareOnTelegram">✈️ Telegram</button>
-        <button @click="copyLink">🔗 Копіювати лінк</button>
-      </div>
-
-      <!-- 🔙🔜 Кнопки навігації -->
-      <div class="navigation-buttons">
-        <button @click="goBack" class="nav-button">← Назад</button>
-        <button @click="goNext" class="nav-button" v-if="nextArticle">Вперед →</button>
-      </div>
-      <div class="comments-section">
-        <h2>💬 Коментарі</h2>
-        <div id="disqus_thread"></div>
-      </div>
-    </div>
-  </DefaultLayout>
-</template>
-
 <script setup>
   import { ref, computed, onMounted, watch } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
@@ -82,7 +19,12 @@
   const scrollBarRef = ref(null)
 
   const DISQUS_SHORTNAME = import.meta.env.VITE_DISQUS_SHORTNAME
+  const truncateBreadcrumb = text => {
+    if (!text) return ''
+    return text.length > 36 ? text.slice(0, 36) + '…' : text
+  }
 
+  // ---------- Disqus ----------
   onMounted(() => {
     if (!DISQUS_SHORTNAME) {
       console.error('❌ Disqus SHORTNAME не налаштовано!')
@@ -95,42 +37,35 @@
     document.body.appendChild(script)
   })
 
+  // ---------- Завантаження статті ----------
   const loadArticle = async () => {
     articles.value = await getBlogArticles()
     article.value = articles.value.find(a => a.handle === route.params.slug)
 
     if (article.value) {
       updateMetaTags()
+
+      // оновлюємо прогрес бар після рендеру
       setTimeout(() => {
         scrollBarRef.value?.updateScroll()
       }, 300)
     }
 
-    // Прокрутка вгору після завантаження статті
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  // Оновлення мета-тегів (title та description)
+  // ---------- Meta tags ----------
   const updateMetaTags = () => {
     if (!article.value) return
 
-    // Оновлюємо заголовок вкладки браузера
     document.title = `${article.value.title} | Mud' Tech Blog`
 
-    // Отримуємо текст з contentHtml
     const plainText = article.value.contentHtml.replace(/<[^>]*>/g, '')
     let description = article.value.excerpt || plainText
 
-    // Обмежуємо довжину опису
-    if (description.length > 250) {
-      description = description.substring(0, 240) + '...'
-    }
+    if (description.length > 250) description = description.substring(0, 240) + '...'
+    if (description.length < 160) description = description.padEnd(160, ' ')
 
-    if (description.length < 160) {
-      description = description.padEnd(160, ' ')
-    }
-
-    // Оновлюємо або додаємо <meta name="description">
     let metaDescription = document.querySelector('meta[name="description"]')
     if (metaDescription) {
       metaDescription.setAttribute('content', description)
@@ -145,6 +80,7 @@
   onMounted(loadArticle)
   watch(() => route.params.slug, loadArticle)
 
+  // ---------- Обчислення ----------
   const readingTime = computed(() => {
     if (!article.value || !article.value.contentHtml) return 1
     const words = article.value.contentHtml.replace(/<[^>]*>/g, '').split(/\s+/).length
@@ -162,6 +98,16 @@
     return articles.value[currentIndex + 1] || null
   })
 
+  const breadcrumbs = computed(() => {
+    if (!article.value) return []
+    return [
+      { title: 'Головна', to: '/' },
+      { title: 'Блог', to: '/blog' },
+      { title: article.value.title, disabled: true },
+    ]
+  })
+
+  // ---------- Навігація ----------
   const goBack = () => {
     router.go(-1)
   }
@@ -172,8 +118,10 @@
     }
   }
 
+  // ---------- Форматування ----------
   const formatDate = date => new Date(date).toLocaleDateString('uk-UA')
 
+  // ---------- Шерінг ----------
   const shareOnFacebook = () => {
     window.open(`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`, '_blank')
   }
@@ -218,144 +166,135 @@
   })
 </script>
 
-<style scoped>
-  .comments-section {
-    margin-top: 40px;
-  }
+<template>
+  <DefaultLayout>
+    <ScrollProgressBar ref="scrollBarRef" />
 
-  .comments-section h2 {
-    margin-bottom: 20px;
-  }
-  .blog-post {
-    max-width: 850px;
-    margin: auto;
-    padding: 25px;
-    background: var(--primary-dark);
-    border-radius: 12px;
-    box-shadow: 0px 4px 10px rgba(255, 255, 100, 0.2);
-    margin-top: 80px;
-  }
+    <v-container v-if="article" class="mm-post" max-width="960">
+      <div class="mm-post__shell">
+        <div class="mm-post__glow" />
 
-  /* 🔗 Хлібні крихти */
-  .breadcrumbs {
-    font-size: 0.9rem;
-    color: var(--primary-light);
-    margin-bottom: 10px;
-  }
+        <div class="mm-post__hero-top">
+          <div class="mm-post__hero-left">
+            <div class="mm-post__breadcrumbs">
+              <v-breadcrumbs :items="breadcrumbs">
+                <template #divider>
+                  <v-icon size="14" class="mm-post__crumb-divider">mdi-chevron-right</v-icon>
+                </template>
 
-  .breadcrumbs a {
-    text-decoration: none;
-    color: var(--primary);
-    transition: color 0.3s;
-  }
+                <template #item="{ item }">
+                  <router-link v-if="!item.disabled" :to="item.to" class="mm-post__crumb-link">
+                    {{ item.title }}
+                  </router-link>
+                  <span v-else class="mm-post__crumb-current">
+                    {{ truncateBreadcrumb(article.title) }}
+                  </span>
+                </template>
+              </v-breadcrumbs>
+            </div>
 
-  .breadcrumbs a:hover {
-    color: var(--primary-light);
-  }
+            <div class="mm-post__meta-top">
+              <v-chip
+                size="small"
+                class="mm-post__chip mm-post__chip--tag"
+                v-if="article.tags?.length"
+                pill
+              >
+                <v-icon icon="mdi-tag-multiple" size="16" start />
+                {{ article.tags[0] }}
+              </v-chip>
 
-  /* 📝 Заголовок */
-  .article-title {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: var(--primary-light);
-    text-align: center;
-    margin-bottom: 15px;
-  }
+              <div class="mm-post__meta-top-right">
+                <span class="mm-post__meta-pill">
+                  <v-icon icon="mdi-calendar" size="16" />
+                  {{ formatDate(article.publishedAt) }}
+                </span>
+                <span class="mm-post__meta-pill">
+                  <v-icon icon="mdi-timer-sand" size="16" />
+                  ~{{ readingTime }} хв
+                </span>
+              </div>
+            </div>
 
-  /* ℹ️ Інформація про статтю */
-  .article-info {
-    background: var(--bg-dark);
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(255, 255, 100, 0.2);
-    margin-bottom: 20px;
-  }
+            <h1 class="mm-post__title">
+              {{ article.title }}
+            </h1>
+          </div>
 
-  .article-info p {
-    font-size: 1rem;
-    color: var(--primary);
-    margin-bottom: 8px;
-    text-align: center;
-  }
+          <div v-if="article.image" class="mm-post__hero-thumb">
+            <img :src="article.image.url" :alt="article.title" />
+          </div>
+        </div>
 
-  /* 🔄 Оновлена стаття */
-  .updated {
-    font-size: 1rem;
-    color: #ffcc00;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
+        <section class="mm-post__donation">
+          <DonationSection />
+        </section>
 
-  /* 📖 Контент */
-  .article-image {
-    width: 100%;
-    border-radius: 10px;
-    margin-bottom: 15px;
-  }
+        <section class="mm-post__content">
+          <div v-html="article.contentHtml" class="mm-post__content-inner" />
+        </section>
+        <section class="mm-post__share">
+          <div class="mm-post__share-header">
+            <v-icon icon="mdi-share-variant" size="22" />
+            <span>Поділитися статтею</span>
+          </div>
 
-  .content {
-    font-size: 1.2rem;
-    line-height: 1.7;
-  }
+          <div class="mm-post__share-buttons">
+            <button class="mm-share-btn" @click="shareOnFacebook" aria-label="Facebook">
+              <v-icon size="20" icon="mdi-facebook" />
+            </button>
 
-  /* 🔙🔜 Кнопки навігації */
-  .navigation-buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-  }
+            <button class="mm-share-btn" @click="shareOnTwitter" aria-label="Twitter / X">
+              <v-icon size="20" icon="mdi-twitter" />
+            </button>
 
-  .nav-button {
-    padding: 10px 15px;
-    background: var(--primary);
-    color: var(--bg-dark);
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-  }
+            <button class="mm-share-btn" @click="shareOnTelegram" aria-label="Telegram">
+              <v-icon size="20" icon="mdi-send-variant" />
+            </button>
 
-  .nav-button:hover {
-    background: var(--primary-light);
-    transform: scale(1.05);
-  }
+            <button
+              class="mm-share-btn mm-share-btn--copy"
+              @click="copyLink"
+              aria-label="Copy link"
+            >
+              <v-icon size="20" icon="mdi-link-variant" />
+            </button>
+          </div>
+        </section>
 
-  /* 📢 Кнопки поширення */
-  .share-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-    margin-top: 20px;
-  }
+        <section class="mm-post__nav">
+          <v-btn
+            class="mm-post__nav-prev"
+            variant="outlined"
+            color="primaryBtn"
+            rounded="lg"
+            @click="goBack"
+          >
+            <v-icon start icon="mdi-chevron-left" />
+            Назад
+          </v-btn>
 
-  .share-buttons button {
-    background: var(--primary);
-    border: none;
-    padding: 10px 15px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    color: var(--bg-dark);
-    transition: 0.3s;
-  }
+          <v-btn
+            class="mm-post__nav-next"
+            v-if="nextArticle"
+            variant="flat"
+            color="primaryBtn"
+            rounded="lg"
+            @click="goNext"
+          >
+            Наступна стаття
+            <v-icon end icon="mdi-chevron-right" />
+          </v-btn>
+        </section>
 
-  .share-buttons button:hover {
-    background: var(--primary-light);
-  }
-
-  @media (max-width: 768px) {
-    .article-title {
-      font-size: 28px;
-      line-height: 34px;
-    }
-    .blog-post {
-      padding: 20px;
-    }
-    .navigation-buttons {
-      flex-direction: column;
-      gap: 10px;
-    }
-  }
-</style>
+        <section class="mm-post__comments">
+          <div class="mm-post__comments-header">
+            <v-icon icon="mdi-comment-multiple-outline" size="22" />
+            <h2>Коментарі</h2>
+          </div>
+          <div id="disqus_thread" />
+        </section>
+      </div>
+    </v-container>
+  </DefaultLayout>
+</template>

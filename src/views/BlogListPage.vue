@@ -1,57 +1,3 @@
-<template>
-  <DefaultLayout>
-    <div class="blog-container">
-      <!-- 📜 Ліва частина: Список статей -->
-      <div class="blog-list">
-        <h1>📝 Блог | Залишайтеся в курсі актуальних технологій</h1>
-        <p class="subtitle">Всі технологічні статті та новини</p>
-
-        <p v-if="loading" class="loading">Завантаження...</p>
-        <p v-if="!loading && !paginatedArticles.length" class="no-articles">Статті не знайдено.</p>
-
-        <div v-if="paginatedArticles.length" class="articles">
-          <ArticleCard
-            v-for="article in paginatedArticles"
-            :key="article.handle"
-            :article="article"
-          />
-        </div>
-
-        <!-- 📄 Пагінація -->
-        <div class="pagination" v-if="totalPages > 1">
-          <button @click="prevPage" :disabled="currentPage === 1">← Попередня</button>
-          <span>Сторінка {{ currentPage }} з {{ totalPages }}</span>
-          <button @click="nextPage" :disabled="currentPage === totalPages">Наступна →</button>
-        </div>
-      </div>
-
-      <!-- 📱 Фіксований мобільний фільтр -->
-      <button class="mobile-filter-btn" @click="toggleMobileFilter">📌 Фільтр</button>
-      <div
-        class="mobile-filter-overlay"
-        v-if="isMobileFilterOpen"
-        @click="toggleMobileFilter"
-      ></div>
-
-      <div class="mobile-filter" :class="{ open: isMobileFilterOpen }">
-        <button class="close-filter" @click="toggleMobileFilter">✖</button>
-        <h2>📌 Фільтр</h2>
-        <div class="tags-container">
-          <button
-            v-for="tag in tags"
-            :key="tag"
-            @click="toggleTagFilter(tag)"
-            :class="{ active: selectedTag === tag }"
-          >
-            {{ tag }}
-          </button>
-          <button v-if="selectedTag" @click="resetFilter" class="reset-filter">Очистити</button>
-        </div>
-      </div>
-    </div>
-  </DefaultLayout>
-</template>
-
 <script setup>
   import { ref, computed, onMounted } from 'vue'
   import { getBlogArticles } from '@/services/shopifyApi'
@@ -143,167 +89,79 @@
     useJsonLd([generateOrganizationJsonLd(), generateBlogIndexJsonLd()])
   })
 </script>
+<template>
+  <DefaultLayout>
+    <!-- HERO BLOG -->
+    <section class="mm-blog-hero">
+      <div class="mm-blog-hero__glow"></div>
 
-<style scoped>
-  .blog-container {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 40px 20px;
-    margin-top: 40px;
-  }
+      <h1 class="mm-blog-hero__title">
+        <v-icon icon="mdi-lightbulb-on-outline" class="mm-blog-hero__icon" />
+        Блог | Залишайтеся в курсі актуальних технологій
+      </h1>
 
-  .blog-list {
-    width: 100%;
-    max-width: 1600px;
-    text-align: center;
-  }
+      <p class="mm-blog-hero__subtitle">Всі технологічні статті та новини</p>
+    </section>
 
-  h1 {
-    font-size: 2.5rem;
-    color: var(--primary-light);
-    text-shadow: 0px 4px 10px rgba(255, 255, 100, 0.5);
-  }
+    <!-- ARTICLES GRID -->
+    <section class="mm-blog-wrapper">
+      <p v-if="loading" class="mm-blog-loading">Завантаження...</p>
+      <p v-if="!loading && !paginatedArticles.length" class="mm-blog-empty">Статті не знайдено.</p>
 
-  .subtitle {
-    font-size: 1.2rem;
-    color: var(--primary);
-    margin-bottom: 20px;
-  }
+      <div v-if="paginatedArticles.length" class="mm-blog-grid">
+        <ArticleCard
+          v-for="article in paginatedArticles"
+          :key="article.handle"
+          :article="article"
+        />
+      </div>
 
-  .loading,
-  .no-articles {
-    font-size: 1.1rem;
-    color: var(--primary-light);
-    margin: 20px 0;
-  }
+      <!-- PAGINATION -->
+      <div class="mm-blog-pagination" v-if="totalPages > 1">
+        <button @click="prevPage" :disabled="currentPage === 1">
+          <v-icon icon="mdi-chevron-left" />
+          Попередня
+        </button>
 
-  /* 📜 Відображення статей */
-  .articles {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-    margin: 30px 0;
-  }
+        <span>Сторінка {{ currentPage }} з {{ totalPages }}</span>
 
-  @media (min-width: 1024px) {
-    .articles {
-      grid-template-columns: repeat(4, 1fr); /* 4 колонки на десктопі */
-    }
-  }
+        <button @click="nextPage" :disabled="currentPage === totalPages">
+          Наступна
+          <v-icon icon="mdi-chevron-right" />
+        </button>
+      </div>
 
-  /* 📄 Пагінація */
-  .pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    margin-top: 20px;
-  }
+      <!-- FAB FILTER BUTTON -->
+      <button class="mm-filter-btn" @click="toggleMobileFilter">
+        <v-icon icon="mdi-filter-variant" size="26" />
+      </button>
 
-  .pagination button {
-    background: var(--primary);
-    color: white;
-    padding: 10px 15px;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    transition: 0.3s;
-  }
+      <div class="mm-filter-overlay" v-if="isMobileFilterOpen" @click="toggleMobileFilter"></div>
 
-  .pagination button:disabled {
-    background: gray;
-    cursor: not-allowed;
-  }
+      <div class="mm-filter" :class="{ open: isMobileFilterOpen }">
+        <button class="close-filter" @click="toggleMobileFilter">
+          <v-icon icon="mdi-close" size="26" />
+        </button>
 
-  .pagination span {
-    font-size: 1.2rem;
-    color: var(--primary-light);
-  }
+        <h2>Фільтр статей</h2>
 
-  /* 📱 Мобільна кнопка фільтра */
-  .mobile-filter-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: var(--primary);
-    color: white;
-    padding: 14px 18px;
-    border-radius: 50%;
-    font-size: 18px;
-    cursor: pointer;
-    border: none;
-    transition:
-      transform 0.3s ease-in-out,
-      box-shadow 0.3s;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-  }
+        <div class="mm-filter-tags">
+          <button
+            v-for="tag in tags"
+            :key="tag"
+            @click="toggleTagFilter(tag)"
+            :class="{ active: selectedTag === tag }"
+          >
+            <v-icon icon="mdi-tag-outline" size="16" />
+            {{ tag }}
+          </button>
 
-  .mobile-filter-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0px 6px 15px rgba(255, 255, 100, 0.5);
-  }
-
-  /* 📱 Фільтр */
-  .mobile-filter-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 100;
-  }
-
-  .mobile-filter {
-    position: fixed;
-    bottom: -100%;
-    left: 0;
-    width: 100%;
-    background: var(--primary-dark);
-    padding: 20px;
-    text-align: center;
-    z-index: 101;
-    transition: bottom 0.3s ease-in-out;
-  }
-
-  .mobile-filter.open {
-    bottom: 0;
-  }
-
-  .close-filter {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-  }
-
-  .tags-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-  }
-
-  .tags-container button {
-    padding: 10px 15px;
-    border: none;
-    background: var(--primary);
-    color: var(--bg-dark);
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    transition:
-      background 0.3s,
-      transform 0.2s;
-  }
-  @media (max-width: 768px) {
-    .blog-container {
-      margin-top: 50px;
-    }
-    .blog-list h1 {
-      font-size: 1.5rem;
-    }
-  }
-</style>
+          <button v-if="selectedTag" @click="resetFilter" class="reset-filter">
+            <v-icon icon="mdi-backspace" size="18" />
+            Очистити
+          </button>
+        </div>
+      </div>
+    </section>
+  </DefaultLayout>
+</template>

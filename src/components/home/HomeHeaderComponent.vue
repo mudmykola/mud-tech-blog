@@ -12,8 +12,14 @@
 </script>
 
 <template>
-  <div class="header">
-    <h1>{{ title }}</h1>
-    <p class="subtitle">{{ subtitle }}</p>
-  </div>
+  <section class="mm-hero">
+    <div class="mm-hero__glow"></div>
+    <h1 class="mm-hero__title">
+      {{ title }}
+    </h1>
+    <p class="mm-hero__subtitle">
+      {{ subtitle }}
+    </p>
+    <div class="mm-hero__grid"></div>
+  </section>
 </template>

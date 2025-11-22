@@ -14,5 +14,9 @@
 </script>
 
 <template>
-  <footer>© {{ currentYear }} Mud' Tech Blog</footer>
+  <footer class="mm-footer">
+    <div class="mm-footer__inner">
+      <p class="mm-footer__text">© {{ currentYear }} MudTech Blog · All rights reserved</p>
+    </div>
+  </footer>
 </template>

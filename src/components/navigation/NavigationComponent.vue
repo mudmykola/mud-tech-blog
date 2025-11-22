@@ -1,19 +1,13 @@
 <script setup>
-  import { ref, onMounted, onUnmounted, computed } from 'vue'
+  import { ref, computed, onMounted, onUnmounted } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
+  import Logo from '@/components/ui/Logo.vue'
 
-  const isMenuOpen = ref(false)
+  const drawer = ref(false)
   const isHeaderVisible = ref(true)
+
   const route = useRoute()
   const router = useRouter()
-
-  const toggleMenu = () => (isMenuOpen.value = !isMenuOpen.value)
-  const closeMenu = () => (isMenuOpen.value = false)
-
-  const isActive = path => {
-    if (path === '/') return route.path === '/'
-    return route.path.startsWith(path)
-  }
 
   const navLinks = computed(() =>
     router
@@ -22,14 +16,20 @@
       .map(r => ({
         path: r.path,
         label: r.meta.label,
+        icon: r.meta.icon || null,
       }))
   )
 
+  const isActive = path => {
+    if (path === '/') return route.path === '/'
+    return route.path.startsWith(path)
+  }
+
   let lastScrollY = 0
   const handleScroll = () => {
-    const currentScrollY = window.scrollY
-    isHeaderVisible.value = currentScrollY < lastScrollY || currentScrollY < 50
-    lastScrollY = currentScrollY
+    const y = window.scrollY
+    isHeaderVisible.value = y < lastScrollY || y < 40
+    lastScrollY = y
   }
 
   onMounted(() => {
@@ -43,40 +43,63 @@
 </script>
 
 <template>
-  <nav class="navbar" :class="{ hidden: !isHeaderVisible }">
-    <div class="nav-container">
-      <router-link to="/" class="logo" @click="closeMenu">
-        <span class="mud">Mud'</span>
-        <span class="tech">Tech</span>
-        <span class="blog">Blog</span>
-      </router-link>
-
-      <button class="burger-menu" @click="toggleMenu">☰</button>
-
-      <div v-if="isMenuOpen" class="overlay" @click="closeMenu"></div>
-
-      <div class="mobile-menu" :class="{ open: isMenuOpen }">
-        <button class="close-btn" @click="closeMenu">✖</button>
-        <ul>
-          <li v-for="link in navLinks" :key="link.path">
-            <router-link
-              :to="link.path"
-              :class="{ active: isActive(link.path) }"
-              @click="closeMenu"
-            >
-              {{ link.label }}
-            </router-link>
-          </li>
-        </ul>
+  <v-app-bar height="64" flat class="mm-nav" :class="{ 'mm-nav--hidden': !isHeaderVisible }">
+    <v-container class="d-flex align-center justify-space-between">
+      <Logo />
+      <div class="d-none d-md-flex gap-4">
+        <v-btn
+          v-for="link in navLinks"
+          :key="link.path"
+          :to="link.path"
+          variant="text"
+          class="mm-nav-btn"
+          :class="{ 'mm-nav-btn--active': isActive(link.path) }"
+        >
+          <v-icon v-if="link.icon" :icon="link.icon" size="18" class="mm-nav-btn__icon" />
+          {{ link.label }}
+        </v-btn>
       </div>
-
-      <ul class="nav-links">
-        <li v-for="link in navLinks" :key="link.path">
-          <router-link :to="link.path" :class="{ active: isActive(link.path) }">
-            {{ link.label }}
-          </router-link>
-        </li>
-      </ul>
+      <v-btn icon class="d-md-none" @click="drawer = true">
+        <v-icon icon="mdi mdi-menu" size="32" />
+      </v-btn>
+    </v-container>
+  </v-app-bar>
+  <v-navigation-drawer v-model="drawer" temporary location="right" width="260" class="mm-drawer">
+    <div class="mm-drawer__header">
+      <span class="mm-drawer__title">Меню</span>
+      <v-btn class="mm-btn-close" icon @click="drawer = false">
+        <v-icon icon="mdi-close" />
+      </v-btn>
     </div>
-  </nav>
+    <v-divider class="mb-2"></v-divider>
+    <v-list density="comfortable">
+      <v-list-item v-for="link in navLinks" :key="link.path" @click="drawer = false">
+        <router-link
+          :to="link.path"
+          class="mm-drawer__link"
+          :class="{ 'mm-drawer__link--active': isActive(link.path) }"
+        >
+          <v-icon v-if="link.icon" :icon="link.icon" size="20" class="mm-drawer__icon" />
+          {{ link.label }}
+        </router-link>
+      </v-list-item>
+    </v-list>
+  </v-navigation-drawer>
+
+  <v-navigation-drawer v-model="drawer" temporary location="right" width="260" class="drawer">
+    <div class="drawer-header">
+      <span class="drawer-title">Меню</span>
+      <v-btn icon @click="drawer = false">
+        <v-icon icon="mdi-close" />
+      </v-btn>
+    </div>
+    <v-divider class="mb-2"></v-divider>
+    <v-list density="comfortable">
+      <v-list-item v-for="link in navLinks" :key="link.path" @click="drawer = false">
+        <router-link :to="link.path" class="drawer-link" :class="{ active: isActive(link.path) }">
+          {{ link.label }}
+        </router-link>
+      </v-list-item>
+    </v-list>
+  </v-navigation-drawer>
 </template>

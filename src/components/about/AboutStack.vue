@@ -1,22 +1,26 @@
 <script setup>
   const stack = [
-    '🟢 Nuxt 3 / Vue 3 / Pinia',
-    '🎨 TailwindCSS / PostCSS',
-    '🛍️ Shopify / Liquid / Storefront API / Admin API / GraphQL',
-    '🐍 Python / Web scraping / Automation / Async / Proxies / CSV / Logging',
-    '📦 Firebase / Firestore / Realtime DB / Google Auth',
-    '🧩 Google Apps Script / Sheets API',
-    '📮 Telegram Bot API / Resend Email API',
-    '🌐 Git / GitHub / CI Workflows',
-    '⚙️ Headless CMS / Custom Checkout / i18n / Multi-language',
+    { label: 'Nuxt 3 / Vue 3 / Pinia', icon: 'mdi-vuejs' },
+    { label: 'TailwindCSS / PostCSS', icon: 'mdi-tailwind' },
+    { label: 'Shopify / Liquid / Storefront API / GraphQL', icon: 'mdi-shopping' },
+    { label: 'Python / Web scraping / Automation', icon: 'mdi-language-python' },
+    { label: 'Firebase / Firestore / Auth', icon: 'mdi-fire' },
+    { label: 'Google Apps Script / Sheets API', icon: 'mdi-google-drive' },
+    { label: 'Telegram Bot API / Automation', icon: 'mdi-telegram' },
+    { label: 'Git / GitHub / CI Workflows', icon: 'mdi-git' },
+    { label: 'Headless CMS / Custom Checkout / i18n', icon: 'mdi-translate' },
   ]
 </script>
 
 <template>
-  <div>
-    <h2>🔧 Технології, з якими працюю</h2>
-    <ul class="stack-list">
-      <li v-for="tech in stack" :key="tech">{{ tech }}</li>
+  <section class="mm-stack">
+    <h2 class="mm-stack-title">Технології, з якими працюю</h2>
+
+    <ul class="mm-stack-list">
+      <li v-for="tech in stack" :key="tech.label" class="mm-stack-item">
+        <v-icon class="mm-stack-icon" :icon="tech.icon" size="20" />
+        <span>{{ tech.label }}</span>
+      </li>
     </ul>
-  </div>
+  </section>
 </template>

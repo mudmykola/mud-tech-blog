@@ -1,0 +1,25 @@
+.mm-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  gap: 4px;
+}
+
+.mm-logo__img {
+  display: block;
+  height: auto;
+}
+
+.mm-logo__text {
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  color: var(--color-text);
+  display: flex;
+  gap: 3px;
+}
+
+.mm-logo__accent {
+  color: var(--color-accent);
+  text-shadow: 0 0 12px rgba(77, 163, 255, 0.5);
+}

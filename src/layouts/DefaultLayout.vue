@@ -22,37 +22,3 @@
     }, 300)
   })
 </script>
-
-<style lang="scss" scoped>
-  .layout {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-
-  main {
-    flex-grow: 1;
-    padding: 20px;
-  }
-
-  footer {
-    text-align: center;
-    padding: 12px;
-    background: var(--primary-dark);
-    font-weight: 500;
-    color: var(--primary-light);
-    font-size: 14px;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
-  }
-
-  @media (max-width: 768px) {
-    main {
-      padding: 10px;
-    }
-
-    footer {
-      font-size: 12px;
-      padding: 10px;
-    }
-  }
-</style>
