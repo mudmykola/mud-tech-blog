@@ -2,6 +2,7 @@
   import { ref, computed, onMounted, onUnmounted } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import Logo from '@/components/ui/Logo.vue'
+  import InstallPWA from '@/components/pwa/InstallPWA.vue'
 
   const drawer = ref(false)
   const isHeaderVisible = ref(true)
@@ -12,7 +13,7 @@
   const navLinks = computed(() =>
     router
       .getRoutes()
-      .filter(r => r.meta?.showInNav)
+      .filter(r => r.meta?.showInNav && !r.path.includes(':'))
       .map(r => ({
         path: r.path,
         label: r.meta.label,
@@ -46,7 +47,7 @@
   <v-app-bar height="64" flat class="mm-nav" :class="{ 'mm-nav--hidden': !isHeaderVisible }">
     <v-container class="d-flex align-center justify-space-between">
       <Logo />
-      <div class="d-none d-md-flex gap-4">
+      <div class="d-none d-md-flex align-center gap-4">
         <v-btn
           v-for="link in navLinks"
           :key="link.path"
@@ -55,15 +56,18 @@
           class="mm-nav-btn"
           :class="{ 'mm-nav-btn--active': isActive(link.path) }"
         >
-          <v-icon v-if="link.icon" :icon="link.icon" size="18" class="mm-nav-btn__icon" />
+          <v-icon v-if="link.icon" :icon="link.icon" size="18" />
           {{ link.label }}
         </v-btn>
+        <InstallPWA />
       </div>
+
       <v-btn icon class="d-md-none" @click="drawer = true">
-        <v-icon icon="mdi mdi-menu" size="32" />
+        <v-icon icon="mdi-menu" size="32" />
       </v-btn>
     </v-container>
   </v-app-bar>
+
   <v-navigation-drawer v-model="drawer" temporary location="right" width="260" class="mm-drawer">
     <div class="mm-drawer__header">
       <span class="mm-drawer__title">Меню</span>
@@ -71,7 +75,9 @@
         <v-icon icon="mdi-close" />
       </v-btn>
     </div>
+
     <v-divider class="mb-2"></v-divider>
+
     <v-list density="comfortable">
       <v-list-item v-for="link in navLinks" :key="link.path" @click="drawer = false">
         <router-link
@@ -83,22 +89,9 @@
           {{ link.label }}
         </router-link>
       </v-list-item>
-    </v-list>
-  </v-navigation-drawer>
 
-  <v-navigation-drawer v-model="drawer" temporary location="right" width="260" class="drawer">
-    <div class="drawer-header">
-      <span class="drawer-title">Меню</span>
-      <v-btn icon @click="drawer = false">
-        <v-icon icon="mdi-close" />
-      </v-btn>
-    </div>
-    <v-divider class="mb-2"></v-divider>
-    <v-list density="comfortable">
-      <v-list-item v-for="link in navLinks" :key="link.path" @click="drawer = false">
-        <router-link :to="link.path" class="drawer-link" :class="{ active: isActive(link.path) }">
-          {{ link.label }}
-        </router-link>
+      <v-list-item class="mt-2">
+        <InstallPWA />
       </v-list-item>
     </v-list>
   </v-navigation-drawer>
