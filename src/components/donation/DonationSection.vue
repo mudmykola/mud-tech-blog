@@ -1,117 +1,82 @@
-<template>
-  <section class="donation-block">
-    <h2>💥 Донать — щоб русня горіла 🔥</h2>
-    <p>
-      Тут має бути твій донат. А там — вибух.
-      <br />
-      Кожна гривня = мінус один окупант. Працює безвідмовно. 🇺🇦
-    </p>
-
-    <div class="donation-links">
-      <a class="donation-links__mono" :href="monobankUrl" target="_blank" rel="noopener">
-        💳 Зарядити через Monobank
-      </a>
-      <a href="https://savelife.in.ua/donate/" target="_blank" rel="noopener">
-        🎯 Підтримати “Повернись живим”
-      </a>
-    </div>
-
-    <p class="small-print">💬 Дякуємо за підтримку. Русня сама себе не утилізує!</p>
-  </section>
-</template>
-
 <script setup>
-  const monobankUrl = 'https://send.monobank.ua/jar/9BwUkcaT2j'
+  import { ref, onMounted } from 'vue'
+
+  const badgeIcon = 'mdi-shield-star'
+  const title = 'Підтримай ЗСУ'
+  const description = `
+  Допоможи армії наближати перемогу.
+  <br />Кожен донат — це реальна дія. 🇺🇦
+`
+  const donateHref = 'https://savelife.in.ua/donate/'
+  const donateBtnText = 'Підтримати «Повернись живим»'
+  const donateBtnIcon = 'mdi-heart'
+  const smallFooter = 'Дякуємо за внесок! Разом до перемоги.'
+
+  const isPopupVisible = ref(false)
+
+  const DISPLAY_INTERVAL = 45_000
+  const AUTO_HIDE_DELAY = 10_000
+
+  const showPopup = () => {
+    isPopupVisible.value = true
+    setTimeout(() => (isPopupVisible.value = false), AUTO_HIDE_DELAY)
+  }
+
+  onMounted(() => {
+    setTimeout(showPopup, 2000)
+    setInterval(showPopup, DISPLAY_INTERVAL)
+  })
 </script>
 
-<style scoped lang="scss">
-  .donation-links__mono {
-    display: none;
-  }
-  .donation-block {
-    margin: 60px 0 40px;
-    padding: 28px 24px;
-    border-radius: 20px;
-    background: linear-gradient(135deg, rgba(255, 230, 0, 0.07), rgba(255, 200, 0, 0.03));
-    border: 1px solid rgba(255, 255, 100, 0.15);
-    text-align: center;
-    box-shadow: 0 0 24px rgba(255, 255, 0, 0.07);
-    animation: pulse-glow 3s infinite;
-  }
+<template>
+  <div class="mm-donation">
+    <div class="mm-donation__badge">
+      <v-icon :icon="badgeIcon" size="32" />
+    </div>
 
-  @keyframes pulse-glow {
-    0%,
-    100% {
-      box-shadow: 0 0 24px rgba(255, 255, 0, 0.07);
-    }
-    50% {
-      box-shadow: 0 0 36px rgba(255, 255, 0, 0.15);
-    }
-  }
+    <h2 class="mm-donation__title">{{ title }}</h2>
 
-  .donation-block h2 {
-    margin-bottom: 16px;
-    font-size: 1.9rem;
-    color: #ffde00;
-    text-shadow: 0 0 6px #ffee80;
-  }
+    <p class="mm-donation__text" v-html="description" />
 
-  .donation-block p {
-    margin-bottom: 24px;
-    font-size: 1.15rem;
-    color: #f8f8f8;
-    line-height: 1.7;
-  }
+    <v-btn
+      :href="donateHref"
+      target="_blank"
+      rel="noopener"
+      class="mm-donation__btn"
+      size="large"
+      rounded="lg"
+      elevation="0"
+    >
+      <v-icon start :icon="donateBtnIcon" />
+      {{ donateBtnText }}
+    </v-btn>
 
-  .donation-block .small-print {
-    margin-top: 22px;
-    font-size: 0.95rem;
-    color: #bbb;
-  }
+    <p class="mm-donation__small">{{ smallFooter }}</p>
+  </div>
 
-  .donation-links {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    align-items: center;
-  }
+  <div class="mm-donation-popup" :class="{ visible: isPopupVisible }">
+    <div class="mm-donation-popup__content">
+      <v-icon icon="mdi-alert" size="20" class="mm-donation-popup__icon" />
 
-  .donation-links a {
-    background: #ffd700;
-    color: #111;
-    padding: 15px 24px;
-    border-radius: 12px;
-    text-decoration: none;
-    font-weight: 800;
-    font-size: 1.1rem;
-    width: 100%;
-    max-width: 360px;
-    transition: all 0.25s;
-    box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
-  }
+      <div class="mm-donation-popup__text">
+        Підтримай ЗСУ 🇺🇦
+        <span>Твій донат має значення</span>
+      </div>
 
-  .donation-links a:hover {
-    background: #fff366;
-    transform: scale(1.05);
-    box-shadow: 0 0 14px rgba(255, 215, 0, 0.45);
-  }
+      <v-btn
+        :href="donateHref"
+        target="_blank"
+        rel="noopener"
+        size="small"
+        rounded="lg"
+        class="mm-donation-popup__btn"
+      >
+        Донат
+      </v-btn>
+    </div>
 
-  @media (max-width: 480px) {
-    .donation-block {
-      padding: 24px 16px;
-    }
-
-    .donation-block h2 {
-      font-size: 1.5rem;
-    }
-
-    .donation-block p {
-      font-size: 1rem;
-    }
-
-    .donation-links a {
-      font-size: 1rem;
-      padding: 12px 18px;
-    }
-  }
-</style>
+    <button class="mm-donation-popup__close" @click="isPopupVisible = false">
+      <v-icon icon="mdi-close" size="18" />
+    </button>
+  </div>
+</template>

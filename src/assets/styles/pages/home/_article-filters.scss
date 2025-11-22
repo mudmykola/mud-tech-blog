@@ -1,0 +1,38 @@
+.mm-filters {
+  display: flex;
+  gap: 16px;
+  margin: 20px 0;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+  }
+}
+
+.mm-filters__search,
+.mm-filters__select {
+  flex: 1;
+}
+
+:deep(.v-input) {
+  background: var(--color-bg-elevated);
+  border-radius: var(--radius-md);
+}
+
+:deep(.v-field__input),
+:deep(.v-select .v-field__input) {
+  color: var(--color-text);
+}
+
+:deep(.v-field__outline) {
+  --v-field-border-width: 1px;
+  border-color: var(--border-soft) !important;
+}
+
+:deep(.v-input--dirty .v-field__outline),
+:deep(.v-input:hover .v-field__outline) {
+  border-color: var(--color-accent) !important;
+}
+
+:deep(.v-input__prepend .v-icon) {
+  color: var(--color-text-muted) !important;
+}

@@ -10,18 +10,25 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@mdi/font": "^7.4.47",
     "axios": "^1.8.3",
     "firebase": "^11.4.0",
     "pinia": "^3.0.1",
     "vue": "^3.5.13",
     "vue-gtag": "^3.5.0",
-    "vue-router": "^4.5.0"
+    "vue-router": "^4.5.0",
+    "vuetify": "^3.10.11"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.2.1",
+    "@fortawesome/fontawesome-svg-core": "^7.1.0",
+    "@fortawesome/free-regular-svg-icons": "^7.1.0",
+    "@fortawesome/free-solid-svg-icons": "^7.1.0",
+    "@fortawesome/vue-fontawesome": "^3.1.2",
+    "@mdi/js": "^7.4.47",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "material-design-icons-iconfont": "^6.7.0",
     "prettier": "^3.6.2",
     "sass-embedded": "^1.85.1",
-    "vite": "^6.2.1",
-    "vite-plugin-vue-devtools": "^7.7.2"
+    "vite": "7.1.11"
   }
 }

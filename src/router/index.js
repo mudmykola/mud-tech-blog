@@ -14,7 +14,8 @@ const routes = [
       title: "Головна | Mud' Tech Blog",
       description: 'Опис для головної сторінки.',
       showInNav: true,
-      label: '🏠 Головна',
+      label: 'Головна',
+      icon: 'mdi-home',
     },
   },
   {
@@ -25,7 +26,8 @@ const routes = [
       title: "Блог | Mud' Tech Blog",
       description: 'Опис для сторінки блогу.',
       showInNav: true,
-      label: '📝 Блог',
+      label: 'Блог',
+      icon: 'mdi-post-outline',
     },
   },
   {
@@ -46,7 +48,8 @@ const routes = [
       title: "Про мене | Mud' Tech Blog",
       description: 'Дізнайся більше про автора блогу: стек, досвід, проєкти та контакти.',
       showInNav: true,
-      label: '🙋‍♂️ Про мене',
+      label: 'Про мене',
+      icon: 'mdi-account-circle',
     },
   },
 ]

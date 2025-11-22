@@ -7,7 +7,11 @@
 </script>
 
 <template>
-  <div>
-    <p v-for="(p, index) in paragraphs" :key="index">{{ p }}</p>
-  </div>
+  <section class="mm-about-intro">
+    <div class="mm-about-intro__wrapper">
+      <p v-for="(p, index) in paragraphs" :key="index" class="mm-about-intro__text">
+        {{ p }}
+      </p>
+    </div>
+  </section>
 </template>

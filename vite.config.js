@@ -6,7 +6,7 @@ import vue from '@vitejs/plugin-vue'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [vue()],
-  css: ['@/assets/styles/main.scss'],
+  css: ['@/assets/styles/main.scss', '@mdi/font/css/materialdesignicons.min.css'],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

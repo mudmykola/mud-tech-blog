@@ -1,5 +1,20 @@
-@use '@/assets/styles/pages/home.scss';
+@use '@/assets/root' as *;
+@use '@/assets/styles/pages/home/home.scss';
+@use '@/assets/styles/pages/home/article-filters';
+@use '@/assets/styles/pages/home/home-header-title';
+@use '@/assets/styles/pages/blog/blog-post-page';
+@use '@/assets/styles/pages/blog/blog-list-page';
+@use '@/assets/styles/layouts/default-layout';
+@use '@/assets/styles/components/navigation/navbar';
+@use '@/assets/styles/components/donation/donation-section';
+@use '@/assets/styles/components/ui/logo';
+@use '@/assets/styles/components/footer/footer';
+
 @use '@/assets/styles/components/article/article-card.scss';
-@use '@/assets/styles/components/navigation/navbar.scss';
+
 @use '@/assets/styles/components/blog/related-posts.scss';
-@use '@/assets/styles/components/about/about.scss';
+@use '@/assets/styles/components/about/about-header';
+@use '@/assets/styles/components/about/about-intro';
+@use '@/assets/styles/components/about/about-stack';
+@use '@/assets/styles/components/about/about-project';
+@use '@/assets/styles/components/about/about-contact';

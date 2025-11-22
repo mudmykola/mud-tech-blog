@@ -1,36 +1,47 @@
 <script setup>
   const projects = [
     {
-      label:
-        'KARPATKA – це сучасний онлайн-магазин, створений для любителів якісних та стильних сумок.',
+      label: 'KARPATKA — сучасний онлайн-магазин сумок',
       link: 'https://karpatka-sable.vercel.app',
+      icon: 'mdi-bag-personal-outline',
     },
     {
-      label: 'GentleWear – ексклюзивні товари та преміум якість ',
+      label: 'GentleWear — ексклюзивний мерч та преміум якість',
       link: 'https://gentle-wear.vercel.app',
+      icon: 'mdi-tshirt-crew-outline',
     },
     {
-      label: 'MudTechBlog — технічний блог на  Vue 3',
+      label: 'MudTechBlog — технічний блог на Vue 3',
       link: 'https://github.com/mudmykola/mud-tech-blog',
+      icon: 'mdi-file-code-outline',
     },
     {
-      label: 'Vue My Portfolio — персональний портфоліо на Vue 3',
+      label: 'Vue My Portfolio — персональний портфоліо',
       link: 'https://vue--my-portfolio.web.app',
+      icon: 'mdi-account-box-outline',
     },
     {
-      label: 'CartoonJoy — Vue 3 SPA для дитячих мультфільмів',
+      label: 'CartoonJoy — мультфільми для дітей (SPA)',
       link: 'https://black-caster-247408.web.app',
+      icon: 'mdi-movie-open-outline',
     },
   ]
 </script>
 
 <template>
-  <div>
-    <h2>🔗 Мої проєкти</h2>
-    <ul class="project-list">
-      <li v-for="project in projects" :key="project.label">
-        <a :href="project.link" target="_blank">{{ project.label }}</a>
-      </li>
-    </ul>
-  </div>
+  <section class="mm-projects">
+    <h2 class="mm-projects-title">Мої проєкти</h2>
+
+    <v-container class="mm-projects-grid" fluid>
+      <v-row dense>
+        <v-col v-for="project in projects" :key="project.label" cols="12" sm="6" md="4">
+          <a :href="project.link" target="_blank" class="mm-project-card">
+            <v-icon class="mm-project-icon" :icon="project.icon" />
+            <span class="mm-project-label">{{ project.label }}</span>
+            <v-icon class="mm-project-external" icon="mdi-open-in-new" />
+          </a>
+        </v-col>
+      </v-row>
+    </v-container>
+  </section>
 </template>

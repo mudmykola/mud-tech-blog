@@ -1,0 +1,211 @@
+.mm-blog-hero__icon {
+  margin-right: 10px;
+  color: var(--color-accent);
+  filter: drop-shadow(0 0 8px rgba(66, 211, 146, 0.4));
+}
+
+.mm-filter-btn {
+  position: fixed;
+  bottom: 26px;
+  right: 26px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: var(--color-bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+  font-weight: 800;
+  box-shadow: var(--shadow-strong);
+  transition:
+    var(--transition-fast),
+    transform 0.22s ease;
+}
+.mm-filter-btn:hover {
+  transform: translateY(-4px) scale(1.06);
+}
+.mm-filter-btn:active {
+  transform: scale(0.92);
+}
+
+.mm-blog-hero {
+  position: relative;
+  text-align: center;
+  padding: 80px 20px 70px;
+  border-radius: var(--radius-xl);
+  background: radial-gradient(circle at 50% 0, rgba(77, 163, 255, 0.14), transparent 70%);
+  margin-bottom: 40px;
+}
+
+.mm-blog-hero__glow {
+  position: absolute;
+  top: -80px;
+  left: 50%;
+  width: 520px;
+  height: 520px;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(255, 242, 130, 0.35), rgba(0, 0, 0, 0));
+  filter: blur(80px);
+  z-index: -1;
+}
+
+.mm-blog-hero__title {
+  font-size: clamp(2.3rem, 4vw, 3rem);
+  font-weight: 900;
+  letter-spacing: -1px;
+  color: var(--color-text);
+  text-shadow: 0 0 22px rgba(255, 255, 180, 0.35);
+}
+
+.mm-blog-hero__subtitle {
+  margin-top: 10px;
+  font-size: 1.15rem;
+  color: var(--color-text-muted);
+}
+
+.mm-blog-wrapper {
+  width: 100%;
+  max-width: 1720px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+}
+
+.mm-blog-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+  margin-top: 40px;
+}
+
+@media (max-width: 1280px) {
+  .mm-blog-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 900px) {
+  .mm-blog-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 540px) {
+  .mm-blog-pagination button {
+    font-size: 0.6rem;
+  }
+  .mm-blog-hero {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  .mm-blog-hero__title {
+    font-size: 1.5rem;
+  }
+  .mm-blog-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mm-blog-loading,
+.mm-blog-empty {
+  font-size: 1.1rem;
+  text-align: center;
+  color: var(--color-text-muted);
+  margin-top: 24px;
+}
+
+.mm-blog-pagination {
+  margin-top: 26px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+}
+
+.mm-blog-pagination button {
+  background: var(--color-accent);
+  color: var(--color-bg);
+  padding: 10px 18px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  border: none;
+  font-weight: 700;
+  transition: var(--transition-fast);
+}
+.mm-blog-pagination button:hover {
+  background: var(--color-accent-light);
+}
+.mm-blog-pagination button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.mm-filter-btn {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  padding: 16px 22px;
+  background: var(--color-accent);
+  border-radius: 50px;
+  border: none;
+  color: var(--color-bg);
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-strong);
+  transition: var(--transition-fast);
+}
+.mm-filter-btn:hover {
+  transform: translateY(-3px);
+}
+
+.mm-filter-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 1200;
+}
+
+.mm-filter {
+  position: fixed;
+  bottom: -100%;
+  left: 0;
+  width: 100%;
+  background: var(--color-bg-elevated);
+  padding: 24px;
+  text-align: center;
+  z-index: 1300;
+  transition: bottom var(--transition-fast);
+  border-top: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-strong);
+}
+.mm-filter.open {
+  bottom: 0;
+}
+
+.mm-filter-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 18px;
+}
+
+.mm-filter-tags button {
+  padding: 8px 16px;
+  background: var(--color-bg-soft);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  color: var(--color-text);
+  font-weight: 600;
+  transition: var(--transition-fast);
+}
+.mm-filter-tags button.active {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+.reset-filter {
+  background: var(--color-error) !important;
+  color: white !important;
+}
