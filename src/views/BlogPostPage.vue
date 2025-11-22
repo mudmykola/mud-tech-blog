@@ -1,5 +1,7 @@
 <script setup>
   import { ref, computed, onMounted, watch } from 'vue'
+  import { useHead } from '@vueuse/head'
+
   import { useRoute, useRouter } from 'vue-router'
   import { getBlogArticles } from '@/services/shopifyApi'
   import DefaultLayout from '@/layouts/DefaultLayout.vue'
@@ -24,7 +26,6 @@
     return text.length > 36 ? text.slice(0, 36) + '…' : text
   }
 
-  // ---------- Disqus ----------
   onMounted(() => {
     if (!DISQUS_SHORTNAME) {
       console.error('❌ Disqus SHORTNAME не налаштовано!')
@@ -37,7 +38,6 @@
     document.body.appendChild(script)
   })
 
-  // ---------- Завантаження статті ----------
   const loadArticle = async () => {
     articles.value = await getBlogArticles()
     article.value = articles.value.find(a => a.handle === route.params.slug)
@@ -45,7 +45,6 @@
     if (article.value) {
       updateMetaTags()
 
-      // оновлюємо прогрес бар після рендеру
       setTimeout(() => {
         scrollBarRef.value?.updateScroll()
       }, 300)
@@ -54,7 +53,6 @@
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  // ---------- Meta tags ----------
   const updateMetaTags = () => {
     if (!article.value) return
 
@@ -80,7 +78,6 @@
   onMounted(loadArticle)
   watch(() => route.params.slug, loadArticle)
 
-  // ---------- Обчислення ----------
   const readingTime = computed(() => {
     if (!article.value || !article.value.contentHtml) return 1
     const words = article.value.contentHtml.replace(/<[^>]*>/g, '').split(/\s+/).length
@@ -107,7 +104,6 @@
     ]
   })
 
-  // ---------- Навігація ----------
   const goBack = () => {
     router.go(-1)
   }
@@ -118,10 +114,8 @@
     }
   }
 
-  // ---------- Форматування ----------
   const formatDate = date => new Date(date).toLocaleDateString('uk-UA')
 
-  // ---------- Шерінг ----------
   const shareOnFacebook = () => {
     window.open(`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`, '_blank')
   }
@@ -157,6 +151,30 @@
 
   watch(article, val => {
     if (!val) return
+
+    const plainText = val.contentHtml.replace(/<[^>]*>/g, '')
+    const description = val.excerpt || plainText.slice(0, 180) + '...'
+    const url = `${window.location.origin}/blog/${val.handle}`
+    const ogImage = val.image?.url || '/default-og.png'
+
+    useHead({
+      title: `${val.title} | Mud' Tech Blog`,
+      meta: [
+        { name: 'description', content: description },
+
+        { property: 'og:title', content: val.title },
+        { property: 'og:description', content: description },
+        { property: 'og:type', content: 'article' },
+        { property: 'og:url', content: url },
+        { property: 'og:image', content: ogImage },
+
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: val.title },
+        { name: 'twitter:description', content: description },
+        { name: 'twitter:image', content: ogImage },
+      ],
+      link: [{ rel: 'canonical', href: url }],
+    })
 
     useJsonLd([
       generateBlogPostJsonLd(val),

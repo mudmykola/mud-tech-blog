@@ -10,6 +10,11 @@
     transform var(--transition),
     opacity var(--transition);
 }
+.mm-nav-install {
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: var(--color-accent);
+}
 
 .mm-nav-btn__icon {
   margin-right: 6px;
