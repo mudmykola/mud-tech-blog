@@ -17,3 +17,13 @@ export function setCanonicalLink(url) {
   }
   canonicalLink.href = url
 }
+
+export function setRobots(content = 'index, follow') {
+  let metaTag = document.querySelector('meta[name="robots"]')
+  if (!metaTag) {
+    metaTag = document.createElement('meta')
+    metaTag.name = 'robots'
+    document.head.appendChild(metaTag)
+  }
+  metaTag.content = content
+}

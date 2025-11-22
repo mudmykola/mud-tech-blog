@@ -67,12 +67,22 @@ if (!serverIp) {
 }
 
 router.afterEach(to => {
+  // Title
   document.title = to.meta.title || "Mud' Tech Blog"
 
+  // Description
   setMetaTag('description', to.meta.description || 'Технологічний блог про новітні тренди.')
+
+  // Robots
+  // Якщо в meta явно вказано noindex — робимо noindex,nofollow
+  const robotsValue = to.meta.robots || 'index, follow'
+  setMetaTag('robots', robotsValue)
+
+  // Other meta fields
   setMetaTag('generator', to.meta.generator || 'Vue.js + Vite + Shopify')
   setMetaTag('cms', to.meta.cms || 'Shopify Headless CMS')
-  setMetaTag('ip', to.meta.ip || 'IP не вказано')
+
+  // Canonical
   setCanonicalLink(window.location.origin + to.fullPath)
 })
 
