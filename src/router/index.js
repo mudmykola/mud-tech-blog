@@ -1,8 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '@/views/HomePage.vue'
-import BlogListPage from '@/views/BlogListPage.vue'
-import BlogPostPage from '@/views/BlogPostPage.vue'
-import AboutPage from '@/views/about/AboutPage.vue'
+const BlogListPage = () => import('@/views/BlogListPage.vue')
+const BlogPostPage = () => import('@/views/BlogPostPage.vue')
 import { setMetaTag, setCanonicalLink } from '@/utils/meta'
 
 const routes = [
