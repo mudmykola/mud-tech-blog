@@ -4,30 +4,39 @@
   const deferredPrompt = ref(null)
   const showBanner = ref(false)
 
+  const AUTO_HIDE_MS = 12000
+
   onMounted(() => {
+    if (localStorage.getItem('pwaDismissed')) return
+
     window.addEventListener('beforeinstallprompt', e => {
       console.log('📲 beforeinstallprompt FIRED')
       e.preventDefault()
       deferredPrompt.value = e
       showBanner.value = true
+
+      setTimeout(() => {
+        showBanner.value = false
+      }, AUTO_HIDE_MS)
     })
   })
 
   const installPWA = async () => {
     if (!deferredPrompt.value) return
-
     deferredPrompt.value.prompt()
+
     const { outcome } = await deferredPrompt.value.userChoice
+    console.log('Install outcome:', outcome)
 
     if (outcome === 'accepted') {
-      console.log('User accepted installation')
+      console.log('👍 Installed')
     }
-
     deferredPrompt.value = null
     showBanner.value = false
   }
 
   const closeBanner = () => {
+    localStorage.setItem('pwaDismissed', 'true')
     showBanner.value = false
   }
 </script>
@@ -37,7 +46,7 @@
     <div v-if="showBanner" class="mm-pwa-banner">
       <div class="mm-pwa-banner__content">
         <v-icon class="mm-pwa-banner__icon" icon="mdi-cellphone-arrow-down" />
-        <span class="mm-pwa-banner__text">Встановити додаток?</span>
+        <span>Встановити додаток?</span>
       </div>
 
       <div class="mm-pwa-banner__actions">
@@ -52,47 +61,3 @@
     </div>
   </v-slide-y-transition>
 </template>
-
-<style scoped>
-  .mm-pwa-banner {
-    position: fixed;
-    bottom: 18px;
-    right: 18px;
-    left: 18px;
-    padding: 16px 18px;
-    border-radius: 18px;
-    backdrop-filter: blur(12px);
-    background: rgba(22, 25, 32, 0.92);
-    border: 1px solid rgba(88, 255, 170, 0.22);
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-
-    box-shadow: 0 0 26px rgba(88, 255, 170, 0.25);
-    z-index: 2000;
-  }
-
-  .mm-pwa-banner__content {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .mm-pwa-banner__icon {
-    color: var(--color-accent);
-    font-size: 28px;
-  }
-
-  .mm-pwa-banner__text {
-    font-weight: 700;
-    font-size: 1.05rem;
-  }
-
-  .mm-pwa-banner__actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-</style>

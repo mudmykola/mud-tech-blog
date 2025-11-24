@@ -2,7 +2,6 @@
   import { ref, computed, onMounted, onUnmounted } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import Logo from '@/components/ui/Logo.vue'
-  import InstallPWA from '@/components/pwa/InstallPWA.vue'
 
   const drawer = ref(false)
   const isHeaderVisible = ref(true)
@@ -88,10 +87,6 @@
           <v-icon v-if="link.icon" :icon="link.icon" size="20" class="mm-drawer__icon" />
           {{ link.label }}
         </router-link>
-      </v-list-item>
-
-      <v-list-item class="mt-2">
-        <InstallPWA />
       </v-list-item>
     </v-list>
   </v-navigation-drawer>

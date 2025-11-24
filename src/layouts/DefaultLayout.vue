@@ -1,19 +1,9 @@
-<template>
-  <div class="layout">
-    <NavigationComponent />
-    <SpinnerComponent v-if="loading" :loading="loading" />
-    <main v-else>
-      <slot />
-    </main>
-    <FooterComponent :year="currentYear" />
-  </div>
-</template>
-
 <script setup>
   import { ref, onMounted } from 'vue'
   import NavigationComponent from '@/components/navigation/NavigationComponent.vue'
   import SpinnerComponent from '@/components/ui/SpinnerComponent.vue'
   import FooterComponent from '@/components/footer/FooterComponent.vue'
+  import InstallPWA from '@/components/pwa/InstallPWA.vue'
 
   const loading = ref(true)
   onMounted(() => {
@@ -22,3 +12,14 @@
     }, 300)
   })
 </script>
+<template>
+  <div class="layout">
+    <InstallPWA />
+    <NavigationComponent />
+    <SpinnerComponent v-if="loading" :loading="loading" />
+    <main v-else>
+      <slot />
+    </main>
+    <FooterComponent :year="currentYear" />
+  </div>
+</template>
