@@ -47,7 +47,6 @@
       rounded="lg"
       elevation="0"
     >
-      <v-icon start :icon="donateBtnIcon" />
       {{ donateBtnText }}
     </v-btn>
 
@@ -57,7 +56,6 @@
   <div class="mm-donation-popup" :class="{ visible: isPopupVisible }">
     <div class="mm-donation-popup__content">
       <v-icon icon="mdi-alert" size="20" class="mm-donation-popup__icon" />
-
       <div class="mm-donation-popup__text">
         Підтримай ЗСУ 🇺🇦
         <span>Твій донат має значення</span>
