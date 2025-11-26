@@ -1,5 +1,5 @@
 <script setup>
-  import { ref, onMounted } from 'vue'
+  import { onMounted, ref } from 'vue'
 
   import DefaultLayout from '@/layouts/DefaultLayout.vue'
   import HomeHeader from '@/components/home/HomeHeaderComponent.vue'
@@ -40,12 +40,12 @@
 <template>
   <DefaultLayout>
     <div class="home">
-      <HomeHeader :title="uiText.title" :subtitle="uiText.subtitle" />
+      <HomeHeader :subtitle="uiText.subtitle" :title="uiText.title" />
 
       <ArticleFilters
         :searchQuery="searchQuery"
-        @update:searchQuery="searchQuery = $event"
         :sortBy="sortBy"
+        @update:searchQuery="searchQuery = $event"
         @update:sortBy="sortBy = $event"
       />
 
@@ -56,13 +56,13 @@
 
       <ArticleGrid :filteredArticles="filteredArticles" />
 
-      <router-link to="/blog" class="btn">
+      <router-link class="btn" to="/blog">
         {{ uiText.showAll }}
       </router-link>
 
       <DonationSection />
       <div class="related-post">
-        <RelatedPostsComponent :allArticles="articles" />
+        <RelatedPostsComponent :allArticles="articles" :article="article" />
       </div>
     </div>
   </DefaultLayout>
