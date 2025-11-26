@@ -9,7 +9,6 @@
 `
   const donateHref = 'https://savelife.in.ua/donate/'
   const donateBtnText = 'Підтримати «Повернись живим»'
-  const donateBtnIcon = 'mdi-heart'
   const smallFooter = 'Дякуємо за внесок! Разом до перемоги.'
 
   const isPopupVisible = ref(false)

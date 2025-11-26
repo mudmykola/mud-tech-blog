@@ -1,11 +1,13 @@
 <script setup>
-  import { ref, onMounted, onUnmounted } from 'vue'
+  import { onMounted, onUnmounted, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { getBlogArticles } from '@/services/shopifyApi'
+  import { useOptimizedImage } from '@/composables/useOptimizedImage.js'
 
   const props = defineProps({
     currentArticle: Object,
     allArticles: Array,
+    article: { type: Object, required: true },
   })
 
   const router = useRouter()
@@ -40,12 +42,13 @@
   onUnmounted(() => clearInterval(interval))
 
   const goTo = slug => router.push(`/blog/${slug}`)
+  const img = useOptimizedImage(props.article?.image?.url, props.article?.title, 700)
 </script>
 
 <template>
   <section class="mm-related">
     <h2 class="mm-related__title">
-      <v-icon icon="mdi-lightning-bolt" size="28" class="mr-2" />
+      <v-icon class="mr-2" icon="mdi-lightning-bolt" size="28" />
       Рекомендовані статті
     </h2>
 
@@ -54,16 +57,19 @@
         v-for="post in related"
         :key="post.handle"
         class="mm-card"
-        rounded="xl"
         elevation="6"
+        rounded="xl"
         @click="goTo(post.handle)"
       >
         <div class="mm-card__glow"></div>
 
-        <v-img :src="post.image?.url" height="170" cover class="mm-card__img" />
+        <img
+          class="mm-article2__image"
+          v-bind="useOptimizedImage(post.image?.url, post.title, 600).attributes"
+        />
 
-        <v-chip v-if="post.tags?.length" size="small" class="mm-card__tag" variant="flat">
-          <v-icon icon="mdi-tag-outline" size="14" class="mr-1" />
+        <v-chip v-if="post.tags?.length" class="mm-card__tag" size="small" variant="flat">
+          <v-icon class="mr-1" icon="mdi-tag-outline" size="14" />
           {{ post.tags[0] }}
         </v-chip>
 

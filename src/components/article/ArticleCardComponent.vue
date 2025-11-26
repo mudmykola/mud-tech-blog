@@ -1,5 +1,6 @@
 <script setup>
   import { computed } from 'vue'
+  import { useOptimizedImage } from '@/composables/useOptimizedImage.js'
 
   const props = defineProps({
     article: { type: Object, required: true },
@@ -15,29 +16,26 @@
     const src = props.article.excerpt || getPlainText(props.article.contentHtml)
     if (!src) return 'Опис відсутній'
 
-    return src.split(' ').slice(0, 26).join(' ') + '…'
+    return src.split(' ').slice(0, 14).join(' ') + '…'
   })
 
   const tag = computed(() => props.article.tags?.[0] || null)
+  const img = useOptimizedImage(props.article?.image?.url, props.article?.title, 300)
 </script>
 
 <template>
   <router-link :to="'/blog/' + article.handle" class="mm-article2">
-    <!-- BORDER GLOW -->
     <div class="mm-article2__glow"></div>
 
-    <!-- TAG -->
     <div v-if="tag" class="mm-article2__tag">
       <v-icon icon="mdi-label" size="14" />
       {{ tag }}
     </div>
 
-    <!-- IMAGE -->
     <div class="mm-article2__image-wrapper">
-      <v-img class="mm-article2__image" :src="article?.image?.url" height="220" cover />
+      <img class="mm-article2__image" v-bind="img.attributes" />
     </div>
 
-    <!-- CONTENT -->
     <div class="mm-article2__content">
       <h2 class="mm-article2__title">{{ article.title }}</h2>
 
