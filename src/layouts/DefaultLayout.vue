@@ -1,5 +1,5 @@
 <script setup>
-  import { ref, onMounted } from 'vue'
+  import { onMounted, ref } from 'vue'
   import NavigationComponent from '@/components/navigation/NavigationComponent.vue'
   import SpinnerComponent from '@/components/ui/SpinnerComponent.vue'
   import FooterComponent from '@/components/footer/FooterComponent.vue'
@@ -11,6 +11,8 @@
       loading.value = false
     }, 300)
   })
+
+  const currentYear = new Date().getFullYear()
 </script>
 <template>
   <div class="layout">
@@ -20,6 +22,6 @@
     <main v-else>
       <slot />
     </main>
-    <FooterComponent :year="currentYear" />
+    <FooterComponent />
   </div>
 </template>
