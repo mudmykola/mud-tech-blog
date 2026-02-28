@@ -6,8 +6,10 @@ import '@/assets/styles/main.scss'
 import '@mdi/font/css/materialdesignicons.min.css'
 import { createHead } from '@vueuse/head'
 import { vuetify } from './plugins/vuetify'
+import { initThemePalette } from './composables/useThemePalette'
 
 const head = createHead()
+initThemePalette()
 
 const vueApp = createApp(App)
 vueApp.use(router)

@@ -25,7 +25,7 @@
 
 .mm-footer__text:hover {
   color: var(--color-accent-light);
-  text-shadow: 0 0 6px rgba(77, 163, 255, 0.25);
+  text-shadow: 0 0 6px color-mix(in srgb, var(--color-accent-light) 36%, transparent);
 }
 
 @media (max-width: 480px) {

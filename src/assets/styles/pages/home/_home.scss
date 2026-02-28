@@ -17,7 +17,7 @@
   position: relative;
   border-radius: 30px;
   padding: 22px;
-  background: linear-gradient(145deg, #3f434b, #33363c);
+  background: var(--surface-grad-2);
   border: 1px solid var(--border-soft);
   box-shadow:
     14px 14px 30px rgba(28, 31, 35, 0.9),
@@ -56,8 +56,8 @@
   border-radius: 999px;
   font-size: 0.86rem;
   color: var(--color-text-soft);
-  background: linear-gradient(145deg, #3d4047, #33363d);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--surface-grad-3);
+  border: 1px solid var(--border-soft);
   box-shadow:
     inset 3px 3px 6px rgba(255, 255, 255, 0.03),
     inset -4px -4px 8px rgba(33, 36, 41, 0.8);
@@ -74,15 +74,15 @@
 }
 
 .mm-home__state--loading {
-  color: #f6c8bc;
-  background: rgba(216, 60, 19, 0.12);
-  border: 1px solid rgba(216, 60, 19, 0.32);
+  color: var(--text-accent-soft);
+  background: var(--accent-bg-soft);
+  border: 1px solid var(--accent-border-soft);
 }
 
 .mm-home__state--empty {
-  color: #ffe0d7;
-  background: rgba(216, 60, 19, 0.14);
-  border: 1px solid rgba(216, 60, 19, 0.28);
+  color: var(--text-accent-soft);
+  background: var(--accent-bg-soft);
+  border: 1px solid var(--accent-border-soft);
 }
 
 .articles-grid {
@@ -101,9 +101,9 @@
   width: 100%;
   min-height: 48px;
   border-radius: 14px;
-  color: #fff;
-  background: linear-gradient(145deg, #dc4d27, #c6350e);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: var(--text-inverse);
+  background: var(--accent-grad-1);
+  border: 1px solid var(--border-heavy);
   box-shadow:
     8px 8px 18px rgba(33, 24, 20, 0.7),
     -5px -5px 10px rgba(232, 116, 87, 0.2);
@@ -129,8 +129,8 @@
 .mm-side-card {
   border-radius: 20px;
   padding: 14px;
-  background: linear-gradient(145deg, #3e4249, #34383e);
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: var(--surface-grad-3);
+  border: 1px solid var(--border-default);
   box-shadow:
     8px 8px 16px rgba(31, 34, 39, 0.9),
     -4px -4px 8px rgba(84, 89, 98, 0.35);
@@ -160,8 +160,8 @@
 .mm-side-metric {
   border-radius: 12px;
   padding: 10px;
-  background: linear-gradient(145deg, #3a3e44, #32363c);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--surface-grad-4);
+  border: 1px solid var(--border-soft);
   display: grid;
   gap: 4px;
 
@@ -196,13 +196,13 @@
 .mm-side-tag {
   border-radius: 10px;
   padding: 9px 10px;
-  background: rgba(216, 60, 19, 0.12);
-  border: 1px solid rgba(216, 60, 19, 0.3);
+  background: var(--accent-bg-soft);
+  border: 1px solid var(--accent-border-soft);
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 8px;
-  color: #fff4f1;
+  color: var(--text-accent-soft);
 
   span {
     font-size: 0.76rem;
@@ -235,8 +235,8 @@
   color: var(--color-text-soft);
   padding: 9px 10px;
   border-radius: 10px;
-  background: linear-gradient(145deg, #3a3e45, #32363c);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--surface-grad-4);
+  border: 1px solid var(--border-soft);
 }
 
 .mm-side-list-item strong {
@@ -261,14 +261,14 @@
   color: var(--color-text);
   font-weight: 700;
   font-size: 0.84rem;
-  background: linear-gradient(145deg, #3f434a, #34383e);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--surface-grad-2);
+  border: 1px solid var(--border-default);
 }
 
 .mm-side-cta--primary {
-  color: #fff;
-  background: linear-gradient(145deg, #dd4e28, #c7340d);
-  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--text-inverse);
+  background: var(--accent-grad-2);
+  border-color: var(--border-heavy);
 }
 
 .related-post--sidebar {

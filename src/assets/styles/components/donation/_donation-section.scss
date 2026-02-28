@@ -2,8 +2,8 @@
   position: relative;
   padding: 32px 18px 20px;
   border-radius: 22px;
-  background: linear-gradient(155deg, #3f434a, #35393f);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--surface-grad-1);
+  border: 1px solid var(--border-soft);
   text-align: center;
   box-shadow:
     12px 12px 22px rgba(30, 33, 38, 0.88),
@@ -17,7 +17,7 @@
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(140deg, rgba(216, 60, 19, 0.45), rgba(216, 60, 19, 0.05));
+  background: linear-gradient(140deg, var(--accent-border-strong), color-mix(in srgb, var(--color-accent) 8%, transparent));
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
@@ -34,7 +34,7 @@
   right: -70px;
   top: -80px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(216, 60, 19, 0.35), transparent 72%);
+  background: radial-gradient(circle, var(--accent-border), transparent 72%);
   pointer-events: none;
 }
 
@@ -78,8 +78,8 @@
   justify-content: center;
   gap: 6px;
   border-radius: 10px;
-  background: linear-gradient(145deg, #3a3e44, #33373d);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--surface-grad-4);
+  border: 1px solid var(--border-default);
   font-size: 0.78rem;
   color: var(--color-text-soft);
 }
@@ -88,11 +88,11 @@
   position: relative;
   z-index: 1;
   width: 100%;
-  background: linear-gradient(145deg, #e25830, #cd340d) !important;
-  color: #fff !important;
+  background: var(--accent-grad-2) !important;
+  color: var(--text-inverse) !important;
   font-weight: 800;
   margin-bottom: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border: 1px solid var(--border-heavy) !important;
   box-shadow:
     7px 7px 14px rgba(40, 28, 24, 0.65),
     -4px -4px 8px rgba(219, 122, 95, 0.2);
@@ -123,8 +123,8 @@
   display: flex;
   align-items: center;
   padding: 10px 12px;
-  background: linear-gradient(145deg, #3c4047, #33363c);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--surface-grad-3);
+  border: 1px solid var(--border-default);
   border-radius: 14px;
   box-shadow:
     10px 10px 18px rgba(27, 30, 35, 0.9),
@@ -164,9 +164,9 @@
 }
 
 .mm-donation-popup__btn {
-  background: linear-gradient(145deg, #e35b34, #d63b12) !important;
-  color: #fff !important;
-  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  background: var(--accent-grad-2) !important;
+  color: var(--text-inverse) !important;
+  border: 1px solid var(--border-heavy) !important;
 }
 
 .mm-donation-popup__close {
@@ -176,6 +176,22 @@
   padding: 4px;
   margin-left: 6px;
   color: var(--color-text-soft);
+}
+
+html[data-theme-palette='light'] {
+  .mm-donation__btn,
+  .mm-donation__btn.v-btn,
+  .mm-donation-popup__btn,
+  .mm-donation-popup__btn.v-btn {
+    color: var(--color-text) !important;
+  }
+
+  .mm-donation__btn .v-btn__content,
+  .mm-donation__btn .v-icon,
+  .mm-donation-popup__btn .v-btn__content,
+  .mm-donation-popup__btn .v-icon {
+    color: var(--color-text) !important;
+  }
 }
 
 @media (max-width: 959px) {

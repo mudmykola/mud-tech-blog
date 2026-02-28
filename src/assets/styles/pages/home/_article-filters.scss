@@ -8,8 +8,8 @@
 .mm-filters__control {
   padding: 8px;
   border-radius: 14px;
-  background: linear-gradient(145deg, #40444b, #373b41);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--surface-grad-1);
+  border: 1px solid var(--border-default);
   box-shadow:
     7px 7px 14px rgba(30, 33, 38, 0.74),
     -4px -4px 10px rgba(86, 91, 100, 0.32);
@@ -50,8 +50,8 @@
 
 .mm-filters__control--sort {
   min-width: 220px;
-  background: linear-gradient(145deg, #3f434a, #353940);
-  border: 1px solid rgba(255, 255, 255, 0.11);
+  background: var(--surface-grad-1);
+  border: 1px solid var(--border-default);
   box-shadow:
     7px 7px 14px rgba(31, 34, 38, 0.78),
     -4px -4px 10px rgba(87, 92, 102, 0.34);
@@ -59,8 +59,8 @@
 
 .mm-filters__control--sort .mm-sort {
   :deep(.v-field) {
-    background: #34373d;
-    border: 1px solid rgba(255, 255, 255, 0.09);
+    background: var(--color-bg);
+    border: 1px solid var(--border-default);
   }
 
   :deep(.v-field__input),
@@ -81,8 +81,8 @@
 
 .mm-sort-menu {
   .v-list {
-    background: linear-gradient(145deg, #3f434a, #35393f) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--surface-grad-1) !important;
+    border: 1px solid var(--border-default);
     box-shadow:
       10px 10px 18px rgba(30, 33, 38, 0.82),
       -5px -5px 10px rgba(84, 89, 98, 0.32);
@@ -103,11 +103,36 @@
   }
 
   .v-list-item:hover {
-    background: rgba(216, 60, 19, 0.16);
+    background: var(--accent-bg);
   }
 
   .v-list-item--active {
-    background: rgba(216, 60, 19, 0.24);
-    border: 1px solid rgba(216, 60, 19, 0.38);
+    background: var(--accent-bg-strong);
+    border: 1px solid var(--accent-border);
+  }
+}
+
+html[data-theme-palette='light'] {
+  .mm-filters .mm-search .v-field__input,
+  .mm-filters .mm-search .v-field__input input,
+  .mm-filters .mm-sort .v-field__input,
+  .mm-filters .mm-sort .v-field__input input,
+  .mm-filters .mm-sort .v-select__selection,
+  .mm-filters .mm-sort .v-select__selection-text {
+    color: var(--color-text) !important;
+  }
+
+  .mm-filters .mm-search input::placeholder,
+  .mm-filters .mm-sort input::placeholder {
+    color: var(--color-text-muted) !important;
+    opacity: 1;
+  }
+
+  .mm-filters .mm-search .v-icon,
+  .mm-filters .mm-sort .v-icon,
+  .mm-filters .mm-search .v-field__prepend-inner .v-icon,
+  .mm-filters .mm-sort .v-field__prepend-inner .v-icon,
+  .mm-filters .mm-sort .v-field__append-inner .v-icon {
+    color: var(--color-text) !important;
   }
 }

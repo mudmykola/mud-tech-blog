@@ -35,7 +35,7 @@
     top: 0;
     left: 0;
     height: 4px;
-    background-color: #facc15; /* Tailwind yellow-400 */
+    background-color: var(--color-accent-light); /* Tailwind yellow-400 */
     z-index: 9999;
     transition: width 0.2s ease;
   }

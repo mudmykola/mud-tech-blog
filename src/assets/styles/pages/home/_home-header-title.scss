@@ -3,7 +3,7 @@
   overflow: hidden;
   border-radius: 22px;
   padding: 16px;
-  background: linear-gradient(152deg, #40444b, #35393f);
+  background: var(--surface-grad-1);
   border: 1px solid var(--border-soft);
   box-shadow:
     10px 10px 22px rgba(27, 30, 34, 0.82),
@@ -22,7 +22,7 @@
   height: 120px;
   right: -22px;
   top: -32px;
-  background: radial-gradient(circle, rgba(216, 60, 19, 0.28), transparent 70%);
+  background: radial-gradient(circle, var(--accent-border-soft), transparent 70%);
 }
 
 .mm-hero__orb--two {
@@ -30,7 +30,7 @@
   height: 100px;
   left: -20px;
   bottom: -45px;
-  background: radial-gradient(circle, rgba(191, 195, 199, 0.22), transparent 70%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--color-text-soft) 28%, transparent), transparent 70%);
 }
 
 .mm-hero__pill {
@@ -44,8 +44,8 @@
   font-weight: 700;
   font-size: 0.74rem;
   color: var(--color-text-soft);
-  background: linear-gradient(145deg, #3f434a, #363a40);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--surface-grad-1);
+  border: 1px solid var(--border-soft);
 }
 
 .mm-hero__title {
@@ -84,8 +84,8 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  background: linear-gradient(145deg, #3b3f46, #34383e);
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: var(--surface-grad-2);
+  border: 1px solid var(--border-default);
   color: var(--color-text-muted);
   font-size: 0.74rem;
   font-weight: 700;
@@ -106,16 +106,16 @@
   justify-content: center;
   gap: 6px;
   text-decoration: none;
-  background: linear-gradient(145deg, #3f434a, #353940);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--surface-grad-1);
+  border: 1px solid var(--border-default);
   color: var(--color-text);
   font-weight: 700;
   font-size: 0.8rem;
 }
 
 .mm-hero__quick-btn:hover {
-  border-color: rgba(216, 60, 19, 0.45);
-  color: #ffd8cf;
+  border-color: var(--accent-border-strong);
+  color: var(--text-accent-soft);
 }
 
 @media (max-width: 640px) {
