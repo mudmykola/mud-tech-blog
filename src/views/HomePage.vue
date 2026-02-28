@@ -14,7 +14,12 @@
   import { useArticleFilters } from '@/composables/useArticleFilters'
   import { useMetaTags } from '@/composables/useMetaTags'
   import { useJsonLd } from '@/composables/useJsonLd'
-  import { generateOrganizationJsonLd, generateWebSiteJsonLd } from '@/utils/jsonld'
+  import {
+    generateCollectionPageJsonLd,
+    generateItemListJsonLd,
+    generateOrganizationJsonLd,
+    generateWebSiteJsonLd,
+  } from '@/utils/jsonld'
 
   const uiText = {
     title: 'Технології, архітектура та продуктивність вебу',
@@ -38,11 +43,33 @@
   const searchQuery = ref('')
   const sortBy = ref('date_desc')
 
+  const buildHomeSchemas = list => {
+    const articleItems = list.slice(0, 12).map(item => ({
+      name: item.title,
+      url: `/blog/${item.handle}`,
+    }))
+
+    return [
+      generateOrganizationJsonLd(),
+      generateWebSiteJsonLd(),
+      generateCollectionPageJsonLd({
+        path: '/',
+        name: 'Головна сторінка Mud Tech Blog',
+        description:
+          'Технологічний блог українською про frontend, AI, eCommerce та продуктивну веб-розробку.',
+      }),
+      generateItemListJsonLd({
+        path: '/',
+        items: articleItems,
+      }),
+    ]
+  }
+
   onMounted(async () => {
     articles.value = await getBlogArticles()
     loading.value = false
     useMetaTags()
-    useJsonLd([generateOrganizationJsonLd(), generateWebSiteJsonLd()])
+    useJsonLd(buildHomeSchemas(articles.value))
   })
 
   const filteredArticles = useArticleFilters(articles, searchQuery, sortBy)

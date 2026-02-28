@@ -2,6 +2,13 @@
   import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
   import DefaultLayout from '@/layouts/DefaultLayout.vue'
   import { devLogEntries } from '@/data/dev-log.js'
+  import { useJsonLd } from '@/composables/useJsonLd'
+  import {
+    generateCollectionPageJsonLd,
+    generateItemListJsonLd,
+    generateOrganizationJsonLd,
+    generateWebSiteJsonLd,
+  } from '@/utils/jsonld'
 
   const PAGE_SIZE = 6
   const FILTERS = [
@@ -94,6 +101,27 @@
     if (currentPage.value < totalPages.value) currentPage.value += 1
   }
 
+  const updateJsonLdSchemas = () => {
+    const logItems = sortedEntries.value.slice(0, 30).map(entry => ({
+      name: entry.title,
+      url: '/updates',
+    }))
+
+    useJsonLd([
+      generateOrganizationJsonLd(),
+      generateWebSiteJsonLd(),
+      generateCollectionPageJsonLd({
+        path: '/updates',
+        name: 'Оновлення Mud Tech Blog',
+        description: 'Список релізів, фіксів і покращень Mud Tech Blog.',
+      }),
+      generateItemListJsonLd({
+        path: '/updates',
+        items: logItems,
+      }),
+    ])
+  }
+
   watch(activeFilter, () => {
     currentPage.value = 1
     activeId.value = null
@@ -117,11 +145,14 @@
     mobileQuery = window.matchMedia('(max-width: 900px)')
     syncMobileState(mobileQuery)
     mobileQuery.addEventListener('change', syncMobileState)
+    updateJsonLdSchemas()
   })
 
   onBeforeUnmount(() => {
     mobileQuery?.removeEventListener('change', syncMobileState)
   })
+
+  watch(sortedEntries, updateJsonLdSchemas)
 </script>
 
 <template>

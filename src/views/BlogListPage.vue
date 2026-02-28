@@ -5,7 +5,13 @@
   import ArticleCard from '@/components/article/ArticleCardComponent.vue'
   import DefaultLayout from '@/layouts/DefaultLayout.vue'
   import { buildCanonicalUrl } from '@/utils/canonical'
-  import { generateBlogIndexJsonLd, generateOrganizationJsonLd } from '@/utils/jsonld'
+  import {
+    generateBlogIndexJsonLd,
+    generateCollectionPageJsonLd,
+    generateItemListJsonLd,
+    generateOrganizationJsonLd,
+    generateWebSiteJsonLd,
+  } from '@/utils/jsonld'
   import { useJsonLd } from '@/composables/useJsonLd'
 
   const PAGE_SIZE = 9
@@ -43,8 +49,31 @@
     articles.value = await getBlogArticles()
     loading.value = false
 
-    useJsonLd([generateOrganizationJsonLd(), generateBlogIndexJsonLd()])
+    updateJsonLdSchemas()
   })
+
+  const updateJsonLdSchemas = () => {
+    const listItems = articles.value.slice(0, 20).map(item => ({
+      name: item.title,
+      url: `/blog/${item.handle}`,
+    }))
+
+    useJsonLd([
+      generateOrganizationJsonLd(),
+      generateWebSiteJsonLd(),
+      generateBlogIndexJsonLd(),
+      generateCollectionPageJsonLd({
+        path: '/blog',
+        name: 'Каталог статей Mud Tech Blog',
+        description:
+          'Список статей про frontend, Vue, AI та eCommerce з практичними технічними прикладами.',
+      }),
+      generateItemListJsonLd({
+        path: '/blog',
+        items: listItems,
+      }),
+    ])
+  }
 
   const tagStats = computed(() => {
     const counts = new Map()
@@ -122,6 +151,13 @@
   watch(totalPages, pageCount => {
     if (currentPage.value > pageCount) currentPage.value = pageCount
   })
+
+  watch(
+    () => articles.value,
+    () => {
+      if (!loading.value) updateJsonLdSchemas()
+    }
+  )
 </script>
 
 <template>
