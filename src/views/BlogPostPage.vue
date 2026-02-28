@@ -8,6 +8,7 @@
   import ScrollProgressBar from '@/components/ui/ScrollProgressBar.vue'
   import { getBlogArticles } from '@/services/shopifyApi'
   import { useOptimizedImage } from '@/composables/useOptimizedImage'
+  import { buildCanonicalUrl, getCanonicalOrigin } from '@/utils/canonical'
   import {
     generateBlogPostJsonLd,
     generateBreadcrumbJsonLd,
@@ -19,6 +20,7 @@
   const router = useRouter()
 
   const DISQUS_SHORTNAME = import.meta.env.VITE_DISQUS_SHORTNAME
+  const TWITTER_SITE = import.meta.env.VITE_TWITTER_SITE || ''
 
   const articles = ref([])
   const article = ref(null)
@@ -43,6 +45,12 @@
     const clipped = wordBoundary > Math.floor(maxLength * 0.62) ? draft.slice(0, wordBoundary) : plain.slice(0, maxLength)
     return `${clipped.trim()}…`
   }
+  const toAbsoluteUrl = value => {
+    const raw = String(value || '').trim()
+    if (!raw) return ''
+    if (/^https?:\/\//i.test(raw)) return raw
+    return `${getCanonicalOrigin()}${raw.startsWith('/') ? raw : `/${raw}`}`
+  }
 
   const summaryText = computed(() => {
     if (!article.value) return ''
@@ -62,8 +70,8 @@
   })
 
   const canonicalUrl = computed(() => {
-    if (!article.value || typeof window === 'undefined') return ''
-    return `${window.location.origin}/blog/${article.value.handle}`
+    if (!article.value) return ''
+    return buildCanonicalUrl(`/blog/${article.value.handle}`)
   })
 
   const encodedShareUrl = computed(() => encodeURIComponent(canonicalUrl.value))
@@ -106,11 +114,8 @@
       ? summaryText.value || 'Практична стаття Mud Tech Blog про веб-розробку.'
       : 'Матеріал Mud Tech Blog про frontend, інструменти та сучасну веб-розробку.'
     const canonical =
-      canonicalUrl.value ||
-      (typeof window !== 'undefined'
-        ? `${window.location.origin}${route.path}`
-        : 'https://mud-tech-blog.web.app/blog')
-    const image = article.value?.image?.url || '/default-og.png'
+      canonicalUrl.value || buildCanonicalUrl(route.path || '/blog')
+    const image = toAbsoluteUrl(article.value?.image?.url || '/pwa-512x512.png')
 
     return {
       title,
@@ -123,10 +128,13 @@
         { property: 'og:type', content: 'article' },
         { property: 'og:url', content: canonical },
         { property: 'og:image', content: image },
+        { property: 'og:site_name', content: 'Mud Tech Blog' },
+        { property: 'og:locale', content: 'uk_UA' },
         { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:title', content: seoPostH1.value || "Стаття | Mud' Tech Blog" },
         { name: 'twitter:description', content: description },
         { name: 'twitter:image', content: image },
+        ...(TWITTER_SITE ? [{ name: 'twitter:site', content: TWITTER_SITE }] : []),
       ],
       link: [{ rel: 'canonical', href: canonical }],
     }

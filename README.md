@@ -27,3 +27,11 @@ npm run dev
 ```sh
 npm run build
 ```
+
+## SEO Environment
+
+Canonical and social metadata use these variables:
+
+- `VITE_CANONICAL_ORIGIN` - canonical domain origin, example: `https://mud-tech-blog.web.app`
+- `VITE_ENFORCE_CANONICAL_REDIRECT` - set to `true` to force redirect from non-canonical hosts
+- `VITE_TWITTER_SITE` - optional Twitter handle for `twitter:site` tag, example: `@mudtechblog`

@@ -7,15 +7,19 @@ import '@mdi/font/css/materialdesignicons.min.css'
 import { createHead } from '@vueuse/head'
 import { vuetify } from './plugins/vuetify'
 import { initThemePalette } from './composables/useThemePalette'
+import { enforceCanonicalRedirect } from './utils/canonical'
 
 const head = createHead()
 initThemePalette()
+const redirectedToCanonical = enforceCanonicalRedirect()
 
-const vueApp = createApp(App)
-vueApp.use(router)
-vueApp.use(vuetify)
-vueApp.use(head)
-vueApp.mount('#app')
+if (!redirectedToCanonical) {
+  const vueApp = createApp(App)
+  vueApp.use(router)
+  vueApp.use(vuetify)
+  vueApp.use(head)
+  vueApp.mount('#app')
+}
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
