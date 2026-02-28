@@ -1,5 +1,5 @@
 <script setup>
-  const avatar = '/images/avatar.jpg'
+  const avatar = '/images/avatar.webp'
   const title = 'Привіт! Я Микола'
   const subtitle = 'Frontend eCommerce Developer'
   const highlights = ['20+ eCommerce проєктів', 'Shopify / Vue / Automation', 'Фокус: UX + продуктивність']

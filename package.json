@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "test": "node --test tests/**/*.test.js",
+    "test": "node --test $(find tests -name \"*.test.js\" -print)",
     "build": "vite build",
     "deploy": "npm run test && npm run build && npx firebase-tools deploy --only hosting",
     "preview": "vite preview",

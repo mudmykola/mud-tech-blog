@@ -1,29 +1,24 @@
 <script setup>
   const projects = [
     {
-      label: 'KARPATKA — сучасний онлайн-магазин сумок',
-      link: 'https://karpatka-sable.vercel.app',
-      icon: 'mdi-bag-personal-outline',
+      label: 'DevKit Tools — набір інструментів для щоденної розробки',
+      link: 'https://devkit-tools.pp.ua/',
+      icon: 'mdi-tools',
     },
     {
-      label: 'GentleWear — ексклюзивний мерч та преміум якість',
-      link: 'https://gentle-wear.vercel.app',
-      icon: 'mdi-tshirt-crew-outline',
+      label: "Mud' Tech Blog — технічний блог на Vue 3",
+      link: 'https://mud-tech-blog.web.app/',
+      icon: 'mdi-post-outline',
     },
     {
-      label: 'MudTechBlog — технічний блог на Vue 3',
-      link: 'https://github.com/mudmykola/mud-tech-blog',
-      icon: 'mdi-file-code-outline',
-    },
-    {
-      label: 'Vue My Portfolio — персональний портфоліо',
-      link: 'https://vue--my-portfolio.web.app',
+      label: 'Mykola Mud Portfolio — персональне портфоліо',
+      link: 'https://mykolamud.pp.ua/',
       icon: 'mdi-account-box-outline',
     },
     {
-      label: 'CartoonJoy — мультфільми для дітей (SPA)',
-      link: 'https://black-caster-247408.web.app',
-      icon: 'mdi-movie-open-outline',
+      label: 'Shesha Shop — ecommerce storefront',
+      link: 'https://shesha-shop.pages.dev/',
+      icon: 'mdi-storefront-outline',
     },
   ]
 </script>
