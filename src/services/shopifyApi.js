@@ -2,9 +2,23 @@ import axios from 'axios'
 
 const API_URL = import.meta.env.VITE_SHOPIFY_API_URL
 const API_KEY = import.meta.env.VITE_SHOPIFY_ACCESS_TOKEN
+const CACHE_TTL_MS = 5 * 60 * 1000
+
+let articlesCache = null
+let cacheUpdatedAt = 0
+let inFlightRequest = null
 
 // Передаємо `latestDate` як параметр, щоб завантажувати лише нові статті
 export const getBlogArticles = async latestDate => {
+  if (!latestDate && articlesCache && Date.now() - cacheUpdatedAt < CACHE_TTL_MS) {
+    return [...articlesCache]
+  }
+
+  if (!latestDate && inFlightRequest) {
+    return inFlightRequest
+  }
+
+  const requestPromise = (async () => {
   const allArticles = []
   let hasNextPage = true
   let endCursor = null
@@ -76,9 +90,27 @@ export const getBlogArticles = async latestDate => {
     // Відсортуємо всі статті за датою у порядку спадання
     allArticles.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
 
-    return allArticles
+      if (!latestDate) {
+        articlesCache = allArticles
+        cacheUpdatedAt = Date.now()
+      }
+
+      return allArticles
   } catch (error) {
     console.error('❌ Помилка отримання статей:', error.response?.data || error.message)
     return []
+  }
+  })()
+
+  if (!latestDate) {
+    inFlightRequest = requestPromise
+  }
+
+  try {
+    return await requestPromise
+  } finally {
+    if (!latestDate) {
+      inFlightRequest = null
+    }
   }
 }

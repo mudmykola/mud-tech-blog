@@ -1,37 +1,38 @@
 :root {
   /* CORE COLOR SYSTEM ------------------------------ */
-  --color-bg: #0f1115;
-  --color-bg-soft: #171a1f;
-  --color-bg-elevated: #1f232a;
+  --color-bg: #34373d;
+  --color-bg-soft: #2f3237;
+  --color-bg-elevated: #3d4148;
 
-  --color-text: #f5f7fa;
-  --color-text-soft: #c8cdd5;
-  --color-text-muted: #9ca3af;
+  --color-text: #f2f3f4;
+  --color-text-soft: #bfc3c7;
+  --color-text-muted: #9ba0a6;
 
-  --color-accent: #42d392;
-  --color-accent-light: #7cbcfe;
-  --color-accent-dark: #2c6fb7;
+  --color-accent: #d83c13;
+  --color-accent-light: #e47a5e;
+  --color-accent-dark: #a92f10;
+  --color-secondary: #5a6472;
 
-  --color-success: #4ade80;
-  --color-warning: #facc15;
-  --color-error: #ef4444;
-  --color-info: #38bdf8;
+  --color-success: #6dbf8b;
+  --color-warning: #f2b255;
+  --color-error: #e05b5b;
+  --color-info: #8da4bf;
 
-  --border-soft: rgba(255, 255, 255, 0.05);
-  --border-strong: rgba(255, 255, 255, 0.12);
+  --border-soft: rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(255, 255, 255, 0.16);
 
-  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.25);
-  --shadow-strong: 0 6px 18px rgba(0, 0, 0, 0.4);
+  --shadow-soft: 8px 8px 18px rgba(24, 26, 30, 0.8);
+  --shadow-strong: 14px 14px 28px rgba(20, 22, 26, 0.9);
 
-  --v-theme-background: #0f1115 !important;
-  --v-theme-surface: #171a1f !important;
+  --v-theme-background: #34373d !important;
+  --v-theme-surface: #3d4148 !important;
 
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 14px;
   --radius-xl: 24px;
 
-  --container-max: 1280px;
+  --container-max: 100%;
 
   --transition-fast: 0.15s ease;
   --transition: 0.25s ease;
@@ -40,7 +41,21 @@
   --z-nav: 1000;
   --z-overlay: 1100;
   --z-modal: 1200;
+
+  --app-shell-gutter: 16px;
+  --app-shell-width: calc(100% - (var(--app-shell-gutter) * 2));
+  --app-nav-offset: 88px;
+  --app-bottom-nav-offset: 0px;
 }
+
+@media (max-width: 959px) {
+  :root {
+    --app-shell-gutter: 10px;
+    --app-nav-offset: 72px;
+    --app-bottom-nav-offset: calc(100px + env(safe-area-inset-bottom));
+  }
+}
+
 html,
 body {
   overflow-x: hidden;
@@ -67,9 +82,10 @@ body {
 
 main {
   flex-grow: 1;
-  padding: 20px;
+  padding: 16px var(--app-shell-gutter);
   display: flex;
   justify-content: center;
+  width: 100%;
 }
 
 /* NAVBAR ------------------------------------------------ */
@@ -99,8 +115,8 @@ main {
 
 .navbar a.router-link-exact-active {
   color: var(--color-accent);
-  background: rgba(77, 163, 255, 0.15);
-  border: 1px solid rgba(77, 163, 255, 0.25);
+  background: rgba(216, 60, 19, 0.14);
+  border: 1px solid rgba(216, 60, 19, 0.35);
 }
 
 /* FOOTER ------------------------------------------------ */
@@ -117,7 +133,7 @@ footer {
 button,
 .btn {
   background: var(--color-accent);
-  color: var(--color-bg);
+  color: #fff;
   padding: 10px 15px;
   font-weight: 600;
   border-radius: var(--radius-md);

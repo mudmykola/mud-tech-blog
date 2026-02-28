@@ -1,71 +1,67 @@
 .mm-projects {
-  width: 100%;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 60px 18px 40px;
-  text-align: left;
+  border-radius: 20px;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(145deg, #3f434b, #34383e);
+  box-shadow:
+    10px 10px 20px rgba(29, 31, 36, 0.8),
+    -4px -4px 10px rgba(82, 88, 97, 0.26);
 }
 
 .mm-projects-title {
-  font-size: clamp(1.9rem, 3vw, 2.4rem);
-  font-weight: 900;
-  color: var(--color-text);
-  margin-bottom: 30px;
-  text-shadow: 0 0 14px rgba(66, 211, 146, 0.25);
-  text-align: center;
+  margin: 0;
+  font-size: 1.02rem;
+  text-align: left;
 }
 
 .mm-projects-grid {
-  margin-top: 10px;
+  margin-top: 0;
 }
 
 .mm-project-card {
+  min-height: 46px;
+  border-radius: 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: linear-gradient(145deg, #3a3e44, #32363c);
+  text-decoration: none;
+  color: var(--color-text-soft);
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 18px 20px;
-  background: var(--color-bg-elevated);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-soft);
-  text-decoration: none;
-  color: var(--color-text);
-  font-weight: 600;
-
-  transition: var(--transition-fast);
-  box-shadow: var(--shadow-soft);
+  gap: 9px;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
 }
 
 .mm-project-card:hover {
-  border-color: var(--color-accent);
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-strong);
+  border-color: rgba(216, 60, 19, 0.45);
+  background: linear-gradient(145deg, #43484f, #373b41);
 }
 
 .mm-project-icon {
-  color: var(--color-accent);
-  font-size: 1.4rem;
+  color: var(--color-accent-light);
+  font-size: 1.18rem;
 }
 
 .mm-project-label {
   flex: 1;
-  font-size: 1rem;
-  line-height: 1.4;
+  font-size: 0.82rem;
+  line-height: 1.42;
 }
 
 .mm-project-external {
   color: var(--color-text-muted);
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
-@media (max-width: 600px) {
-  .mm-project-card {
-    padding: 14px 14px;
-    gap: 10px;
+@media (max-width: 640px) {
+  .mm-projects {
+    border-radius: 16px;
+    padding: 12px;
   }
+
   .mm-project-label {
-    font-size: 0.95rem;
-  }
-  .mm-project-icon {
-    font-size: 1.2rem;
+    font-size: 0.76rem;
   }
 }

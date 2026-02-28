@@ -8,6 +8,11 @@
 
 <template>
   <section class="mm-about-intro">
+    <div class="mm-about-section-head">
+      <v-icon icon="mdi-text-box-outline" size="20" />
+      <h2>Про мене</h2>
+    </div>
+
     <div class="mm-about-intro__wrapper">
       <p v-for="(p, index) in paragraphs" :key="index" class="mm-about-intro__text">
         {{ p }}

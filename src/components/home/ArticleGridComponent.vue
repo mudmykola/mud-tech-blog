@@ -1,10 +1,16 @@
 <script setup>
   import ArticleCard from '@/components/article/ArticleCardComponent.vue'
-  defineProps(['filteredArticles'])
+
+  defineProps({
+    filteredArticles: {
+      type: Array,
+      default: () => [],
+    },
+  })
 </script>
 
 <template>
-  <div class="articles-grid">
+  <section class="articles-grid" aria-label="Сітка статей">
     <ArticleCard v-for="article in filteredArticles" :key="article.handle" :article="article" />
-  </div>
+  </section>
 </template>
