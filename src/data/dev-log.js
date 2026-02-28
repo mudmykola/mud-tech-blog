@@ -1,5 +1,44 @@
 export const devLogEntries = [
   {
+    id: 'devlog-087',
+    date: '2026-03-01T01:18:00+02:00',
+    type: 'Improvement',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.seo.canonical.policy.redirects.title',
+    summaryKey: 'updates.seo.canonical.policy.redirects.summary',
+    title: 'Уніфіковано canonical domain policy та runtime redirects',
+    summary:
+      'Впроваджено єдиний canonical origin builder для meta/JSON-LD і додано опційний редірект на canonical домен до монтування апки.',
+    details: [
+      'Додано `src/utils/canonical.js` з `buildCanonicalUrl`, `getCanonicalOrigin` і `enforceCanonicalRedirect`.',
+      'Router і Blog сторінки переведено на canonical URL builder для canonical/OG/Twitter полів.',
+      'JSON-LD генератори оновлено на canonical URL замість прямого `window.location.origin`.',
+      'README доповнено env-змінними `VITE_CANONICAL_ORIGIN` та `VITE_ENFORCE_CANONICAL_REDIRECT`.',
+    ],
+    route: '/blog',
+    routeLabelKey: 'nav.blog',
+    githubIssue: '#57',
+  },
+  {
+    id: 'devlog-086',
+    date: '2026-03-01T00:36:00+02:00',
+    type: 'Improvement',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.seo.og.twitter.unify.title',
+    summaryKey: 'updates.seo.og.twitter.unify.summary',
+    title: 'Уніфіковано Open Graph і Twitter Cards для всіх сторінок',
+    summary:
+      'Для non-article route додано єдиний OG/Twitter fallback набір у router, а для BlogPost узгоджено absolute image URL і додаткові social meta поля.',
+    details: [
+      'Додано setMetaProperty utility для коректного оновлення `meta[property=...]` тегів.',
+      'У router.afterEach налаштовано og:title/description/type/url/image/site_name/locale і twitter:* для non-article сторінок.',
+      'У BlogPost виправлено fallback image на абсолютний URL та додано og:site_name, og:locale і опційний twitter:site.',
+    ],
+    route: '/blog',
+    routeLabelKey: 'nav.blog',
+    githubIssue: '#58',
+  },
+  {
     id: 'devlog-085',
     date: '2026-03-01T00:22:00+02:00',
     type: 'Improvement',

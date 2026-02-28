@@ -8,6 +8,16 @@ export function setMetaTag(name, content) {
   metaTag.content = content
 }
 
+export function setMetaProperty(property, content) {
+  let metaTag = document.querySelector(`meta[property="${property}"]`)
+  if (!metaTag) {
+    metaTag = document.createElement('meta')
+    metaTag.setAttribute('property', property)
+    document.head.appendChild(metaTag)
+  }
+  metaTag.content = content
+}
+
 export function setCanonicalLink(url) {
   let canonicalLink = document.querySelector('link[rel="canonical"]')
   if (!canonicalLink) {

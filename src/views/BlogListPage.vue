@@ -4,6 +4,7 @@
   import { getBlogArticles } from '@/services/shopifyApi'
   import ArticleCard from '@/components/article/ArticleCardComponent.vue'
   import DefaultLayout from '@/layouts/DefaultLayout.vue'
+  import { buildCanonicalUrl } from '@/utils/canonical'
   import { generateBlogIndexJsonLd, generateOrganizationJsonLd } from '@/utils/jsonld'
   import { useJsonLd } from '@/composables/useJsonLd'
 
@@ -24,8 +25,7 @@
     { value: 'title_desc', label: 'Назва: Я-А' },
   ]
 
-  const canonicalBlogUrl =
-    typeof window === 'undefined' ? 'https://mud-tech-blog.web.app/blog' : `${window.location.origin}/blog`
+  const canonicalBlogUrl = buildCanonicalUrl('/blog')
 
   useHead({
     title: 'Блог статей про Frontend, Vue та eCommerce | Mud Tech Blog',

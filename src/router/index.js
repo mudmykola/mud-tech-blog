@@ -2,7 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '@/views/HomePage.vue'
 const BlogListPage = () => import('@/views/BlogListPage.vue')
 const BlogPostPage = () => import('@/views/BlogPostPage.vue')
-import { setMetaTag, setCanonicalLink } from '@/utils/meta'
+import { setMetaTag, setCanonicalLink, setMetaProperty } from '@/utils/meta'
+import { buildCanonicalUrl } from '@/utils/canonical'
 
 const routes = [
   {
@@ -76,6 +77,7 @@ const router = createRouter({
 })
 
 const serverIp = import.meta.env.VITE_SERVER_IP
+const twitterSite = import.meta.env.VITE_TWITTER_SITE || ''
 if (!serverIp) {
   console.warn('VITE_SERVER_IP не встановлено')
 } else {
@@ -87,12 +89,16 @@ router.afterEach(to => {
   if (to.name === 'article') return
 
   const defaultRobots = 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1'
+  const canonicalUrl = buildCanonicalUrl(to.path)
+  const description = to.meta.description || 'Технологічний блог про новітні тренди.'
+  const title = to.meta.title || "Mud' Tech Blog"
+  const fallbackImage = buildCanonicalUrl('/pwa-512x512.png')
 
   // Title
-  document.title = to.meta.title || "Mud' Tech Blog"
+  document.title = title
 
   // Description
-  setMetaTag('description', to.meta.description || 'Технологічний блог про новітні тренди.')
+  setMetaTag('description', description)
 
   // Robots
   // Якщо в meta явно вказано noindex — робимо noindex,nofollow
@@ -104,8 +110,24 @@ router.afterEach(to => {
   setMetaTag('generator', to.meta.generator || 'Vue.js + Vite + Shopify')
   setMetaTag('cms', to.meta.cms || 'Shopify Headless CMS')
 
+  // Open Graph + Twitter defaults for non-article pages
+  setMetaProperty('og:title', title)
+  setMetaProperty('og:description', description)
+  setMetaProperty('og:type', 'website')
+  setMetaProperty('og:url', canonicalUrl)
+  setMetaProperty('og:image', fallbackImage)
+  setMetaProperty('og:site_name', 'Mud Tech Blog')
+  setMetaProperty('og:locale', 'uk_UA')
+  setMetaTag('twitter:card', 'summary_large_image')
+  setMetaTag('twitter:title', title)
+  setMetaTag('twitter:description', description)
+  setMetaTag('twitter:image', fallbackImage)
+  if (twitterSite) {
+    setMetaTag('twitter:site', twitterSite)
+  }
+
   // Canonical
-  setCanonicalLink(`${window.location.origin}${to.path}`)
+  setCanonicalLink(canonicalUrl)
 })
 
 export default router
