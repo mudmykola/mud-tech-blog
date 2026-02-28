@@ -1,5 +1,5 @@
 <script setup>
-  import { computed, onMounted, ref, watch } from 'vue'
+  import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
   import { useHead } from '@vueuse/head'
   import { getBlogArticles } from '@/services/shopifyApi'
   import ArticleCard from '@/components/article/ArticleCardComponent.vue'
@@ -13,6 +13,8 @@
     generateWebSiteJsonLd,
   } from '@/utils/jsonld'
   import { useJsonLd } from '@/composables/useJsonLd'
+  import { ANALYTICS_EVENTS, ANALYTICS_PARAMS } from '@/analytics/events'
+  import { trackEvent } from '@/firebase'
 
   const PAGE_SIZE = 9
 
@@ -23,6 +25,7 @@
   const sortBy = ref('date_desc')
   const currentPage = ref(1)
   const mobileFiltersOpen = ref(false)
+  let searchTrackTimeout = null
 
   const sortOptions = [
     { value: 'date_desc', label: 'Спочатку новіші' },
@@ -134,6 +137,12 @@
 
   const selectTag = tag => {
     selectedTag.value = tag
+    trackEvent(ANALYTICS_EVENTS.FILTER_CHANGED, {
+      [ANALYTICS_PARAMS.ROUTE]: '/blog',
+      [ANALYTICS_PARAMS.FILTER_TYPE]: 'tag',
+      [ANALYTICS_PARAMS.FILTER_VALUE]: tag,
+      [ANALYTICS_PARAMS.RESULTS_COUNT]: filteredArticles.value.length,
+    })
   }
 
   const clearFilters = () => {
@@ -142,6 +151,12 @@
     sortBy.value = 'date_desc'
     currentPage.value = 1
     mobileFiltersOpen.value = false
+    trackEvent(ANALYTICS_EVENTS.FILTER_CHANGED, {
+      [ANALYTICS_PARAMS.ROUTE]: '/blog',
+      [ANALYTICS_PARAMS.FILTER_TYPE]: 'reset',
+      [ANALYTICS_PARAMS.FILTER_VALUE]: 'all',
+      [ANALYTICS_PARAMS.RESULTS_COUNT]: filteredArticles.value.length,
+    })
   }
 
   watch([selectedTag, searchQuery, sortBy], () => {
@@ -150,6 +165,30 @@
 
   watch(totalPages, pageCount => {
     if (currentPage.value > pageCount) currentPage.value = pageCount
+  })
+
+  watch(sortBy, value => {
+    trackEvent(ANALYTICS_EVENTS.FILTER_CHANGED, {
+      [ANALYTICS_PARAMS.ROUTE]: '/blog',
+      [ANALYTICS_PARAMS.FILTER_TYPE]: 'sort',
+      [ANALYTICS_PARAMS.FILTER_VALUE]: value,
+      [ANALYTICS_PARAMS.RESULTS_COUNT]: filteredArticles.value.length,
+    })
+  })
+
+  watch(searchQuery, value => {
+    if (searchTrackTimeout) clearTimeout(searchTrackTimeout)
+    searchTrackTimeout = setTimeout(() => {
+      trackEvent(ANALYTICS_EVENTS.SEARCH_USED, {
+        [ANALYTICS_PARAMS.ROUTE]: '/blog',
+        [ANALYTICS_PARAMS.SEARCH_QUERY_LENGTH]: String(value || '').trim().length,
+        [ANALYTICS_PARAMS.RESULTS_COUNT]: filteredArticles.value.length,
+      })
+    }, 450)
+  })
+
+  onBeforeUnmount(() => {
+    if (searchTrackTimeout) clearTimeout(searchTrackTimeout)
   })
 
   watch(

@@ -9,6 +9,8 @@
   import { getBlogArticles } from '@/services/shopifyApi'
   import { useOptimizedImage } from '@/composables/useOptimizedImage'
   import { buildCanonicalUrl, getCanonicalOrigin } from '@/utils/canonical'
+  import { ANALYTICS_EVENTS, ANALYTICS_PARAMS } from '@/analytics/events'
+  import { trackEvent } from '@/firebase'
   import {
     generateBlogPostJsonLd,
     generateBreadcrumbJsonLd,
@@ -28,9 +30,14 @@
   const copied = ref(false)
   const scrollBarRef = ref(null)
   const disqusThreadRef = ref(null)
+  const contentRef = ref(null)
   const disqusActivated = ref(false)
+  const readStarted = ref(false)
+  const readHalfReached = ref(false)
+  const readCompleted = ref(false)
   let loadRequestId = 0
   let disqusObserver = null
+  let readProgressRaf = null
 
   const stripHtml = value => (value || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
   const trimSeoText = (value, maxLength) => {
@@ -241,6 +248,11 @@
 
     try {
       await navigator.clipboard.writeText(canonicalUrl.value)
+      trackEvent(ANALYTICS_EVENTS.CTA_SHARE_CLICK, {
+        [ANALYTICS_PARAMS.CTA_NAME]: 'share_copy_link',
+        [ANALYTICS_PARAMS.LOCATION]: 'blog_post',
+        [ANALYTICS_PARAMS.ARTICLE_HANDLE]: article.value?.handle || '',
+      })
       copied.value = true
       setTimeout(() => {
         copied.value = false
@@ -251,10 +263,20 @@
   }
 
   const shareOnFacebook = () => {
+    trackEvent(ANALYTICS_EVENTS.CTA_SHARE_CLICK, {
+      [ANALYTICS_PARAMS.CTA_NAME]: 'share_facebook',
+      [ANALYTICS_PARAMS.LOCATION]: 'blog_post',
+      [ANALYTICS_PARAMS.ARTICLE_HANDLE]: article.value?.handle || '',
+    })
     window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodedShareUrl.value}`, '_blank')
   }
 
   const shareOnTwitter = () => {
+    trackEvent(ANALYTICS_EVENTS.CTA_SHARE_CLICK, {
+      [ANALYTICS_PARAMS.CTA_NAME]: 'share_twitter',
+      [ANALYTICS_PARAMS.LOCATION]: 'blog_post',
+      [ANALYTICS_PARAMS.ARTICLE_HANDLE]: article.value?.handle || '',
+    })
     window.open(
       `https://twitter.com/intent/tweet?url=${encodedShareUrl.value}&text=${encodedShareTitle.value}`,
       '_blank'
@@ -262,14 +284,80 @@
   }
 
   const shareOnTelegram = () => {
+    trackEvent(ANALYTICS_EVENTS.CTA_SHARE_CLICK, {
+      [ANALYTICS_PARAMS.CTA_NAME]: 'share_telegram',
+      [ANALYTICS_PARAMS.LOCATION]: 'blog_post',
+      [ANALYTICS_PARAMS.ARTICLE_HANDLE]: article.value?.handle || '',
+    })
     window.open(
       `https://t.me/share/url?url=${encodedShareUrl.value}&text=${encodedShareTitle.value}`,
       '_blank'
     )
   }
 
+  const queueReadProgressCheck = () => {
+    if (readProgressRaf) return
+    readProgressRaf = window.requestAnimationFrame(() => {
+      readProgressRaf = null
+      const contentEl = contentRef.value
+      if (!contentEl || !article.value) return
+
+      const rect = contentEl.getBoundingClientRect()
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0
+      const total = Math.max(1, rect.height + viewportHeight)
+      const seen = Math.min(total, Math.max(0, viewportHeight - rect.top))
+      const progress = Math.max(0, Math.min(1, seen / total))
+
+      if (!readHalfReached.value && progress >= 0.5) {
+        readHalfReached.value = true
+        trackEvent(ANALYTICS_EVENTS.ARTICLE_READ_50, {
+          [ANALYTICS_PARAMS.ROUTE]: `/blog/${article.value.handle}`,
+          [ANALYTICS_PARAMS.ARTICLE_HANDLE]: article.value.handle,
+          [ANALYTICS_PARAMS.ARTICLE_TITLE]: article.value.title,
+          [ANALYTICS_PARAMS.PROGRESS]: 50,
+        })
+      }
+
+      if (!readCompleted.value && progress >= 0.9) {
+        readCompleted.value = true
+        trackEvent(ANALYTICS_EVENTS.ARTICLE_READ_COMPLETE, {
+          [ANALYTICS_PARAMS.ROUTE]: `/blog/${article.value.handle}`,
+          [ANALYTICS_PARAMS.ARTICLE_HANDLE]: article.value.handle,
+          [ANALYTICS_PARAMS.ARTICLE_TITLE]: article.value.title,
+          [ANALYTICS_PARAMS.PROGRESS]: 100,
+        })
+      }
+    })
+  }
+
+  const resetReadMilestones = () => {
+    readStarted.value = false
+    readHalfReached.value = false
+    readCompleted.value = false
+  }
+
+  const goToNextArticle = () => {
+    if (!nextArticle.value) return
+    trackEvent(ANALYTICS_EVENTS.CTA_NEXT_ARTICLE_CLICK, {
+      [ANALYTICS_PARAMS.ARTICLE_HANDLE]: article.value?.handle || '',
+      [ANALYTICS_PARAMS.TARGET]: `/blog/${nextArticle.value.handle}`,
+      [ANALYTICS_PARAMS.LOCATION]: 'blog_post_footer',
+    })
+    router.push(`/blog/${nextArticle.value.handle}`)
+  }
+
   watch(article, value => {
     if (!value) return
+
+    resetReadMilestones()
+    if (!readStarted.value) {
+      readStarted.value = true
+      trackEvent(ANALYTICS_EVENTS.ARTICLE_READ_START, {
+        [ANALYTICS_PARAMS.ROUTE]: `/blog/${value.handle}`,
+        [ANALYTICS_PARAMS.ARTICLE_HANDLE]: value.handle,
+        [ANALYTICS_PARAMS.ARTICLE_TITLE]: value.title,
+      })
+    }
 
     useJsonLd([
       generateBlogPostJsonLd(value),
@@ -280,6 +368,8 @@
     if (disqusActivated.value) {
       ensureDisqus()
     }
+
+    queueReadProgressCheck()
   })
 
   watch(
@@ -291,8 +381,21 @@
     }
   )
 
-  onMounted(loadArticle)
-  onBeforeUnmount(resetDisqusObserver)
+  onMounted(() => {
+    loadArticle()
+    window.addEventListener('scroll', queueReadProgressCheck, { passive: true })
+    window.addEventListener('resize', queueReadProgressCheck)
+  })
+
+  onBeforeUnmount(() => {
+    resetDisqusObserver()
+    window.removeEventListener('scroll', queueReadProgressCheck)
+    window.removeEventListener('resize', queueReadProgressCheck)
+    if (readProgressRaf) {
+      window.cancelAnimationFrame(readProgressRaf)
+      readProgressRaf = null
+    }
+  })
   watch(() => route.params.slug, loadArticle)
 </script>
 
@@ -355,7 +458,7 @@
 
       <div class="mm-post__layout">
         <article class="mm-post__surface">
-          <section class="mm-post__content">
+          <section ref="contentRef" class="mm-post__content">
             <div v-html="article.contentHtml" class="mm-post__content-inner" />
           </section>
 
@@ -368,7 +471,7 @@
             <button
               v-if="nextArticle"
               class="mm-post-action mm-post-action--primary"
-              @click="router.push(`/blog/${nextArticle.handle}`)"
+              @click="goToNextArticle"
             >
               Наступна стаття
               <v-icon icon="mdi-chevron-right" size="16" />
