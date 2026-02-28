@@ -86,29 +86,31 @@
     </div>
   </section>
 
-  <div class="mm-donation-popup" :class="{ visible: isPopupVisible }">
-    <div class="mm-donation-popup__content">
-      <v-icon icon="mdi-bell-ring-outline" size="20" class="mm-donation-popup__icon" />
-      <div class="mm-donation-popup__text">
-        Підтримай ЗСУ
-        <span>Твій донат має значення</span>
+  <teleport to="body">
+    <div class="mm-donation-popup" :class="{ visible: isPopupVisible }">
+      <div class="mm-donation-popup__content">
+        <v-icon icon="mdi-bell-ring-outline" size="20" class="mm-donation-popup__icon" />
+        <div class="mm-donation-popup__text">
+          Підтримай ЗСУ
+          <span>Твій донат має значення</span>
+        </div>
+
+        <v-btn
+          :href="donateHref"
+          target="_blank"
+          rel="noopener"
+          size="small"
+          rounded="pill"
+          class="mm-donation-popup__btn"
+        >
+          <v-icon icon="mdi-heart" start size="14" />
+          Донат
+        </v-btn>
       </div>
 
-      <v-btn
-        :href="donateHref"
-        target="_blank"
-        rel="noopener"
-        size="small"
-        rounded="pill"
-        class="mm-donation-popup__btn"
-      >
-        <v-icon icon="mdi-heart" start size="14" />
-        Донат
-      </v-btn>
+      <button class="mm-donation-popup__close" @click="hidePopup">
+        <v-icon icon="mdi-close" size="18" />
+      </button>
     </div>
-
-    <button class="mm-donation-popup__close" @click="hidePopup">
-      <v-icon icon="mdi-close" size="18" />
-    </button>
-  </div>
+  </teleport>
 </template>
