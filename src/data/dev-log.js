@@ -1,5 +1,44 @@
 export const devLogEntries = [
   {
+    id: 'devlog-089',
+    date: '2026-03-01T02:34:00+02:00',
+    type: 'Feature',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.seo.sitemap.dynamic.generation.title',
+    summaryKey: 'updates.seo.sitemap.dynamic.generation.summary',
+    title: 'Автоматизовано генерацію sitemap з live article routes',
+    summary:
+      'Build-процес тепер генерує `sitemap.xml` із Shopify article handles та актуальним `lastmod`, щоб нові/видалені статті синхронізувались без ручного редагування.',
+    details: [
+      'Додано build-step `scripts/generate-sitemap.mjs` із Shopify pagination (blog handle `news`).',
+      'У sitemap автоматично додаються статичні route (`/`, `/blog`, `/about`, `/updates`) і всі `/blog/:slug` з live даних.',
+      'Для статей використовується `updatedAt` як `lastmod` (fallback: `publishedAt`).',
+      'Додано unit-тести для sitemap утиліт і XML-рендеру.',
+    ],
+    route: '/blog',
+    routeLabelKey: 'nav.blog',
+    githubIssue: '#29',
+  },
+  {
+    id: 'devlog-088',
+    date: '2026-03-01T02:05:00+02:00',
+    type: 'Feature',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.seo.prerender.key.routes.title',
+    summaryKey: 'updates.seo.prerender.key.routes.summary',
+    title: 'Додано prerender ключових route для кращої crawlability',
+    summary:
+      'Після `vite build` генерується статичний HTML для `/`, `/blog`, `/about`, `/updates` із route-specific SEO метаданими, сумісний з поточним Firebase hosting flow.',
+    details: [
+      'Додано build-step `scripts/prerender-routes.mjs` з генерацією route-specific `index.html` у `dist`.',
+      'Для prerender route проставляються title, description, canonical, OG/Twitter meta і базовий semantic shell.',
+      'Зафіксовано поточне обмеження: `/blog/:slug` поки залишається client-rendered (потребує окремого dynamic prerender).',
+    ],
+    route: '/blog',
+    routeLabelKey: 'nav.blog',
+    githubIssue: '#62',
+  },
+  {
     id: 'devlog-087',
     date: '2026-03-01T01:18:00+02:00',
     type: 'Improvement',

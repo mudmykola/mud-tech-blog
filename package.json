@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "test": "node --test $(find tests -name \"*.test.js\" -print)",
-    "build": "vite build",
+    "build": "vite build && node scripts/prerender-routes.mjs && node scripts/generate-sitemap.mjs",
     "bump:deploy-version": "node scripts/bump-deploy-version.mjs",
     "deploy": "npm run bump:deploy-version && npm run test && npm run build && npx firebase-tools deploy --only hosting",
     "preview": "vite preview",
