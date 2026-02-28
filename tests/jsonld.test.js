@@ -15,8 +15,10 @@ test('generateBlogPostJsonLd: builds valid schema fields', () => {
     contentHtml: '<p>Hello world</p>',
     handle: 'test-title',
     publishedAt: '2026-02-28T01:00:00+02:00',
+    updatedAt: '2026-02-28T02:00:00+02:00',
     authorV2: { name: 'Mykola' },
     image: { url: 'https://example.dev/image.jpg' },
+    tags: ['Vue', 'SEO'],
   }
 
   const schema = generateBlogPostJsonLd(article)
@@ -25,6 +27,12 @@ test('generateBlogPostJsonLd: builds valid schema fields', () => {
   assert.equal(schema.headline, 'Test Title')
   assert.equal(schema.mainEntityOfPage['@id'], 'https://example.dev/blog/test-title')
   assert.equal(schema.author.name, 'Mykola')
+  assert.equal(schema.publisher['@type'], 'Organization')
+  assert.equal(schema.publisher.logo.url, 'https://example.dev/favicon.ico')
+  assert.equal(schema.url, 'https://example.dev/blog/test-title')
+  assert.equal(schema.inLanguage, 'uk-UA')
+  assert.equal(schema.keywords, 'Vue, SEO')
+  assert.equal(schema.image[0], 'https://example.dev/image.jpg')
 })
 
 test('generateBreadcrumbJsonLd: contains 3 ordered breadcrumb items', () => {

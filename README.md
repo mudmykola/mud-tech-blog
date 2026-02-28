@@ -68,4 +68,5 @@ Source:
 Notes:
 
 - Static routes `/`, `/blog`, `/about`, `/updates` are always included.
-- `robots.txt` points to `https://mud-tech-blog.web.app/sitemap.xml`.
+- `robots.txt` is generated at build time from canonical origin (no manual host hardcode).
+- Build includes `verify-seo-host-config` check to validate robots/sitemap host consistency.

@@ -1,5 +1,45 @@
 export const devLogEntries = [
   {
+    id: 'devlog-091',
+    date: '2026-03-01T03:29:00+02:00',
+    type: 'Feature',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.seo.robots.sitemap.host.automation.title',
+    summaryKey: 'updates.seo.robots.sitemap.host.automation.summary',
+    title: 'Автоматизовано robots/sitemap host-конфігурацію для production',
+    summary:
+      'Прибрано ручний host-hardcode для robots і додано build-перевірку консистентності robots.txt та sitemap.xml відносно canonical domain.',
+    details: [
+      'Додано `scripts/generate-robots.mjs`, який генерує `dist/robots.txt` із Sitemap URL на базі `VITE_CANONICAL_ORIGIN`.',
+      'Додано `scripts/verify-seo-host-config.mjs` для автоматичної валідації host-консистентності robots/sitemap у build pipeline.',
+      'Оновлено `npm run build`: після prerender+sitemap виконується robots generation і SEO host check.',
+      'З `public/robots.txt` прибрано ручний hardcoded production host.',
+    ],
+    route: '/blog',
+    routeLabelKey: 'nav.blog',
+    githubIssue: '#61',
+  },
+  {
+    id: 'devlog-090',
+    date: '2026-03-01T03:07:00+02:00',
+    type: 'Feature',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.seo.structured.data.expansion.title',
+    summaryKey: 'updates.seo.structured.data.expansion.summary',
+    title: 'Розширено structured data покриття для ключових route',
+    summary:
+      'Для Home/Blog/About/Updates додано релевантні CollectionPage/ItemList/Person схеми, а BlogPosting розширено до повного SEO-профілю (publisher, inLanguage, keywords, url, image).',
+    details: [
+      'Оновлено `src/utils/jsonld.js`: додано генератори CollectionPage, AboutPage, Person, ItemList та розширено BlogPosting schema.',
+      'Інтегровано JSON-LD на `/`, `/blog`, `/about`, `/updates` через `useJsonLd` із route-специфічними даними.',
+      'У BlogPosting додано `publisher`, `logo`, `inLanguage`, `keywords`, `articleSection`, `url` та нормалізоване absolute `image`.',
+      'Оновлено unit-тести для JSON-LD, включаючи перевірку нових полів BlogPosting.',
+    ],
+    route: '/blog',
+    routeLabelKey: 'nav.blog',
+    githubIssue: '#59',
+  },
+  {
     id: 'devlog-089',
     date: '2026-03-01T02:34:00+02:00',
     type: 'Feature',
