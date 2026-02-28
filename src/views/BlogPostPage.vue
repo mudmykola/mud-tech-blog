@@ -1,5 +1,5 @@
 <script setup>
-  import { computed, onMounted, ref, watch } from 'vue'
+  import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
   import { useHead } from '@vueuse/head'
   import { useRoute, useRouter } from 'vue-router'
 
@@ -7,6 +7,7 @@
   import DonationSection from '@/components/donation/DonationSection.vue'
   import ScrollProgressBar from '@/components/ui/ScrollProgressBar.vue'
   import { getBlogArticles } from '@/services/shopifyApi'
+  import { useOptimizedImage } from '@/composables/useOptimizedImage'
   import {
     generateBlogPostJsonLd,
     generateBreadcrumbJsonLd,
@@ -24,7 +25,10 @@
   const loading = ref(true)
   const copied = ref(false)
   const scrollBarRef = ref(null)
+  const disqusThreadRef = ref(null)
+  const disqusActivated = ref(false)
   let loadRequestId = 0
+  let disqusObserver = null
 
   const stripHtml = value => (value || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
 
@@ -52,6 +56,18 @@
 
   const encodedShareUrl = computed(() => encodeURIComponent(canonicalUrl.value))
   const encodedShareTitle = computed(() => encodeURIComponent(article.value?.title || ''))
+  const heroImageAttrs = computed(() => {
+    const src = article.value?.image?.url || ''
+    const alt = article.value?.image?.altText || article.value?.title || 'Hero image'
+
+    return useOptimizedImage(src, alt, 1600, {
+      loading: 'eager',
+      decoding: 'async',
+      fetchpriority: 'high',
+      sizes: '(max-width: 600px) 100vw, (max-width: 960px) 94vw, (max-width: 1400px) 74vw, 1120px',
+      style: 'width:100%;height:100%;display:block;',
+    }).attributes
+  })
 
   const nextArticle = computed(() => {
     if (!article.value || !articles.value.length) return null
@@ -69,6 +85,7 @@
     const requestId = ++loadRequestId
     const targetSlug = String(route.params.slug || '')
     loading.value = true
+    disqusActivated.value = false
 
     // Fast path: reuse already loaded articles to avoid full refetch on "next article".
     if (articles.value.length) {
@@ -121,6 +138,43 @@
         },
       })
     }
+  }
+
+  const resetDisqusObserver = () => {
+    if (disqusObserver) {
+      disqusObserver.disconnect()
+      disqusObserver = null
+    }
+  }
+
+  const armDisqusObserver = () => {
+    if (!article.value || !DISQUS_SHORTNAME || typeof window === 'undefined') return
+    const target = disqusThreadRef.value
+    if (!target) return
+
+    resetDisqusObserver()
+
+    if (!('IntersectionObserver' in window)) {
+      disqusActivated.value = true
+      ensureDisqus()
+      return
+    }
+
+    disqusObserver = new IntersectionObserver(
+      entries => {
+        if (!entries.some(entry => entry.isIntersecting)) return
+        disqusActivated.value = true
+        ensureDisqus()
+        resetDisqusObserver()
+      },
+      {
+        root: null,
+        rootMargin: '240px 0px',
+        threshold: 0.01,
+      }
+    )
+
+    disqusObserver.observe(target)
   }
 
   const copyLink = async () => {
@@ -183,12 +237,24 @@
         generateBreadcrumbJsonLd(value),
       ])
 
-      ensureDisqus()
+      if (disqusActivated.value) {
+        ensureDisqus()
+      }
     },
     { immediate: true }
   )
 
+  watch(
+    () => article.value?.handle,
+    async handle => {
+      if (!handle) return
+      await nextTick()
+      armDisqusObserver()
+    }
+  )
+
   onMounted(loadArticle)
+  onBeforeUnmount(resetDisqusObserver)
   watch(() => route.params.slug, loadArticle)
 </script>
 
@@ -243,10 +309,9 @@
         </div>
 
         <h1 class="mm-post__title">{{ article.title }}</h1>
-        <p v-if="summaryText" class="mm-post__summary">{{ summaryText }}</p>
 
-        <figure v-if="article.image" class="mm-post__hero-image">
-          <img :src="article.image.url" :alt="article.title" />
+        <figure v-if="article.image" class="mm-post__hero-image d-md-none">
+          <img v-bind="heroImageAttrs" class="mm-post__hero-image-el" />
         </figure>
       </header>
 
@@ -299,11 +364,15 @@
               <v-icon icon="mdi-comment-multiple-outline" size="20" />
               <h2>Коментарі</h2>
             </div>
-            <div id="disqus_thread" />
+            <div id="disqus_thread" ref="disqusThreadRef" />
           </section>
         </article>
 
         <aside class="mm-post__sidebar">
+          <figure v-if="article.image" class="mm-post__hero-image mm-post__hero-image--sidebar d-none d-md-block">
+            <img v-bind="heroImageAttrs" class="mm-post__hero-image-el" />
+          </figure>
+
           <section class="mm-post-card d-none d-md-block">
             <div class="mm-post__section-head">
               <v-icon icon="mdi-share-variant-outline" size="20" />

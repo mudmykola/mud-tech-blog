@@ -1,14 +1,23 @@
 import { computed } from 'vue'
 
-export function useOptimizedImage(rawUrl, alt = 'Image', maxWidth = 900) {
+export function useOptimizedImage(rawUrl, alt = 'Image', maxWidth = 900, options = {}) {
+  const {
+    loading = 'lazy',
+    decoding = 'async',
+    fetchpriority,
+    sizes: customSizes,
+    style = 'width:100%;height:auto;display:block;border-radius:inherit;',
+  } = options
+
   if (!rawUrl) {
     return {
       attributes: {
         src: '',
         alt,
         title: alt,
-        loading: 'lazy',
-        decoding: 'async',
+        loading,
+        decoding,
+        ...(fetchpriority ? { fetchpriority } : {}),
       },
     }
   }
@@ -37,10 +46,12 @@ export function useOptimizedImage(rawUrl, alt = 'Image', maxWidth = 900) {
     `.trim()
   })
 
-  const sizes = `(max-width: 600px) 360px,
-                 (max-width: 900px) 560px,
-                 (max-width: 1200px) 700px,
-                 ${maxWidth}px`
+  const sizes =
+    customSizes ||
+    `(max-width: 600px) 360px,
+     (max-width: 900px) 560px,
+     (max-width: 1200px) 700px,
+     ${maxWidth}px`
 
   return {
     attributes: {
@@ -49,9 +60,10 @@ export function useOptimizedImage(rawUrl, alt = 'Image', maxWidth = 900) {
       sizes,
       alt,
       title: alt,
-      loading: 'lazy',
-      decoding: 'async',
-      style: 'width:100%;height:auto;display:block;border-radius:inherit;',
+      loading,
+      decoding,
+      ...(fetchpriority ? { fetchpriority } : {}),
+      style,
     },
   }
 }
