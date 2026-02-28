@@ -1,8 +1,8 @@
 .mm-about-intro {
   border-radius: 20px;
   padding: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(145deg, #3f434b, #34383e);
+  border: 1px solid var(--border-soft);
+  background: var(--surface-grad-2);
   box-shadow:
     10px 10px 20px rgba(29, 31, 36, 0.8),
     -4px -4px 10px rgba(82, 88, 97, 0.26);

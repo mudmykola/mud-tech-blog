@@ -7,8 +7,8 @@
 .mm-blog__hero {
   border-radius: 24px;
   padding: 18px;
-  background: linear-gradient(145deg, #3f434a, #34383e);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--surface-grad-2);
+  border: 1px solid var(--border-soft);
   box-shadow:
     12px 12px 24px rgba(29, 31, 36, 0.86),
     -6px -6px 14px rgba(83, 88, 98, 0.32);
@@ -34,9 +34,9 @@
 .mm-blog__filter-toggle {
   min-height: 36px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-default);
   color: var(--color-text-soft);
-  background: linear-gradient(145deg, #3f434a, #35393f);
+  background: var(--surface-grad-1);
   padding: 0 10px;
   display: inline-flex;
   align-items: center;
@@ -60,8 +60,8 @@
 .mm-blog-stat {
   border-radius: 12px;
   padding: 10px;
-  background: linear-gradient(145deg, #3e4249, #34383e);
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: var(--surface-grad-3);
+  border: 1px solid var(--border-default);
   box-shadow:
     8px 8px 16px rgba(31, 34, 39, 0.9),
     -4px -4px 8px rgba(84, 89, 98, 0.35);
@@ -90,9 +90,9 @@
   span {
     border-radius: 999px;
     padding: 5px 10px;
-    background: rgba(216, 60, 19, 0.12);
-    border: 1px solid rgba(216, 60, 19, 0.35);
-    color: #ffe2d8;
+    background: var(--accent-bg-soft);
+    border: 1px solid var(--accent-border);
+    color: var(--text-accent-soft);
     font-size: 0.78rem;
     display: inline-flex;
     align-items: center;
@@ -105,7 +105,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      background: rgba(216, 60, 19, 0.24);
+      background: var(--accent-bg-strong);
       font-size: 0.72rem;
     }
   }
@@ -121,8 +121,8 @@
 .mm-blog__surface {
   border-radius: 24px;
   padding: 16px;
-  background: linear-gradient(145deg, #3f434b, #34383e);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--surface-grad-2);
+  border: 1px solid var(--border-soft);
   box-shadow:
     10px 10px 22px rgba(29, 31, 36, 0.82),
     -5px -5px 12px rgba(83, 88, 98, 0.28);
@@ -138,8 +138,8 @@
 .mm-blog-control {
   min-height: 44px;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: linear-gradient(145deg, #3a3e44, #32363c);
+  border: 1px solid var(--border-default);
+  background: var(--surface-grad-4);
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -179,8 +179,8 @@
   width: 100%;
   justify-content: center;
   border-radius: 12px;
-  border: 1px solid rgba(216, 60, 19, 0.28);
-  background: rgba(216, 60, 19, 0.12);
+  border: 1px solid var(--accent-border-soft);
+  background: var(--accent-bg-soft);
   flex-wrap: wrap;
   padding: 14px;
   gap: 10px;
@@ -189,7 +189,7 @@
 .mm-blog__clear-btn {
   min-height: 34px;
   border-radius: 9px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid var(--border-strong);
   padding: 0 10px;
   font-size: 0.78rem;
   font-weight: 700;
@@ -212,8 +212,8 @@
   button {
     min-height: 36px;
     border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background: linear-gradient(145deg, #3f434a, #35393f);
+    border: 1px solid var(--border-strong);
+    background: var(--surface-grad-1);
     color: var(--color-text-soft);
     display: inline-flex;
     align-items: center;
@@ -228,9 +228,9 @@
   }
 
   button:hover:not(:disabled) {
-    color: #fff;
-    border-color: rgba(216, 60, 19, 0.45);
-    background: linear-gradient(145deg, #dc4d27, #c6350e);
+    color: var(--text-inverse);
+    border-color: var(--accent-border-strong);
+    background: var(--accent-grad-1);
   }
 
   button:disabled {
@@ -249,8 +249,8 @@
 .mm-blog-panel {
   border-radius: 18px;
   padding: 12px;
-  background: linear-gradient(145deg, #3f434a, #35393f);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--surface-grad-1);
+  border: 1px solid var(--border-default);
   box-shadow:
     8px 8px 18px rgba(31, 34, 39, 0.82),
     -4px -4px 10px rgba(84, 89, 97, 0.28);
@@ -281,8 +281,8 @@
 .mm-blog-tag {
   min-height: 36px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: linear-gradient(145deg, #3a3e44, #33373d);
+  border: 1px solid var(--border-default);
+  background: var(--surface-grad-4);
   color: var(--color-text-soft);
   padding: 0 10px;
   display: inline-flex;
@@ -301,14 +301,14 @@
     align-items: center;
     justify-content: center;
     font-size: 0.72rem;
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--border-soft);
   }
 }
 
 .mm-blog-tag--active {
-  color: #fff;
-  border-color: rgba(216, 60, 19, 0.45);
-  background: linear-gradient(145deg, #dd4e28, #c7340d);
+  color: var(--text-inverse);
+  border-color: var(--accent-border-strong);
+  background: var(--accent-grad-2);
 }
 
 .mm-blog-actions {
@@ -319,8 +319,8 @@
 .mm-blog-action {
   min-height: 38px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: linear-gradient(145deg, #3a3e45, #33373d);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-grad-4);
   color: var(--color-text-soft);
   display: inline-flex;
   justify-content: center;
@@ -332,9 +332,9 @@
 }
 
 .mm-blog-action--primary {
-  color: #fff;
-  border-color: rgba(216, 60, 19, 0.45);
-  background: linear-gradient(145deg, #dd4e28, #c7340d);
+  color: var(--text-inverse);
+  border-color: var(--accent-border-strong);
+  background: var(--accent-grad-2);
 }
 
 .mm-blog__sidebar-head {
@@ -352,8 +352,8 @@
     width: 30px;
     height: 30px;
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    background: linear-gradient(145deg, #3f434a, #35393f);
+    border: 1px solid var(--border-heavy);
+    background: var(--surface-grad-1);
     color: var(--color-text-soft);
     display: inline-flex;
     align-items: center;
@@ -365,7 +365,7 @@
   position: fixed;
   inset: 0;
   z-index: 1050;
-  background: rgba(12, 14, 17, 0.52);
+  background: var(--overlay-backdrop);
 }
 
 @media (max-width: 1180px) {
@@ -444,9 +444,9 @@
     transition: transform 0.26s ease;
     max-height: calc(100vh - (var(--app-bottom-nav-offset) + 84px));
     overflow: auto;
-    background: linear-gradient(145deg, #3d4148, #34383f);
+    background: var(--surface-grad-2);
     border-radius: 18px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid var(--border-strong);
     padding: 10px;
     box-shadow:
       14px 14px 26px rgba(20, 23, 27, 0.92),

@@ -1,8 +1,8 @@
 .mm-contact {
   border-radius: 20px;
   padding: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(145deg, #3f434b, #34383e);
+  border: 1px solid var(--border-soft);
+  background: var(--surface-grad-2);
   box-shadow:
     10px 10px 20px rgba(29, 31, 36, 0.8),
     -4px -4px 10px rgba(82, 88, 97, 0.26);
@@ -30,8 +30,8 @@
 .mm-contact-row {
   min-height: 40px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: linear-gradient(145deg, #3a3e44, #32363c);
+  border: 1px solid var(--border-default);
+  background: var(--surface-grad-4);
   color: var(--color-text-soft);
   padding: 0 10px;
   display: inline-flex;
@@ -43,7 +43,7 @@
 }
 
 .mm-contact-row:hover {
-  border-color: rgba(216, 60, 19, 0.45);
+  border-color: var(--accent-border-strong);
 }
 
 .mm-contact-icon {
@@ -59,8 +59,8 @@
 .mm-contact-social-item {
   min-height: 38px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: linear-gradient(145deg, #3a3e44, #32363c);
+  border: 1px solid var(--border-default);
+  background: var(--surface-grad-4);
   color: var(--color-text-soft);
   padding: 0 10px;
   display: inline-flex;
@@ -73,7 +73,7 @@
 }
 
 .mm-contact-social-item:hover {
-  border-color: rgba(216, 60, 19, 0.45);
+  border-color: var(--accent-border-strong);
 }
 
 .mm-contact-social-icon {

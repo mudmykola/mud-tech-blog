@@ -1,7 +1,7 @@
 .mm-about-header {
   border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(145deg, #3f434a, #34383e);
+  border: 1px solid var(--border-soft);
+  background: var(--surface-grad-2);
   box-shadow:
     12px 12px 24px rgba(29, 31, 36, 0.86),
     -6px -6px 14px rgba(83, 88, 98, 0.32);
@@ -23,7 +23,7 @@
   height: 140px;
   border-radius: 50%;
   overflow: hidden;
-  border: 2px solid rgba(216, 60, 19, 0.8);
+  border: 2px solid var(--color-accent);
   box-shadow:
     8px 8px 16px rgba(28, 31, 36, 0.86),
     -4px -4px 10px rgba(82, 88, 98, 0.3);
@@ -63,8 +63,8 @@
     border-radius: 999px;
     display: inline-flex;
     align-items: center;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: linear-gradient(145deg, #3a3e44, #32363c);
+    border: 1px solid var(--border-default);
+    background: var(--surface-grad-4);
     color: var(--color-text-soft);
     font-size: 0.74rem;
     font-weight: 700;

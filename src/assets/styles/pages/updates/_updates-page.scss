@@ -7,8 +7,8 @@
 .mm-updates__head {
   padding: 14px;
   border-radius: 14px;
-  background: linear-gradient(145deg, #3f434a, #35393f);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--surface-grad-1);
+  border: 1px solid var(--border-soft);
 
   h1 {
     margin: 0;
@@ -33,8 +33,8 @@
 .mm-updates-filter {
   min-height: 36px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.11);
-  background: linear-gradient(145deg, #3f434a, #35393f);
+  border: 1px solid var(--border-default);
+  background: var(--surface-grad-1);
   color: var(--color-text-soft);
   padding: 0 10px;
   display: inline-flex;
@@ -52,14 +52,14 @@
     align-items: center;
     justify-content: center;
     font-size: 0.72rem;
-    background: rgba(255, 255, 255, 0.09);
+    background: var(--border-default);
   }
 }
 
 .mm-updates-filter--active {
   color: #fff;
-  border-color: rgba(216, 60, 19, 0.4);
-  background: linear-gradient(145deg, #dd4e28, #c7340d);
+  border-color: var(--accent-border);
+  background: var(--accent-grad-2);
 }
 
 .mm-updates__layout {
@@ -77,8 +77,8 @@
 .mm-update-item {
   text-align: left;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: linear-gradient(145deg, #40444b, #35393f);
+  border: 1px solid var(--border-default);
+  background: var(--surface-grad-1);
   color: var(--color-text);
   padding: 10px;
   display: grid;
@@ -109,20 +109,17 @@
 }
 
 .mm-update-item:hover {
-  border-color: rgba(216, 60, 19, 0.46);
-  background: linear-gradient(145deg, #464b53, #3a3f46);
-  box-shadow:
-    0 0 0 1px rgba(216, 60, 19, 0.2),
-    10px 10px 18px rgba(29, 32, 37, 0.58),
-    -6px -6px 14px rgba(83, 88, 97, 0.22);
+  border-color: var(--accent-border-strong);
+  background: var(--surface-grad-hover);
+  box-shadow: var(--shadow-hover-elev);
 }
 
 .mm-update-item:hover h2 {
-  color: #fff;
+  color: var(--text-on-surface-hover);
 }
 
 .mm-update-item:hover p {
-  color: #d0d4d8;
+  color: var(--color-text-soft);
 }
 
 .mm-update-item__top {
@@ -138,7 +135,7 @@
   border-radius: 999px;
   padding: 3px 7px;
   color: #fff;
-  background: rgba(216, 60, 19, 0.82);
+  background: var(--color-accent);
   font-weight: 700;
 }
 
@@ -152,8 +149,8 @@
 }
 
 .mm-update-item--active {
-  border-color: rgba(216, 60, 19, 0.45);
-  box-shadow: 0 0 0 1px rgba(216, 60, 19, 0.2);
+  border-color: var(--accent-border-strong);
+  box-shadow: 0 0 0 1px var(--accent-ring);
 }
 
 .mm-updates__empty {
@@ -173,8 +170,8 @@
 .mm-updates__pager-btn {
   min-height: 34px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: linear-gradient(145deg, #3f434a, #35393f);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-grad-1);
   color: var(--color-text-soft);
   display: inline-flex;
   align-items: center;
@@ -192,8 +189,8 @@
 
 .mm-updates__pager-btn:hover:not(:disabled) {
   color: #fff;
-  border-color: rgba(216, 60, 19, 0.42);
-  background: linear-gradient(145deg, #dc4d27, #c6350e);
+  border-color: var(--accent-border);
+  background: var(--accent-grad-1);
 }
 
 .mm-updates__pager-btn:disabled {
@@ -210,8 +207,8 @@
 
 .mm-update-detail {
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: linear-gradient(145deg, #40444b, #35393f);
+  border: 1px solid var(--border-default);
+  background: var(--surface-grad-1);
   padding: 14px;
   display: grid;
   gap: 10px;
@@ -231,7 +228,7 @@
   border-radius: 999px;
   padding: 4px 8px;
   color: #fff;
-  background: linear-gradient(145deg, #dd4e28, #c7340d);
+  background: var(--accent-grad-2);
   font-weight: 700;
 }
 

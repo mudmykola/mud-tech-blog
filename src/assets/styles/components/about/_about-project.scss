@@ -1,8 +1,8 @@
 .mm-projects {
   border-radius: 20px;
   padding: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(145deg, #3f434b, #34383e);
+  border: 1px solid var(--border-soft);
+  background: var(--surface-grad-2);
   box-shadow:
     10px 10px 20px rgba(29, 31, 36, 0.8),
     -4px -4px 10px rgba(82, 88, 97, 0.26);
@@ -22,8 +22,8 @@
   min-height: 46px;
   border-radius: 12px;
   padding: 10px 12px;
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  background: linear-gradient(145deg, #3a3e44, #32363c);
+  border: 1px solid var(--border-default);
+  background: var(--surface-grad-4);
   text-decoration: none;
   color: var(--color-text-soft);
   display: flex;
@@ -35,8 +35,9 @@
 }
 
 .mm-project-card:hover {
-  border-color: rgba(216, 60, 19, 0.45);
-  background: linear-gradient(145deg, #43484f, #373b41);
+  border-color: var(--accent-border-strong);
+  background: var(--surface-grad-hover);
+  color: var(--text-on-surface-hover);
 }
 
 .mm-project-icon {

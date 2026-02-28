@@ -2,6 +2,7 @@
   import { computed, onMounted, onUnmounted, ref } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import Logo from '@/components/ui/Logo.vue'
+  import ThemePaletteSwitcher from '@/components/ui/ThemePaletteSwitcher.vue'
 
   const route = useRoute()
   const router = useRouter()
@@ -73,6 +74,7 @@
         </nav>
 
         <div class="mm-nav__widgets">
+          <ThemePaletteSwitcher />
           <div class="mm-nav-widget">
             <v-icon icon="mdi-clock-time-eight-outline" size="16" />
             <span>{{ clock }}</span>
@@ -96,6 +98,7 @@
           <v-icon icon="mdi-clock-outline" size="14" />
           <span>{{ clock }}</span>
         </div>
+        <ThemePaletteSwitcher compact />
       </div>
     </div>
 
