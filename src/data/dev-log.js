@@ -1,5 +1,25 @@
 export const devLogEntries = [
   {
+    id: 'devlog-092',
+    date: '2026-03-01T03:56:00+02:00',
+    type: 'Feature',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.seo.quality.gates.title',
+    summaryKey: 'updates.seo.quality.gates.summary',
+    title: 'Додано SEO quality gates: smoke tests + Lighthouse CI',
+    summary:
+      'Перед релізом автоматично виконується SEO smoke-перевірка meta/schema, а в CI підключено Lighthouse quality gate для ключових route з порогами для блокування критичних деградацій.',
+    details: [
+      'Додано `scripts/seo-smoke.mjs` для валідації title/description/canonical/robots/JSON-LD на prerendered HTML.',
+      'Розширено `scripts/prerender-routes.mjs`: для ключових route вставляються crawler-ready JSON-LD блоки в static HTML.',
+      'Оновлено npm scripts: `seo:smoke`, deploy тепер включає SEO smoke gate перед `firebase deploy`.',
+      'Додано `.github/workflows/seo-quality.yml` і `.lighthouserc.json` з assertion порогами (SEO >= 0.9).',
+    ],
+    route: '/updates',
+    routeLabelKey: 'nav.updates',
+    githubIssue: '#63',
+  },
+  {
     id: 'devlog-091',
     date: '2026-03-01T03:29:00+02:00',
     type: 'Feature',

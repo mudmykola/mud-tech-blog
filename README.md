@@ -70,3 +70,17 @@ Notes:
 - Static routes `/`, `/blog`, `/about`, `/updates` are always included.
 - `robots.txt` is generated at build time from canonical origin (no manual host hardcode).
 - Build includes `verify-seo-host-config` check to validate robots/sitemap host consistency.
+
+## SEO Quality Gates
+
+- `npm run seo:smoke` validates built HTML for key routes (`/`, `/blog`, `/about`, `/updates`):
+  - title
+  - meta description
+  - canonical
+  - robots
+  - JSON-LD presence/validity
+- CI workflow `.github/workflows/seo-quality.yml` runs:
+  - unit tests
+  - build
+  - SEO smoke checks
+  - Lighthouse CI with SEO thresholds (`.lighthouserc.json`)
