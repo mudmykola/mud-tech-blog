@@ -8,17 +8,28 @@ import { createHead } from '@vueuse/head'
 import { vuetify } from './plugins/vuetify'
 import { initThemePalette } from './composables/useThemePalette'
 import { enforceCanonicalRedirect } from './utils/canonical'
+import { initFirebaseAnalytics, trackPageView } from './firebase'
 
 const head = createHead()
 initThemePalette()
 const redirectedToCanonical = enforceCanonicalRedirect()
 
 if (!redirectedToCanonical) {
+  router.afterEach(to => {
+    trackPageView({
+      path: to.fullPath,
+      title: document.title,
+      location: window.location.href,
+    })
+  })
+
   const vueApp = createApp(App)
   vueApp.use(router)
   vueApp.use(vuetify)
   vueApp.use(head)
   vueApp.mount('#app')
+
+  initFirebaseAnalytics()
 }
 
 if ('serviceWorker' in navigator) {

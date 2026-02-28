@@ -1,5 +1,5 @@
 <script setup>
-  import { computed, onMounted, ref } from 'vue'
+  import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
   import DefaultLayout from '@/layouts/DefaultLayout.vue'
   import HomeHeader from '@/components/home/HomeHeaderComponent.vue'
@@ -20,6 +20,8 @@
     generateOrganizationJsonLd,
     generateWebSiteJsonLd,
   } from '@/utils/jsonld'
+  import { ANALYTICS_EVENTS, ANALYTICS_PARAMS } from '@/analytics/events'
+  import { trackEvent } from '@/firebase'
 
   const uiText = {
     title: 'Технології, архітектура та продуктивність вебу',
@@ -42,6 +44,7 @@
   const loading = ref(true)
   const searchQuery = ref('')
   const sortBy = ref('date_desc')
+  let searchTrackTimeout = null
 
   const buildHomeSchemas = list => {
     const articleItems = list.slice(0, 12).map(item => ({
@@ -106,6 +109,30 @@
       .sort((a, b) => b[1] - a[1])
       .slice(0, 4)
       .map(([label, count]) => ({ label, count }))
+  })
+
+  watch(sortBy, value => {
+    trackEvent(ANALYTICS_EVENTS.FILTER_CHANGED, {
+      [ANALYTICS_PARAMS.ROUTE]: '/',
+      [ANALYTICS_PARAMS.FILTER_TYPE]: 'sort',
+      [ANALYTICS_PARAMS.FILTER_VALUE]: value,
+      [ANALYTICS_PARAMS.RESULTS_COUNT]: filteredCount.value,
+    })
+  })
+
+  watch(searchQuery, value => {
+    if (searchTrackTimeout) clearTimeout(searchTrackTimeout)
+    searchTrackTimeout = setTimeout(() => {
+      trackEvent(ANALYTICS_EVENTS.SEARCH_USED, {
+        [ANALYTICS_PARAMS.ROUTE]: '/',
+        [ANALYTICS_PARAMS.SEARCH_QUERY_LENGTH]: String(value || '').trim().length,
+        [ANALYTICS_PARAMS.RESULTS_COUNT]: filteredCount.value,
+      })
+    }, 450)
+  })
+
+  onBeforeUnmount(() => {
+    if (searchTrackTimeout) clearTimeout(searchTrackTimeout)
   })
 </script>
 

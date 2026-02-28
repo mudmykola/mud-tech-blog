@@ -1,5 +1,46 @@
 export const devLogEntries = [
   {
+    id: 'devlog-094',
+    date: '2026-03-01T04:52:00+02:00',
+    type: 'Feature',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.analytics.events.layer.title',
+    summaryKey: 'updates.analytics.events.layer.summary',
+    title: 'Додано структурований layer аналітики для читання, фільтрів і CTA',
+    summary:
+      'Реалізовано єдиний словник подій і параметрів аналітики, а також трекінг ключових взаємодій блогу: читання статті, пошук/фільтри та конверсійні CTA.',
+    details: [
+      'Додано `src/analytics/events.js` з централізованими назвами подій і параметрів.',
+      'У `src/firebase.js` додано універсальний `trackEvent` поверх Firebase Analytics.',
+      'BlogPost: події `article_read_start`, `article_read_50`, `article_read_complete`, share CTA та next-article CTA.',
+      'Blog/Home: події `search_used` і `filter_changed` з параметрами `results_count`.',
+      'DonationSection: подія `cta_donation_click` для основної і popup кнопки.',
+    ],
+    route: '/blog',
+    routeLabelKey: 'nav.blog',
+    githubIssue: '#87',
+  },
+  {
+    id: 'devlog-093',
+    date: '2026-03-01T04:27:00+02:00',
+    type: 'Feature',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.analytics.firebase.runtime.integration.title',
+    summaryKey: 'updates.analytics.firebase.runtime.integration.summary',
+    title: 'Підключено Firebase Analytics і page_view трекінг для SPA',
+    summary:
+      'Додано безпечну runtime-ініціалізацію Firebase Analytics і автоматичне логування `page_view` при зміні route у SPA.',
+    details: [
+      'Оновлено `src/firebase.js`: lazy init через `isSupported()`, безпечний fallback, експорт `trackPageView`.',
+      'У `src/main.js` додано `router.afterEach` з логуванням `page_view` (path/title/location).',
+      'Ініціалізація analytics виконується після mount апки і не ламає рендер у не-підтримуваних середовищах.',
+      'Підтверджено стабільність: `npm run test` і `npm run build` проходять.',
+    ],
+    route: '/',
+    routeLabelKey: 'nav.home',
+    githubIssue: '#63',
+  },
+  {
     id: 'devlog-092',
     date: '2026-03-01T03:56:00+02:00',
     type: 'Feature',

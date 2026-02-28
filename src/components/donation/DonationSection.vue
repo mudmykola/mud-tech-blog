@@ -1,5 +1,7 @@
 <script setup>
   import { onMounted, onUnmounted, ref } from 'vue'
+  import { ANALYTICS_EVENTS, ANALYTICS_PARAMS } from '@/analytics/events'
+  import { trackEvent } from '@/firebase'
 
   const title = 'Підтримай ЗСУ'
   const description = 'Допоможи армії наближати перемогу. Кожен донат - це реальна дія.'
@@ -37,6 +39,14 @@
     }, AUTO_HIDE_DELAY)
   }
 
+  const trackDonationClick = location => {
+    trackEvent(ANALYTICS_EVENTS.CTA_DONATION_CLICK, {
+      [ANALYTICS_PARAMS.CTA_NAME]: 'donation_support',
+      [ANALYTICS_PARAMS.LOCATION]: location,
+      [ANALYTICS_PARAMS.TARGET]: donateHref,
+    })
+  }
+
   onMounted(() => {
     popupTimeoutId = setTimeout(showPopup, 2000)
     popupIntervalId = setInterval(showPopup, DISPLAY_INTERVAL)
@@ -72,6 +82,7 @@
       size="large"
       rounded="pill"
       elevation="0"
+      @click="trackDonationClick('donation_section')"
     >
       <v-icon icon="mdi-shield-star-outline" start />
       {{ donateBtnText }}
@@ -102,6 +113,7 @@
           size="small"
           rounded="pill"
           class="mm-donation-popup__btn"
+          @click="trackDonationClick('donation_popup')"
         >
           <v-icon icon="mdi-heart" start size="14" />
           Донат
