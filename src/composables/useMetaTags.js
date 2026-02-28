@@ -1,6 +1,6 @@
 export function useMetaTags() {
   const metaDescription =
-    "Ласкаво просимо до Mud' Tech Blog! Дізнайтеся більше про останні технології, корисні статті, та новини. Переглядайте топові матеріали та отримуйте свіжі ідеї щодня."
+    'Практичний техноблог українською про frontend-розробку, Vue, eCommerce, AI та продуктивність. Публікуємо покрокові гайди, огляди інструментів і робочі рішення для реальних проєктів.'
 
   let metaTag = document.querySelector('meta[name="description"]')
   if (!metaTag) {
@@ -10,5 +10,5 @@ export function useMetaTags() {
   }
   metaTag.content = metaDescription
 
-  document.title = 'Головна | Дізнайтеся більше про останні технології'
+  document.title = 'Технологічний блог про Frontend, AI та eCommerce | Mud Tech Blog'
 }

@@ -1,5 +1,6 @@
 <script setup>
   import { computed, onMounted, ref, watch } from 'vue'
+  import { useHead } from '@vueuse/head'
   import { getBlogArticles } from '@/services/shopifyApi'
   import ArticleCard from '@/components/article/ArticleCardComponent.vue'
   import DefaultLayout from '@/layouts/DefaultLayout.vue'
@@ -23,20 +24,24 @@
     { value: 'title_desc', label: 'Назва: Я-А' },
   ]
 
+  const canonicalBlogUrl =
+    typeof window === 'undefined' ? 'https://mud-tech-blog.web.app/blog' : `${window.location.origin}/blog`
+
+  useHead({
+    title: 'Блог статей про Frontend, Vue та eCommerce | Mud Tech Blog',
+    meta: [
+      {
+        name: 'description',
+        content:
+          "У розділі блогу зібрані практичні статті про frontend, Vue, Shopify, eCommerce архітектуру та оптимізацію продуктивності. Читай покрокові матеріали з реальними прикладами впровадження.",
+      },
+    ],
+    link: [{ rel: 'canonical', href: canonicalBlogUrl }],
+  })
+
   onMounted(async () => {
     articles.value = await getBlogArticles()
     loading.value = false
-
-    const metaDescription =
-      "Усі статті Mud' Tech Blog: практичні матеріали про frontend, eCommerce, архітектуру та сучасну розробку."
-    let metaTag = document.querySelector('meta[name="description"]')
-    if (!metaTag) {
-      metaTag = document.createElement('meta')
-      metaTag.name = 'description'
-      document.head.appendChild(metaTag)
-    }
-    metaTag.content = metaDescription
-    document.title = "Блог | Mud' Tech Blog"
 
     useJsonLd([generateOrganizationJsonLd(), generateBlogIndexJsonLd()])
   })
@@ -126,7 +131,7 @@
         <div class="mm-blog__hero-head">
           <h1>
             <v-icon icon="mdi-post-outline" size="26" />
-            Журнал статей
+            Статті про веб-розробку та архітектуру
           </h1>
           <button class="mm-blog__filter-toggle d-md-none" @click="mobileFiltersOpen = !mobileFiltersOpen">
             <v-icon icon="mdi-tune-variant" size="18" />

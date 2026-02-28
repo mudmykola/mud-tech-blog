@@ -1,7 +1,7 @@
 <script setup>
   const avatar = '/images/avatar.webp'
-  const title = 'Привіт! Я Микола'
-  const subtitle = 'Frontend eCommerce Developer'
+  const title = 'Я Микола, веб-інженер та розробник'
+  const subtitle = 'Frontend Developer | Vue | Nuxt | Shopify'
   const highlights = ['20+ eCommerce проєктів', 'Shopify / Vue / Automation', 'Фокус: UX + продуктивність']
 </script>
 
