@@ -51,6 +51,18 @@ const routes = [
       icon: 'mdi-account-circle',
     },
   },
+  {
+    path: '/updates',
+    name: 'updates',
+    component: () => import('@/views/UpdatesPage.vue'),
+    meta: {
+      title: "Оновлення | Mud' Tech Blog",
+      description: 'Журнал змін, виправлень і нових функцій проєкту.',
+      showInNav: true,
+      label: 'Оновлення',
+      icon: 'mdi-history',
+    },
+  },
 ]
 
 const router = createRouter({

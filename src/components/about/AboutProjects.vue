@@ -30,12 +30,15 @@
 
 <template>
   <section class="mm-projects">
-    <h2 class="mm-projects-title">Мої проєкти</h2>
+    <div class="mm-about-section-head">
+      <v-icon icon="mdi-rocket-launch-outline" size="20" />
+      <h2 class="mm-projects-title">Мої проєкти</h2>
+    </div>
 
     <v-container class="mm-projects-grid" fluid>
       <v-row dense>
-        <v-col v-for="project in projects" :key="project.label" cols="12" sm="6" md="4">
-          <a :href="project.link" target="_blank" class="mm-project-card">
+        <v-col v-for="project in projects" :key="project.label" cols="12" sm="6">
+          <a :href="project.link" target="_blank" rel="noopener" class="mm-project-card">
             <v-icon class="mm-project-icon" :icon="project.icon" />
             <span class="mm-project-label">{{ project.label }}</span>
             <v-icon class="mm-project-external" icon="mdi-open-in-new" />

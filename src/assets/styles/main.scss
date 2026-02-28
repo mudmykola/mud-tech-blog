@@ -4,6 +4,8 @@
 @use '@/assets/styles/pages/home/home-header-title';
 
 @use '@/assets/styles/pages/blog/blog-list-page';
+@use '@/assets/styles/pages/blog/blog-post-page';
+@use '@/assets/styles/pages/about/about-page';
 @use '@/assets/styles/layouts/default-layout';
 @use '@/assets/styles/components/navigation/navbar';
 @use '@/assets/styles/components/donation/donation-section';
@@ -19,3 +21,4 @@
 @use '@/assets/styles/components/about/about-stack';
 @use '@/assets/styles/components/about/about-project';
 @use '@/assets/styles/components/about/about-contact';
+@use '@/assets/styles/pages/updates/updates-page';

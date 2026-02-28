@@ -1,10 +1,7 @@
 <script setup>
-  import { ref, computed, onMounted, onUnmounted } from 'vue'
+  import { computed, onMounted, onUnmounted, ref } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import Logo from '@/components/ui/Logo.vue'
-
-  const drawer = ref(false)
-  const isHeaderVisible = ref(true)
 
   const route = useRoute()
   const router = useRouter()
@@ -16,7 +13,7 @@
       .map(r => ({
         path: r.path,
         label: r.meta.label,
-        icon: r.meta.icon || null,
+        icon: r.meta.icon || 'mdi-circle-medium',
       }))
   )
 
@@ -25,69 +22,98 @@
     return route.path.startsWith(path)
   }
 
-  let lastScrollY = 0
-  const handleScroll = () => {
-    const y = window.scrollY
-    isHeaderVisible.value = y < lastScrollY || y < 40
-    lastScrollY = y
+  const currentSectionLabel = computed(() => {
+    const current = navLinks.value.find(link => isActive(link.path))
+    return current?.label || "Mud' Tech Blog"
+  })
+
+  const clock = ref('--:--')
+  const dateLabel = ref('--')
+  let clockTimer
+
+  const formatClockData = () => {
+    const now = new Date()
+    clock.value = now.toLocaleTimeString('uk-UA', {
+      hour: '2-digit',
+      minute: '2-digit',
+    })
+    dateLabel.value = now.toLocaleDateString('uk-UA', {
+      day: '2-digit',
+      month: '2-digit',
+    })
   }
 
   onMounted(() => {
-    lastScrollY = window.scrollY
-    window.addEventListener('scroll', handleScroll)
+    formatClockData()
+    clockTimer = setInterval(formatClockData, 30_000)
   })
 
   onUnmounted(() => {
-    window.removeEventListener('scroll', handleScroll)
+    if (clockTimer) clearInterval(clockTimer)
   })
 </script>
 
 <template>
-  <v-app-bar height="64" flat class="mm-nav" :class="{ 'mm-nav--hidden': !isHeaderVisible }">
-    <v-container class="d-flex align-center justify-space-between">
-      <Logo />
-      <div class="d-none d-md-flex align-center gap-4">
-        <v-btn
-          v-for="link in navLinks"
-          :key="link.path"
-          :to="link.path"
-          variant="text"
-          class="mm-nav-btn"
-          :class="{ 'mm-nav-btn--active': isActive(link.path) }"
-        >
-          <v-icon v-if="link.icon" :icon="link.icon" size="18" />
-          {{ link.label }}
-        </v-btn>
-        <InstallPWA />
+  <header>
+    <div class="mm-nav d-none d-md-flex">
+      <div class="mm-nav__inner">
+        <Logo />
+
+        <nav class="mm-nav__links" aria-label="Desktop navigation">
+          <router-link
+            v-for="link in navLinks"
+            :key="link.path"
+            :to="link.path"
+            class="mm-nav-btn"
+            :class="{ 'mm-nav-btn--active': isActive(link.path) }"
+          >
+            <v-icon :icon="link.icon" size="18" />
+            <span>{{ link.label }}</span>
+          </router-link>
+        </nav>
+
+        <div class="mm-nav__widgets">
+          <div class="mm-nav-widget">
+            <v-icon icon="mdi-clock-time-eight-outline" size="16" />
+            <span>{{ clock }}</span>
+          </div>
+          <div class="mm-nav-widget">
+            <v-icon icon="mdi-calendar-month-outline" size="16" />
+            <span>{{ dateLabel }}</span>
+          </div>
+        </div>
       </div>
-
-      <v-btn icon class="d-md-none" @click="drawer = true">
-        <v-icon icon="mdi-menu" size="32" />
-      </v-btn>
-    </v-container>
-  </v-app-bar>
-
-  <v-navigation-drawer v-model="drawer" temporary location="right" width="260" class="mm-drawer">
-    <div class="mm-drawer__header">
-      <span class="mm-drawer__title">Меню</span>
-      <v-btn class="mm-btn-close" icon @click="drawer = false">
-        <v-icon icon="mdi-close" />
-      </v-btn>
     </div>
 
-    <v-divider class="mb-2"></v-divider>
+    <div class="mm-nav-mobile-top d-md-none">
+      <Logo />
+      <div class="mm-nav-mobile-top__meta">
+        <div class="mm-nav-mobile-top__current">
+          <v-icon icon="mdi-navigation-variant-outline" size="16" />
+          <span>{{ currentSectionLabel }}</span>
+        </div>
+        <div class="mm-nav-mobile-top__clock">
+          <v-icon icon="mdi-clock-outline" size="14" />
+          <span>{{ clock }}</span>
+        </div>
+      </div>
+    </div>
 
-    <v-list density="comfortable">
-      <v-list-item v-for="link in navLinks" :key="link.path" @click="drawer = false">
-        <router-link
-          :to="link.path"
-          class="mm-drawer__link"
-          :class="{ 'mm-drawer__link--active': isActive(link.path) }"
-        >
-          <v-icon v-if="link.icon" :icon="link.icon" size="20" class="mm-drawer__icon" />
-          {{ link.label }}
-        </router-link>
-      </v-list-item>
-    </v-list>
-  </v-navigation-drawer>
+    <nav
+      class="mm-bottom-nav d-md-none"
+      aria-label="Mobile app navigation"
+      :style="{ gridTemplateColumns: `repeat(${Math.max(navLinks.length, 1)}, minmax(0, 1fr))` }"
+    >
+      <router-link
+        v-for="link in navLinks"
+        :key="`mobile-${link.path}`"
+        :to="link.path"
+        class="mm-bottom-nav__item"
+        :class="{ 'mm-bottom-nav__item--active': isActive(link.path) }"
+      >
+        <v-icon :icon="link.icon" size="22" />
+        <span>{{ link.label }}</span>
+      </router-link>
+    </nav>
+  </header>
 </template>

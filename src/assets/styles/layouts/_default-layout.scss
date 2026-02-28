@@ -7,11 +7,13 @@
 
 main {
   flex-grow: 1;
-  padding: 20px;
+  padding: calc(var(--app-nav-offset) + 20px) var(--app-shell-gutter) 20px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 959px) {
   main {
-    padding: 10px;
+    padding:
+      calc(var(--app-nav-offset) + 10px) var(--app-shell-gutter)
+      calc(var(--app-bottom-nav-offset) + 10px);
   }
 }

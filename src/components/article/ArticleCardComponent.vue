@@ -16,20 +16,30 @@
     const src = props.article.excerpt || getPlainText(props.article.contentHtml)
     if (!src) return 'Опис відсутній'
 
-    return src.split(' ').slice(0, 14).join(' ') + '…'
+    return src.split(' ').slice(0, 16).join(' ') + '...'
   })
 
   const tag = computed(() => props.article.tags?.[0] || null)
+  const publishDate = computed(() => {
+    if (!props.article.publishedAt) return '-'
+    return new Date(props.article.publishedAt).toLocaleDateString('uk-UA')
+  })
+
   const img = useOptimizedImage(props.article?.image?.url, props.article?.title, 300)
 </script>
 
 <template>
   <router-link :to="'/blog/' + article.handle" class="mm-article2">
-    <div class="mm-article2__glow"></div>
+    <div class="mm-article2__halo" />
 
-    <div v-if="tag" class="mm-article2__tag">
-      <v-icon icon="mdi-label" size="14" />
-      {{ tag }}
+    <div class="mm-article2__top">
+      <div v-if="tag" class="mm-article2__tag">
+        <v-icon icon="mdi-tag-outline" size="14" />
+        {{ tag }}
+      </div>
+      <div class="mm-article2__quick">
+        <v-icon icon="mdi-open-in-new" size="16" />
+      </div>
     </div>
 
     <div class="mm-article2__image-wrapper">
@@ -45,13 +55,13 @@
 
       <div class="mm-article2__meta">
         <div class="mm-article2__meta-left">
-          <v-icon icon="mdi-clock-outline" size="18" />
-          <span>{{ article.publishedAt?.slice(0, 10) || '—' }}</span>
+          <v-icon icon="mdi-calendar-month-outline" size="18" />
+          <span>{{ publishDate }}</span>
         </div>
 
         <div class="mm-article2__readmore">
+          <v-icon icon="mdi-book-open-page-variant-outline" size="16" />
           Читати
-          <v-icon icon="mdi-arrow-right" size="18" />
         </div>
       </div>
     </div>

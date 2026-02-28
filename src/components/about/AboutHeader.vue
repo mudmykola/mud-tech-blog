@@ -2,21 +2,24 @@
   const avatar = '/images/avatar.jpg'
   const title = 'Привіт! Я Микола'
   const subtitle = 'Frontend eCommerce Developer'
+  const highlights = ['20+ eCommerce проєктів', 'Shopify / Vue / Automation', 'Фокус: UX + продуктивність']
 </script>
 
 <template>
-  <v-container class="mm-about-header" max-width="960">
-    <v-row align="center" justify="center" class="mm-about-row">
-      <v-col cols="12" md="3" class="mm-about-avatar-col">
-        <div class="mm-about-avatar-wrap">
-          <img :src="avatar" alt="Avatar" class="mm-about-avatar" />
-        </div>
-      </v-col>
+  <section class="mm-about-header">
+    <div class="mm-about-header__media">
+      <div class="mm-about-avatar-wrap">
+        <img :src="avatar" alt="Avatar" class="mm-about-avatar" />
+      </div>
+    </div>
 
-      <v-col cols="12" md="9" class="mm-about-text-col">
-        <h1 class="mm-about-title">{{ title }}</h1>
-        <p class="mm-about-subtitle">{{ subtitle }}</p>
-      </v-col>
-    </v-row>
-  </v-container>
+    <div class="mm-about-header__content">
+      <h1 class="mm-about-title">{{ title }}</h1>
+      <p class="mm-about-subtitle">{{ subtitle }}</p>
+
+      <div class="mm-about-header__highlights">
+        <span v-for="item in highlights" :key="item">{{ item }}</span>
+      </div>
+    </div>
+  </section>
 </template>

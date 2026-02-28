@@ -14,7 +14,10 @@
 
 <template>
   <section class="mm-stack">
-    <h2 class="mm-stack-title">Технології, з якими працюю</h2>
+    <div class="mm-about-section-head">
+      <v-icon icon="mdi-layers-triple-outline" size="20" />
+      <h2 class="mm-stack-title">Технології, з якими працюю</h2>
+    </div>
 
     <ul class="mm-stack-list">
       <li v-for="tech in stack" :key="tech.label" class="mm-stack-item">

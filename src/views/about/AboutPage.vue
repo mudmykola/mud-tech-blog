@@ -9,9 +9,9 @@
 
 <template>
   <DefaultLayout>
-    <section class="about-page">
+    <section class="mm-about">
       <AboutHeader />
-      <div class="about-content">
+      <div class="mm-about__content">
         <AboutIntro />
         <AboutStack />
         <AboutProjects />
