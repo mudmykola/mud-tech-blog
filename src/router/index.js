@@ -10,8 +10,9 @@ const routes = [
     name: 'home',
     component: HomePage,
     meta: {
-      title: "Головна | Mud' Tech Blog",
-      description: 'Опис для головної сторінки.',
+      title: 'Технологічний блог про Frontend, AI та eCommerce | Mud Tech Blog',
+      description:
+        'Практичний техноблог українською про frontend-розробку, Vue, eCommerce, AI та продуктивність. Публікуємо покрокові гайди, огляди інструментів і робочі рішення для реальних проєктів.',
       showInNav: true,
       label: 'Головна',
       icon: 'mdi-home',
@@ -22,8 +23,9 @@ const routes = [
     name: 'blog',
     component: BlogListPage,
     meta: {
-      title: "Блог | Mud' Tech Blog",
-      description: 'Опис для сторінки блогу.',
+      title: 'Блог статей про Frontend, Vue та eCommerce | Mud Tech Blog',
+      description:
+        "У розділі блогу зібрані практичні статті про frontend, Vue, Shopify, eCommerce архітектуру та оптимізацію продуктивності. Читай покрокові матеріали з реальними прикладами впровадження.",
       showInNav: true,
       label: 'Блог',
       icon: 'mdi-post-outline',
@@ -35,7 +37,8 @@ const routes = [
     component: BlogPostPage,
     meta: {
       title: "Завантаження... – Mud' Tech Blog",
-      description: 'Опис для статті.',
+      description:
+        "Стаття Mud' Tech Blog: практичний розбір технологій, інструментів і рішень для сучасної веб-розробки.",
       showInNav: true,
     },
   },
@@ -44,8 +47,9 @@ const routes = [
     name: 'about',
     component: () => import('@/views/about/AboutPage.vue'),
     meta: {
-      title: "Про мене | Mud' Tech Blog",
-      description: 'Дізнайся більше про автора блогу: стек, досвід, проєкти та контакти.',
+      title: 'Про автора та досвід у Frontend eCommerce | Mud Tech Blog',
+      description:
+        "Дізнайся більше про Миколу — frontend eCommerce розробника з практичним досвідом у Vue, Shopify та оптимізації UX. На сторінці зібрано стек технологій, проєкти та канали зв'язку.",
       showInNav: true,
       label: 'Про мене',
       icon: 'mdi-account-circle',
@@ -56,8 +60,9 @@ const routes = [
     name: 'updates',
     component: () => import('@/views/UpdatesPage.vue'),
     meta: {
-      title: "Оновлення | Mud' Tech Blog",
-      description: 'Журнал змін, виправлень і нових функцій проєкту.',
+      title: 'Оновлення Mud Tech Blog: релізи, фікси й покращення',
+      description:
+        'Сторінка оновлень Mud Tech Blog містить історію релізів, виправлень і нових функцій. Відстежуй прогрес проєкту, зміни в UX, SEO-поліпшення та технічні доробки.',
       showInNav: true,
       label: 'Оновлення',
       icon: 'mdi-history',
@@ -78,6 +83,11 @@ if (!serverIp) {
 }
 
 router.afterEach(to => {
+  // Article page manages its SEO head in component to avoid competing updates.
+  if (to.name === 'article') return
+
+  const defaultRobots = 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1'
+
   // Title
   document.title = to.meta.title || "Mud' Tech Blog"
 
@@ -86,15 +96,16 @@ router.afterEach(to => {
 
   // Robots
   // Якщо в meta явно вказано noindex — робимо noindex,nofollow
-  const robotsValue = to.meta.robots || 'index, follow'
+  const robotsValue = to.meta.robots || defaultRobots
   setMetaTag('robots', robotsValue)
+  setMetaTag('googlebot', robotsValue)
 
   // Other meta fields
   setMetaTag('generator', to.meta.generator || 'Vue.js + Vite + Shopify')
   setMetaTag('cms', to.meta.cms || 'Shopify Headless CMS')
 
   // Canonical
-  setCanonicalLink(window.location.origin + to.fullPath)
+  setCanonicalLink(`${window.location.origin}${to.path}`)
 })
 
 export default router

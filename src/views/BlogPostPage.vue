@@ -31,6 +31,18 @@
   let disqusObserver = null
 
   const stripHtml = value => (value || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+  const trimSeoText = (value, maxLength) => {
+    const plain = String(value || '')
+      .replace(/\s+/g, ' ')
+      .trim()
+    if (!plain) return ''
+    if (plain.length <= maxLength) return plain
+
+    const draft = plain.slice(0, maxLength + 1)
+    const wordBoundary = draft.lastIndexOf(' ')
+    const clipped = wordBoundary > Math.floor(maxLength * 0.62) ? draft.slice(0, wordBoundary) : plain.slice(0, maxLength)
+    return `${clipped.trim()}…`
+  }
 
   const summaryText = computed(() => {
     if (!article.value) return ''
@@ -80,6 +92,45 @@
     { title: 'Блог', to: '/blog' },
     { title: article.value?.title || 'Стаття', to: '' },
   ])
+  const seoPostTitle = computed(() =>
+    trimSeoText(article.value?.title || 'Стаття про frontend, eCommerce та веб-розробку', 52)
+  )
+  const seoPostH1 = computed(() =>
+    trimSeoText(article.value?.title || 'Стаття про frontend, eCommerce та веб-розробку', 60)
+  )
+
+  useHead(() => {
+    const robots = String(route.meta?.robots || 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1')
+    const title = article.value ? `${seoPostTitle.value} | Mud' Tech Blog` : "Стаття | Mud' Tech Blog"
+    const description = article.value
+      ? summaryText.value || 'Практична стаття Mud Tech Blog про веб-розробку.'
+      : 'Матеріал Mud Tech Blog про frontend, інструменти та сучасну веб-розробку.'
+    const canonical =
+      canonicalUrl.value ||
+      (typeof window !== 'undefined'
+        ? `${window.location.origin}${route.path}`
+        : 'https://mud-tech-blog.web.app/blog')
+    const image = article.value?.image?.url || '/default-og.png'
+
+    return {
+      title,
+      meta: [
+        { name: 'description', content: description },
+        { name: 'robots', content: robots },
+        { name: 'googlebot', content: robots },
+        { property: 'og:title', content: seoPostH1.value || "Стаття | Mud' Tech Blog" },
+        { property: 'og:description', content: description },
+        { property: 'og:type', content: 'article' },
+        { property: 'og:url', content: canonical },
+        { property: 'og:image', content: image },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: seoPostH1.value || "Стаття | Mud' Tech Blog" },
+        { name: 'twitter:description', content: description },
+        { name: 'twitter:image', content: image },
+      ],
+      link: [{ rel: 'canonical', href: canonical }],
+    }
+  })
 
   const loadArticle = async () => {
     const requestId = ++loadRequestId
@@ -209,40 +260,19 @@
     )
   }
 
-  watch(
-    article,
-    value => {
-      if (!value) return
+  watch(article, value => {
+    if (!value) return
 
-      useHead({
-        title: `${value.title} | Mud' Tech Blog`,
-        meta: [
-          { name: 'description', content: summaryText.value || 'Стаття блогу Mud Tech' },
-          { property: 'og:title', content: value.title },
-          { property: 'og:description', content: summaryText.value || '' },
-          { property: 'og:type', content: 'article' },
-          { property: 'og:url', content: canonicalUrl.value },
-          { property: 'og:image', content: value.image?.url || '/default-og.png' },
-          { name: 'twitter:card', content: 'summary_large_image' },
-          { name: 'twitter:title', content: value.title },
-          { name: 'twitter:description', content: summaryText.value || '' },
-          { name: 'twitter:image', content: value.image?.url || '/default-og.png' },
-        ],
-        link: [{ rel: 'canonical', href: canonicalUrl.value }],
-      })
+    useJsonLd([
+      generateBlogPostJsonLd(value),
+      generateOrganizationJsonLd(),
+      generateBreadcrumbJsonLd(value),
+    ])
 
-      useJsonLd([
-        generateBlogPostJsonLd(value),
-        generateOrganizationJsonLd(),
-        generateBreadcrumbJsonLd(value),
-      ])
-
-      if (disqusActivated.value) {
-        ensureDisqus()
-      }
-    },
-    { immediate: true }
-  )
+    if (disqusActivated.value) {
+      ensureDisqus()
+    }
+  })
 
   watch(
     () => article.value?.handle,
@@ -308,7 +338,7 @@
           </button>
         </div>
 
-        <h1 class="mm-post__title">{{ article.title }}</h1>
+        <h1 class="mm-post__title">{{ seoPostH1 }}</h1>
 
         <figure v-if="article.image" class="mm-post__hero-image d-md-none">
           <img v-bind="heroImageAttrs" class="mm-post__hero-image-el" />

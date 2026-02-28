@@ -17,7 +17,7 @@
   import { generateOrganizationJsonLd, generateWebSiteJsonLd } from '@/utils/jsonld'
 
   const uiText = {
-    title: 'Твоя доза технологій',
+    title: 'Технології, архітектура та продуктивність вебу',
     subtitle: 'Залишайся попереду. Читай, дізнавайся, впроваджуй',
     loading: 'Завантаження статей...',
     notFound: 'Статті не знайдено. Спробуй змінити фільтр або пошук.',
