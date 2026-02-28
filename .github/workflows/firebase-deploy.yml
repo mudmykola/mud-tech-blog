@@ -14,6 +14,8 @@ jobs:
   deploy:
     name: Test, Build, Deploy (Firebase Hosting)
     runs-on: ubuntu-latest
+    env:
+      FIREBASE_PROJECT_ID: mud-tech-blog
 
     steps:
       - name: Checkout
@@ -34,5 +36,19 @@ jobs:
       - name: Build app
         run: npm run build
 
+      - name: Validate service account secret
+        run: |
+          if [ -z "${{ secrets.GCP_SA_KEY }}" ]; then
+            echo "GCP_SA_KEY is empty or missing in repository secrets."
+            exit 1
+          fi
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
       - name: Deploy to Firebase Hosting
-        run: npx firebase-tools deploy --only hosting --project mud-tech-blog --token "${{ secrets.FIREBASE_TOKEN }}"
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ env.GOOGLE_GHA_CREDS_PATH }}
+        run: npx firebase-tools deploy --only hosting --project "$FIREBASE_PROJECT_ID" --non-interactive

@@ -1,5 +1,24 @@
 export const devLogEntries = [
   {
+    id: 'devlog-054',
+    date: '2026-02-28T02:10:00+02:00',
+    type: 'Improvement',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.ci.auth.serviceaccount.title',
+    summaryKey: 'updates.ci.auth.serviceaccount.summary',
+    title: 'Оновлено CI-автентифікацію Firebase на service account',
+    summary:
+      'GitHub Actions переведено з deprecated --token авторизації на service account ключ через google-github-actions/auth.',
+    details: [
+      'У workflow додано валідацію секрета GCP_SA_KEY.',
+      'Підключено офіційний крок Authenticate to Google Cloud (auth@v2).',
+      'Firebase deploy тепер запускається без --token у non-interactive режимі.',
+    ],
+    route: '/',
+    routeLabelKey: 'nav.home',
+    githubIssue: '#54',
+  },
+  {
     id: 'devlog-053',
     date: '2026-02-28T02:04:00+02:00',
     type: 'Feature',
