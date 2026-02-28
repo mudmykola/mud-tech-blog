@@ -13,6 +13,19 @@ const ROUTES = [
       'Практичний техноблог українською про frontend-розробку, Vue, eCommerce, AI та продуктивність. Публікуємо покрокові гайди, огляди інструментів і робочі рішення для реальних проєктів.',
     heading: 'Mud Tech Blog',
     lead: 'Практичні матеріали про frontend, AI, eCommerce та продуктивну веб-розробку.',
+    jsonLd: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: "Mud' Tech Blog",
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: 'Головна сторінка Mud Tech Blog',
+        inLanguage: 'uk-UA',
+      },
+    ],
   },
   {
     path: '/blog',
@@ -21,6 +34,19 @@ const ROUTES = [
       "У розділі блогу зібрані практичні статті про frontend, Vue, Shopify, eCommerce архітектуру та оптимізацію продуктивності. Читай покрокові матеріали з реальними прикладами впровадження.",
     heading: 'Блог статей',
     lead: 'Огляди інструментів, архітектурні підходи та технічні розбори для сучасної веб-розробки.',
+    jsonLd: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Blog',
+        name: "Mud' Tech Blog",
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: 'Каталог статей Mud Tech Blog',
+        inLanguage: 'uk-UA',
+      },
+    ],
   },
   {
     path: '/about',
@@ -29,6 +55,20 @@ const ROUTES = [
       "Дізнайся більше про Миколу — frontend eCommerce розробника з практичним досвідом у Vue, Shopify та оптимізації UX. На сторінці зібрано стек технологій, проєкти та канали зв'язку.",
     heading: 'Про автора',
     lead: 'Профіль, стек і досвід роботи з frontend eCommerce рішеннями.',
+    jsonLd: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'AboutPage',
+        name: 'Про автора та досвід у Frontend eCommerce | Mud Tech Blog',
+        inLanguage: 'uk-UA',
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Person',
+        name: 'Mykola Mud`',
+        jobTitle: 'Frontend eCommerce Developer',
+      },
+    ],
   },
   {
     path: '/updates',
@@ -37,6 +77,19 @@ const ROUTES = [
       'Сторінка оновлень Mud Tech Blog містить історію релізів, виправлень і нових функцій. Відстежуй прогрес проєкту, зміни в UX, SEO-поліпшення та технічні доробки.',
     heading: 'Оновлення проєкту',
     lead: 'Хронологія релізів, фіксів і технічних покращень блогу.',
+    jsonLd: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: 'Оновлення Mud Tech Blog',
+        inLanguage: 'uk-UA',
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        name: 'Останні оновлення Mud Tech Blog',
+      },
+    ],
   },
 ]
 
@@ -113,6 +166,18 @@ const renderRouteHtml = (baseHtml, route) => {
   html = upsertMetaByName(html, 'twitter:description', route.description)
   html = upsertMetaByName(html, 'twitter:image', buildCanonical('/pwa-512x512.png'))
   html = upsertCanonical(html, canonicalUrl)
+  html = html.replace(
+    '</head>',
+    `${(route.jsonLd || [])
+      .map(schema => {
+        const withUrl = {
+          ...schema,
+          url: schema.url || canonicalUrl,
+        }
+        return `  <script type="application/ld+json">${JSON.stringify(withUrl)}</script>`
+      })
+      .join('\n')}\n  </head>`
+  )
 
   html = html.replace(/<div id="app"><\/div>/i, renderShell(route))
   return html

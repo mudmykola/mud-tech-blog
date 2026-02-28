@@ -1,0 +1,44 @@
+name: SEO Quality Gates
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  seo-quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Unit tests
+        run: npm run test
+
+      - name: Build (includes prerender + sitemap/robots generation)
+        run: npm run build
+
+      - name: SEO smoke checks
+        run: npm run seo:smoke
+
+      - name: Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          configPath: ./.lighthouserc.json
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+          runs: 1
+          startServerCommand: npm run preview -- --host 127.0.0.1 --port 4173
+          startServerReadyPattern: "Local:"
+          startServerReadyTimeout: 120

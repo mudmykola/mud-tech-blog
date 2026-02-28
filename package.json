@@ -6,9 +6,10 @@
   "scripts": {
     "dev": "vite",
     "test": "node --test $(find tests -name \"*.test.js\" -print)",
+    "seo:smoke": "node scripts/seo-smoke.mjs",
     "build": "vite build && node scripts/prerender-routes.mjs && node scripts/generate-sitemap.mjs && node scripts/generate-robots.mjs && node scripts/verify-seo-host-config.mjs",
     "bump:deploy-version": "node scripts/bump-deploy-version.mjs",
-    "deploy": "npm run bump:deploy-version && npm run test && npm run build && npx firebase-tools deploy --only hosting",
+    "deploy": "npm run bump:deploy-version && npm run test && npm run build && npm run seo:smoke && npx firebase-tools deploy --only hosting",
     "preview": "vite preview",
     "format": "prettier --write ."
   },
