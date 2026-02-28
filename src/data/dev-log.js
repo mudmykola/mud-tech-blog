@@ -1,5 +1,43 @@
 export const devLogEntries = [
   {
+    id: 'devlog-056',
+    date: '2026-02-28T03:02:00+02:00',
+    type: 'Improvement',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.about.projects.refresh.title',
+    summaryKey: 'updates.about.projects.refresh.summary',
+    title: 'Оновлено список проєктів на сторінці /about',
+    summary:
+      'Блок “Мої проєкти” синхронізовано з актуальними продуктами: DevKit Tools, Mud Tech Blog, персональне портфоліо та Shesha Shop.',
+    details: [
+      'Замінено попередній список на 4 актуальні посилання.',
+      'Оновлено label і icon для кожного проєкту.',
+      'Збережено поточну карткову структуру секції без зміни UX.',
+    ],
+    route: '/about',
+    routeLabelKey: 'nav.about',
+    githubIssue: '#56',
+  },
+  {
+    id: 'devlog-055',
+    date: '2026-02-28T02:47:00+02:00',
+    type: 'Improvement',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.ci.disable.firebase.title',
+    summaryKey: 'updates.ci.disable.firebase.summary',
+    title: 'Відключено автодеплой з GitHub, повернуто ручний реліз',
+    summary:
+      'Прибрано Firebase GitHub Actions workflow, щоб деплой виконувати вручну з локального оточення після перевірок.',
+    details: [
+      'Видалено workflow .github/workflows/firebase-deploy.yml.',
+      'Пайплайн автодеплою в master більше не запускається.',
+      'Реліз виконується вручну командою npm run deploy.',
+    ],
+    route: '/',
+    routeLabelKey: 'nav.home',
+    githubIssue: '#55',
+  },
+  {
     id: 'devlog-054',
     date: '2026-02-28T02:10:00+02:00',
     type: 'Improvement',
