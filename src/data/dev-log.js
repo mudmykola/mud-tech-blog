@@ -1,5 +1,24 @@
 export const devLogEntries = [
   {
+    id: 'devlog-095',
+    date: '2026-03-01T05:06:00+02:00',
+    type: 'Fix',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.blogpost.title.desktop.twoline.fix.title',
+    summaryKey: 'updates.blogpost.title.desktop.twoline.fix.summary',
+    title: 'Виправлено desktop-відображення заголовка статті у 2 рядки без тримінгу',
+    summary:
+      'У BlogPost прибрано обрізання тексту заголовка: в h1 тепер виводиться повний title статті, а desktop-ритм стабілізовано під дворядковий блок.',
+    details: [
+      'У шаблоні BlogPost `h1.mm-post__title` переведено з `seoPostH1` на повний `article.title`.',
+      'Для desktop скориговано ширину заголовка і задано дворядкову висоту блоку без mobile змін.',
+      'Підтверджено стабільність через `npm run test` і `npm run build`.',
+    ],
+    route: '/blog',
+    routeLabelKey: 'nav.blog',
+    githubIssue: '#89',
+  },
+  {
     id: 'devlog-094',
     date: '2026-03-01T04:52:00+02:00',
     type: 'Feature',

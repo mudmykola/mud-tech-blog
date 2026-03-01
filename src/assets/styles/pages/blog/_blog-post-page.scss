@@ -91,7 +91,7 @@
 .mm-post__title {
   position: relative;
   margin: 0;
-  max-width: 38ch;
+  max-width: 40ch;
   font-size: clamp(1.28rem, 2.34vw, 1.72rem);
   line-height: 1.14;
   letter-spacing: -0.018em;
@@ -99,6 +99,14 @@
   color: var(--color-text);
   text-wrap: pretty;
   padding-left: 12px;
+}
+
+@media (min-width: 641px) {
+  .mm-post__title {
+    min-height: calc(2 * 1.14em);
+    display: flex;
+    align-items: center;
+  }
 }
 
 .mm-post__title::before {
@@ -232,6 +240,7 @@
   strong {
     color: var(--color-text);
     font-weight: 800;
+    min-width: max-content;
   }
 
   em {
@@ -388,6 +397,7 @@
     padding: 2px 7px;
     font-size: 0.9em;
     font-weight: 700;
+     min-width: max-content;
   }
 
   pre {
