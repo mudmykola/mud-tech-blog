@@ -25,7 +25,9 @@
     return new Date(props.article.publishedAt).toLocaleDateString('uk-UA')
   })
 
-  const img = useOptimizedImage(props.article?.image?.url, props.article?.title, 300)
+  const img = useOptimizedImage(props.article?.image?.url, props.article?.title, 1200, {
+    sizes: '(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 33vw',
+  })
 </script>
 
 <template>

@@ -1,5 +1,25 @@
 export const devLogEntries = [
   {
+    id: 'devlog-098',
+    date: '2026-03-01T12:46:00+02:00',
+    type: 'Fix',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.ui.article.image.quality.fix.title',
+    summaryKey: 'updates.ui.article.image.quality.fix.summary',
+    title: 'Покращено якість превʼю-зображень у картках статей на Home/Blog',
+    summary:
+      'У компонентах карток статей збільшено цільову якість зображень і оновлено responsive srcset, щоб прибрати розмиття в `.mm-article2__image-wrapper` на desktop та retina екранах.',
+    details: [
+      'У `ArticleCardComponent` піднято `maxWidth` для image до 1200 і додано коректний `sizes` для grid-розкладок.',
+      'У `useOptimizedImage` перероблено генерацію `srcset` на динамічні брейкпоїнти з дедуплікацією ширин.',
+      'Збережено lazy loading, decoding async та поточний оптимізаційний pipeline.',
+      'Підтверджено стабільність через `npm run test` і `npm run build`.',
+    ],
+    route: '/',
+    routeLabelKey: 'nav.home',
+    githubIssue: 'pending',
+  },
+  {
     id: 'devlog-097',
     date: '2026-03-01T12:22:00+02:00',
     type: 'Improvement',
