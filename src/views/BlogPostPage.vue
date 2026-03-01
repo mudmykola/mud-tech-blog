@@ -449,7 +449,7 @@
           </button>
         </div>
 
-        <h1 class="mm-post__title">{{ seoPostH1 }}</h1>
+        <h1 class="mm-post__title">{{ article.title }}</h1>
 
         <figure v-if="article.image" class="mm-post__hero-image d-md-none">
           <img v-bind="heroImageAttrs" class="mm-post__hero-image-el" />
