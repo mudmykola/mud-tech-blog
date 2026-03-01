@@ -1,5 +1,45 @@
 export const devLogEntries = [
   {
+    id: 'devlog-097',
+    date: '2026-03-01T12:22:00+02:00',
+    type: 'Improvement',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.ui.skeleton.second.wave.title',
+    summaryKey: 'updates.ui.skeleton.second.wave.summary',
+    title: 'Додано другу хвилю skeleton-станів для sidebar і related posts',
+    summary:
+      'Під час завантаження даних блог тепер показує повноцінні skeleton-блоки у правій колонці фільтрів та у блоці рекомендацій, без порожніх/різких переходів.',
+    details: [
+      'Додано `RelatedPostsSkeleton` і підключено його в `RelatedPostsComponent` замість тимчасового empty-стану.',
+      'Додано `BlogSidebarSkeleton` та умовний рендер для sidebar-фільтрів на `/blog` до завершення завантаження статей.',
+      'Оновлено стилі для sidebar-варіанта related posts skeleton, щоб зберегти компактний вертикальний ритм.',
+      'Підтверджено проходження `npm run test` і `npm run build`.',
+    ],
+    route: '/blog',
+    routeLabelKey: 'nav.blog',
+    githubIssue: '#92',
+  },
+  {
+    id: 'devlog-096',
+    date: '2026-03-01T05:34:00+02:00',
+    type: 'Improvement',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.ui.skeleton.first.wave.title',
+    summaryKey: 'updates.ui.skeleton.first.wave.summary',
+    title: 'Запущено першу хвилю skeleton loading для ключових async-сторінок',
+    summary:
+      'На Home, BlogList і BlogPost впроваджено skeleton placeholders замість plain spinner/text, щоб покращити відчуття швидкості та зменшити візуальні стрибки під час завантаження.',
+    details: [
+      'Додано reusable компоненти `ArticleCardsSkeleton` і `BlogPostSkeleton`.',
+      'HomePage і BlogListPage переведено з `v-progress-circular` на card-grid skeleton.',
+      'BlogPostPage отримав окремий hero/content/sidebar skeleton layout для desktop/mobile.',
+      'Оновлено стилі loading контейнерів під skeleton-відображення без зламу наявного UI.',
+    ],
+    route: '/blog',
+    routeLabelKey: 'nav.blog',
+    githubIssue: '#91',
+  },
+  {
     id: 'devlog-095',
     date: '2026-03-01T05:06:00+02:00',
     type: 'Fix',

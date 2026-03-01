@@ -4,6 +4,8 @@
   import { getBlogArticles } from '@/services/shopifyApi'
   import ArticleCard from '@/components/article/ArticleCardComponent.vue'
   import DefaultLayout from '@/layouts/DefaultLayout.vue'
+  import ArticleCardsSkeleton from '@/components/skeleton/ArticleCardsSkeleton.vue'
+  import BlogSidebarSkeleton from '@/components/skeleton/BlogSidebarSkeleton.vue'
   import { buildCanonicalUrl } from '@/utils/canonical'
   import {
     generateBlogIndexJsonLd,
@@ -263,9 +265,8 @@
             </label>
           </div>
 
-          <div class="mm-blog__state" v-if="loading">
-            <v-progress-circular indeterminate size="24" width="3" color="primary" />
-            <span>Завантаження статей...</span>
+          <div class="mm-blog__state mm-blog__state--skeleton" v-if="loading">
+            <ArticleCardsSkeleton :count="6" />
           </div>
 
           <div class="mm-blog__state mm-blog__state--empty" v-else-if="!filteredArticles.length">
@@ -303,52 +304,56 @@
             </button>
           </div>
 
-          <section class="mm-blog-panel">
-            <div class="mm-blog-panel__head">
-              <v-icon icon="mdi-tag-multiple-outline" size="18" />
-              <h3>Теми</h3>
-            </div>
+          <BlogSidebarSkeleton v-if="loading" />
 
-            <div class="mm-blog-tags">
-              <button
-                class="mm-blog-tag"
-                :class="{ 'mm-blog-tag--active': selectedTag === 'all' }"
-                @click="selectTag('all')"
-              >
-                <span>Усі теми</span>
-                <strong>{{ articles.length }}</strong>
-              </button>
+          <template v-else>
+            <section class="mm-blog-panel">
+              <div class="mm-blog-panel__head">
+                <v-icon icon="mdi-tag-multiple-outline" size="18" />
+                <h3>Теми</h3>
+              </div>
 
-              <button
-                v-for="item in tagStats"
-                :key="item.label"
-                class="mm-blog-tag"
-                :class="{ 'mm-blog-tag--active': selectedTag === item.label }"
-                @click="selectTag(item.label)"
-              >
-                <span>{{ item.label }}</span>
-                <strong>{{ item.count }}</strong>
-              </button>
-            </div>
-          </section>
+              <div class="mm-blog-tags">
+                <button
+                  class="mm-blog-tag"
+                  :class="{ 'mm-blog-tag--active': selectedTag === 'all' }"
+                  @click="selectTag('all')"
+                >
+                  <span>Усі теми</span>
+                  <strong>{{ articles.length }}</strong>
+                </button>
 
-          <section class="mm-blog-panel">
-            <div class="mm-blog-panel__head">
-              <v-icon icon="mdi-lightning-bolt-outline" size="18" />
-              <h3>Швидкі дії</h3>
-            </div>
+                <button
+                  v-for="item in tagStats"
+                  :key="item.label"
+                  class="mm-blog-tag"
+                  :class="{ 'mm-blog-tag--active': selectedTag === item.label }"
+                  @click="selectTag(item.label)"
+                >
+                  <span>{{ item.label }}</span>
+                  <strong>{{ item.count }}</strong>
+                </button>
+              </div>
+            </section>
 
-            <div class="mm-blog-actions">
-              <router-link to="/" class="mm-blog-action mm-blog-action--primary">
-                <v-icon icon="mdi-home-variant-outline" size="17" />
-                На головну
-              </router-link>
-              <button class="mm-blog-action" @click="clearFilters">
-                <v-icon icon="mdi-filter-remove-outline" size="17" />
-                Скинути фільтри
-              </button>
-            </div>
-          </section>
+            <section class="mm-blog-panel">
+              <div class="mm-blog-panel__head">
+                <v-icon icon="mdi-lightning-bolt-outline" size="18" />
+                <h3>Швидкі дії</h3>
+              </div>
+
+              <div class="mm-blog-actions">
+                <router-link to="/" class="mm-blog-action mm-blog-action--primary">
+                  <v-icon icon="mdi-home-variant-outline" size="17" />
+                  На головну
+                </router-link>
+                <button class="mm-blog-action" @click="clearFilters">
+                  <v-icon icon="mdi-filter-remove-outline" size="17" />
+                  Скинути фільтри
+                </button>
+              </div>
+            </section>
+          </template>
         </aside>
       </div>
 

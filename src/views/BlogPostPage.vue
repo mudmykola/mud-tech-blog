@@ -6,6 +6,7 @@
   import DefaultLayout from '@/layouts/DefaultLayout.vue'
   import DonationSection from '@/components/donation/DonationSection.vue'
   import ScrollProgressBar from '@/components/ui/ScrollProgressBar.vue'
+  import BlogPostSkeleton from '@/components/skeleton/BlogPostSkeleton.vue'
   import { getBlogArticles } from '@/services/shopifyApi'
   import { useOptimizedImage } from '@/composables/useOptimizedImage'
   import { buildCanonicalUrl, getCanonicalOrigin } from '@/utils/canonical'
@@ -403,9 +404,8 @@
   <DefaultLayout>
     <ScrollProgressBar ref="scrollBarRef" />
 
-    <section v-if="loading" class="mm-post-state">
-      <v-progress-circular indeterminate size="26" width="3" color="primary" />
-      <span>Завантаження статті...</span>
+    <section v-if="loading" class="mm-post-state mm-post-state--skeleton">
+      <BlogPostSkeleton />
     </section>
 
     <section v-else-if="!article" class="mm-post-state mm-post-state--empty">
