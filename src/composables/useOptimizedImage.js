@@ -26,24 +26,29 @@ export function useOptimizedImage(rawUrl, alt = 'Image', maxWidth = 900, options
   const originalParams = rawUrl.includes('?') ? '?' + rawUrl.split('?')[1] : ''
 
   const tryWebp = !baseUrl.endsWith('.gif')
+  const buildResponsiveWidths = width => {
+    const predefined = [360, 560, 760, 960, 1200, 1600]
+    const limited = predefined.filter(value => value <= width)
+    return [...new Set([...limited, width])].sort((a, b) => a - b)
+  }
+  const responsiveWidths = buildResponsiveWidths(maxWidth)
 
   const make = (w, fmt) => {
     if (!tryWebp && fmt === 'webp') return `${baseUrl}${originalParams}`
     return `${baseUrl}?width=${w}&format=${fmt}`
   }
 
-  const src = computed(() => (tryWebp ? make(maxWidth, 'webp') : `${baseUrl}${originalParams}`))
+  const src = computed(() => {
+    if (!tryWebp) return `${baseUrl}${originalParams}`
+    const bestWidth = responsiveWidths[responsiveWidths.length - 1] || maxWidth
+    return make(bestWidth, 'webp')
+  })
 
   const srcset = computed(() => {
     if (!tryWebp) {
       return `${baseUrl}${originalParams} ${maxWidth}w`
     }
-    return `
-      ${make(360, 'webp')} 360w,
-      ${make(560, 'webp')} 560w,
-      ${make(700, 'webp')} 700w,
-      ${make(maxWidth, 'webp')} ${maxWidth}w
-    `.trim()
+    return responsiveWidths.map(width => `${make(width, 'webp')} ${width}w`).join(', ')
   })
 
   const sizes =
