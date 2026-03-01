@@ -79,6 +79,14 @@
   border: 1px solid var(--accent-border-soft);
 }
 
+.mm-home__state--skeleton {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
 .mm-home__state--empty {
   color: var(--text-accent-soft);
   background: var(--accent-bg-soft);
@@ -299,6 +307,11 @@
     grid-auto-rows: auto;
   }
 
+  .mm-related-sk-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
   .mm-card {
     border-radius: 14px !important;
     min-height: 0;
@@ -338,7 +351,8 @@
   }
 
   .related-post--sidebar {
-    .mm-related__grid {
+    .mm-related__grid,
+    .mm-related-sk-grid {
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     }
   }

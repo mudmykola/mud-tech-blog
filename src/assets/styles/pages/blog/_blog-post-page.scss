@@ -21,6 +21,16 @@
   margin: 0 auto;
 }
 
+.mm-post-state--skeleton {
+  min-height: 0;
+  align-content: stretch;
+  justify-items: stretch;
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
 .mm-post {
   width: 100%;
   display: grid;

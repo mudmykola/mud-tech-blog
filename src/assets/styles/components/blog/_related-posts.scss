@@ -52,6 +52,12 @@
   color: var(--color-text-muted);
 }
 
+.mm-related-sk-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+}
+
 .mm-card {
   position: relative;
   display: grid;

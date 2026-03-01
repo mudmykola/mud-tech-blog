@@ -175,6 +175,12 @@
   color: var(--color-text-soft);
 }
 
+.mm-blog__state--skeleton {
+  display: block;
+  width: 100%;
+  min-height: 0;
+}
+
 .mm-blog__state--empty {
   width: 100%;
   justify-content: center;

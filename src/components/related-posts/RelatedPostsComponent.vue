@@ -3,6 +3,7 @@
   import { useRouter } from 'vue-router'
   import { getBlogArticles } from '@/services/shopifyApi'
   import { useOptimizedImage } from '@/composables/useOptimizedImage.js'
+  import RelatedPostsSkeleton from '@/components/skeleton/RelatedPostsSkeleton.vue'
 
   const props = defineProps({
     currentArticle: {
@@ -22,6 +23,7 @@
   const router = useRouter()
   const related = ref([])
   const all = ref([])
+  const loading = ref(true)
   let intervalId
 
   const pickRandom = () => {
@@ -44,8 +46,13 @@
   }
 
   const load = async () => {
-    all.value = props.allArticles.length ? props.allArticles : await getBlogArticles()
-    pickRandom()
+    loading.value = true
+    try {
+      all.value = props.allArticles.length ? props.allArticles : await getBlogArticles()
+      pickRandom()
+    } finally {
+      loading.value = false
+    }
   }
 
   onMounted(async () => {
@@ -73,7 +80,9 @@
       </span>
     </div>
 
-    <div class="mm-related__grid" v-if="related.length">
+    <RelatedPostsSkeleton v-if="loading" :count="limit" />
+
+    <div class="mm-related__grid" v-else-if="related.length">
       <v-card
         v-for="post in related"
         :key="post.handle"

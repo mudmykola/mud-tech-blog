@@ -9,6 +9,7 @@
   import HomeQuickActionsComponent from '@/components/home/HomeQuickActionsComponent.vue'
   import DonationSection from '@/components/donation/DonationSection.vue'
   import RelatedPostsComponent from '@/components/related-posts/RelatedPostsComponent.vue'
+  import ArticleCardsSkeleton from '@/components/skeleton/ArticleCardsSkeleton.vue'
 
   import { getBlogArticles } from '@/services/shopifyApi'
   import { useArticleFilters } from '@/composables/useArticleFilters'
@@ -166,9 +167,8 @@
             @update:sortBy="sortBy = $event"
           />
 
-          <div v-if="loading" class="mm-home__state mm-home__state--loading">
-            <v-progress-circular indeterminate size="24" width="3" color="primary" />
-            <span>{{ uiText.loading }}</span>
+          <div v-if="loading" class="mm-home__state mm-home__state--loading mm-home__state--skeleton">
+            <ArticleCardsSkeleton :count="6" />
           </div>
 
           <div v-else-if="!filteredArticles.length" class="mm-home__state mm-home__state--empty">
