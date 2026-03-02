@@ -2,6 +2,7 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 
 const DIST_DIR = path.resolve('dist')
+const PRERENDER_MANIFEST_PATH = path.join(DIST_DIR, 'prerender-manifest.json')
 const DEFAULT_ORIGIN = 'https://mud-tech-blog.web.app'
 
 const ROUTES = [
@@ -77,12 +78,15 @@ const validateJsonLd = (html, routePath) => {
   })
 }
 
-const validateRoute = ({ path: routePath, file }, canonicalOrigin) =>
+const validateRoute = ({ path: routePath, file }, canonicalOrigin, options = {}) =>
   fs.readFile(file, 'utf8').then(html => {
+    const minDescriptionLength = Number.isFinite(options.minDescriptionLength)
+      ? options.minDescriptionLength
+      : 80
     assertMatch(html, /<title>[^<]{10,}<\/title>/i, `${routePath}: missing or too short <title>`)
     assertMatch(
       html,
-      /<meta name="description" content="[^"]{80,}" \/>/i,
+      new RegExp(`<meta name="description" content="[^"]{${minDescriptionLength},}" \\/>`, 'i'),
       `${routePath}: missing or too short meta description`
     )
     assertMatch(
@@ -105,9 +109,39 @@ const validateRoute = ({ path: routePath, file }, canonicalOrigin) =>
     validateJsonLd(html, routePath)
   })
 
+const validateDynamicBlogRoute = async canonicalOrigin => {
+  let manifest
+  try {
+    const manifestRaw = await fs.readFile(PRERENDER_MANIFEST_PATH, 'utf8')
+    manifest = JSON.parse(manifestRaw)
+  } catch {
+    return
+  }
+
+  const blogPostRoutes = Array.isArray(manifest?.blogPostRoutes) ? manifest.blogPostRoutes : []
+  if (!blogPostRoutes.length) {
+    console.warn('[seo-smoke] Dynamic blog route check skipped: no prerendered post routes in manifest.')
+    return
+  }
+
+  const firstRoute = String(blogPostRoutes[0])
+  const firstRouteFile = path.join(DIST_DIR, firstRoute.replace(/^\//, ''), 'index.html')
+  await validateRoute(
+    {
+      path: firstRoute,
+      file: firstRouteFile,
+    },
+    canonicalOrigin,
+    { minDescriptionLength: 40 }
+  )
+
+  console.log(`[seo-smoke] Dynamic blog route validated: ${firstRoute}`)
+}
+
 const main = async () => {
   const canonicalOrigin = await getCanonicalOrigin()
   await Promise.all(ROUTES.map(route => validateRoute(route, canonicalOrigin)))
+  await validateDynamicBlogRoute(canonicalOrigin)
   console.log(`[seo-smoke] SEO smoke checks passed for ${ROUTES.length} routes.`)
 }
 
