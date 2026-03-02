@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomePage from '@/views/HomePage.vue'
-const BlogListPage = () => import('@/views/BlogListPage.vue')
-const BlogPostPage = () => import('@/views/BlogPostPage.vue')
+import HomePage from '@/views/home/index.vue'
+const BlogListPage = () => import('@/views/blog/index.vue')
+const BlogPostPage = () => import('@/views/blog/[slug].vue')
 import { setMetaTag, setCanonicalLink, setMetaProperty } from '@/utils/meta'
 import { buildCanonicalUrl } from '@/utils/canonical'
 
@@ -46,7 +46,7 @@ const routes = [
   {
     path: '/about',
     name: 'about',
-    component: () => import('@/views/about/AboutPage.vue'),
+    component: () => import('@/views/about/index.vue'),
     meta: {
       title: 'Про автора та досвід у Frontend eCommerce | Mud Tech Blog',
       description:
@@ -59,7 +59,7 @@ const routes = [
   {
     path: '/updates',
     name: 'updates',
-    component: () => import('@/views/UpdatesPage.vue'),
+    component: () => import('@/views/updates/index.vue'),
     meta: {
       title: 'Оновлення Mud Tech Blog: релізи, фікси й покращення',
       description:
