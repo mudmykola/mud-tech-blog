@@ -13,6 +13,25 @@ import { initFirebaseAnalytics, trackPageView } from './firebase'
 const head = createHead()
 initThemePalette()
 const redirectedToCanonical = enforceCanonicalRedirect()
+const ADSENSE_CLIENT_ID = 'ca-pub-8259582705541308'
+const shouldLoadAdSense = import.meta.env.VITE_ENABLE_ADSENSE === 'true'
+
+const loadAdSenseScript = () => {
+  if (typeof document === 'undefined') return
+  if (document.querySelector('script[data-mm-adsense="true"]')) return
+
+  const adSenseScript = document.createElement('script')
+  adSenseScript.async = true
+  adSenseScript.crossOrigin = 'anonymous'
+  adSenseScript.src =
+    `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT_ID}`
+  adSenseScript.dataset.mmAdsense = 'true'
+  adSenseScript.onerror = () => {
+    console.warn('[adsense] Script blocked or unavailable')
+  }
+
+  document.body.appendChild(adSenseScript)
+}
 
 if (!redirectedToCanonical) {
   router.afterEach(to => {
@@ -30,6 +49,10 @@ if (!redirectedToCanonical) {
   vueApp.mount('#app')
 
   initFirebaseAnalytics()
+
+  if (shouldLoadAdSense) {
+    loadAdSenseScript()
+  }
 }
 
 if ('serviceWorker' in navigator) {
