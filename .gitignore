@@ -30,5 +30,8 @@ coverage
 *.tsbuildinfo
 .env
 .gitnexus
+
+# Local AI assistant artifacts (must stay local-only)
 .claude/
 CLAUDE.md
+.codex/
