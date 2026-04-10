@@ -267,6 +267,25 @@ Rules:
 - End state: `Done` in Project + Issue closed after implementation
 - Do not leave completed code changes without backlog state closure
 
+## Repository Hygiene (Local Tooling Files)
+
+Local assistant/helper artifacts are not part of production source code and must never be committed.
+
+Do not commit:
+
+- `.claude/**`
+- `CLAUDE.md`
+- `.codex/**`
+
+Required behavior:
+
+- Keep these paths in `.gitignore`.
+- If any of these files are accidentally tracked, untrack before commit:
+  - `git rm -r --cached .claude CLAUDE.md .codex`
+  - `git commit -m "chore(core): stop tracking local assistant artifacts"`
+- Validate before each commit:
+  - `git status --short`
+
 ## Dev Log Rule (Required)
 
 After each completed user-facing task, update `/updates` data source with:
