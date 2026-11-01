@@ -3,8 +3,16 @@
   import { ANALYTICS_EVENTS, ANALYTICS_PARAMS } from '@/analytics/events'
   import { trackEvent } from '@/firebase'
 
+  const props = defineProps({
+    compact: {
+      type: Boolean,
+      default: false,
+    },
+  })
+
   const title = 'Підтримай ЗСУ'
   const description = 'Допоможи армії наближати перемогу. Кожен донат - це реальна дія.'
+  const compactDescription = 'Підтримай українське військо через фонд «Повернись живим».'
   const donateHref = 'https://savelife.in.ua/donate/'
   const donateBtnText = 'Підтримати «Повернись живим»'
   const smallFooter = 'Дякуємо за внесок! Разом до перемоги.'
@@ -59,15 +67,17 @@
 </script>
 
 <template>
-  <section class="mm-donation">
+  <section class="mm-donation" :class="{ 'mm-donation--compact': props.compact }">
     <h2 class="mm-donation__title">
       <v-icon icon="mdi-hand-heart-outline" size="24" />
       {{ title }}
     </h2>
 
-    <p class="mm-donation__text">{{ description }}</p>
+    <p class="mm-donation__text">
+      {{ props.compact ? compactDescription : description }}
+    </p>
 
-    <div class="mm-donation__support-grid">
+    <div class="mm-donation__support-grid" role="group" aria-label="Напрями підтримки фонду">
       <div v-for="point in supportPoints" :key="point.text" class="mm-donation__support-item">
         <v-icon :icon="point.icon" size="16" />
         <span>{{ point.text }}</span>
@@ -85,12 +95,12 @@
       @click="trackDonationClick('donation_section')"
     >
       <v-icon icon="mdi-shield-star-outline" start />
-      {{ donateBtnText }}
+      {{ props.compact ? 'Підтримати фонд' : donateBtnText }}
     </v-btn>
 
-    <p class="mm-donation__small">{{ smallFooter }}</p>
+    <p v-if="!props.compact" class="mm-donation__small">{{ smallFooter }}</p>
 
-    <div class="mm-donation__icons-row">
+    <div v-if="!props.compact" class="mm-donation__icons-row">
       <v-icon icon="mdi-heart-flash" size="18" />
       <v-icon icon="mdi-shield-check-outline" size="18" />
       <v-icon icon="mdi-flag-variant-outline" size="18" />

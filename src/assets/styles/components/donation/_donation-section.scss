@@ -17,7 +17,11 @@
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(140deg, var(--accent-border-strong), color-mix(in srgb, var(--color-accent) 8%, transparent));
+  background: linear-gradient(
+    140deg,
+    var(--accent-border-strong),
+    color-mix(in srgb, var(--color-accent) 8%, transparent)
+  );
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
@@ -113,6 +117,47 @@
   align-items: center;
   gap: 10px;
   color: var(--color-accent-light);
+}
+
+.mm-donation--compact {
+  padding: 20px 16px 16px;
+  border-radius: 18px;
+  text-align: left;
+}
+
+.mm-donation--compact .mm-donation__title {
+  justify-content: flex-start;
+  margin: 0 0 8px;
+  font-size: 1.16rem;
+}
+
+.mm-donation--compact .mm-donation__text {
+  margin: 0 0 12px;
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.mm-donation--compact .mm-donation__support-grid {
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.mm-donation--compact .mm-donation__support-item {
+  min-height: 38px;
+  gap: 4px;
+  padding: 0 5px;
+  border-radius: 11px;
+  font-size: 0.72rem;
+}
+
+.mm-donation--compact .mm-donation__support-item .v-icon {
+  color: var(--color-accent-light);
+}
+
+.mm-donation--compact .mm-donation__btn {
+  min-height: 44px !important;
+  margin: 0;
+  font-size: 0.86rem !important;
 }
 
 .mm-donation-popup {
@@ -242,6 +287,15 @@ html[data-theme-palette='light'] {
     gap: 8px;
   }
 
+  .mm-donation--compact {
+    padding: 16px 14px 14px;
+  }
+
+  .mm-donation--compact .mm-donation__support-item {
+    min-height: 36px;
+    font-size: 0.69rem;
+  }
+
   .mm-donation-popup {
     left: 10px;
     right: 10px;
@@ -295,6 +349,20 @@ html[data-theme-palette='light'] {
 
   .mm-donation__support-item:last-child {
     grid-column: auto;
+  }
+
+  .mm-donation--compact .mm-donation__support-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .mm-donation--compact .mm-donation__support-item {
+    min-height: 48px;
+    flex-direction: column;
+    gap: 1px;
+    padding: 4px 2px;
+    font-size: 0.62rem;
+    line-height: 1.1;
+    text-align: center;
   }
 
   .mm-donation-popup__btn {

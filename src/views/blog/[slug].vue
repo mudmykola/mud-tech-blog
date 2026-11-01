@@ -18,6 +18,7 @@
     generateOrganizationJsonLd,
   } from '@/utils/jsonld'
   import { useJsonLd } from '@/composables/useJsonLd'
+  import { saveLastReadArticle } from '@/utils/homeReadingState'
 
   const route = useRoute()
   const router = useRouter()
@@ -350,6 +351,7 @@
   watch(article, value => {
     if (!value) return
 
+    saveLastReadArticle(value.handle)
     resetReadMilestones()
     if (!readStarted.value) {
       readStarted.value = true

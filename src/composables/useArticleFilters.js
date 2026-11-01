@@ -1,6 +1,8 @@
 import { computed } from 'vue'
 
-export function useArticleFilters(articles, searchQuery, sortBy) {
+export function useArticleFilters(articles, searchQuery, sortBy, options = {}) {
+  const limit = options.limit === false ? null : (options.limit ?? 12)
+
   return computed(() => {
     let sorted = [...articles.value]
 
@@ -14,13 +16,14 @@ export function useArticleFilters(articles, searchQuery, sortBy) {
       sorted.sort((a, b) => b.title.localeCompare(a.title))
     }
 
-    return sorted
+    const filtered = sorted
       .filter(
         article =>
           article.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
           (article.excerpt &&
             article.excerpt.toLowerCase().includes(searchQuery.value.toLowerCase()))
       )
-      .slice(0, 12)
+
+    return limit === null ? filtered : filtered.slice(0, limit)
   })
 }
