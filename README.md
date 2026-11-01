@@ -22,6 +22,8 @@ npm install
 npm run dev
 ```
 
+Open the blog at `http://localhost:5174`. This dedicated port keeps it separate from other local Vite projects; startup fails with a port-in-use error if `5174` is occupied.
+
 ### Compile and Minify for Production
 
 ```sh
