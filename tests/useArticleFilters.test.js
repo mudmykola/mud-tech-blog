@@ -38,6 +38,16 @@ test('useArticleFilters: caps output to 12 items', () => {
   assert.equal(filtered.value.length, 12)
 })
 
+test('useArticleFilters: supports unbounded results for combined home filters', () => {
+  const articles = ref(Array.from({ length: 20 }, (_, i) => makeArticle(i + 1)))
+  const searchQuery = ref('')
+  const sortBy = ref('date_desc')
+
+  const filtered = useArticleFilters(articles, searchQuery, sortBy, { limit: false })
+
+  assert.equal(filtered.value.length, 20)
+})
+
 test('useArticleFilters: sorts by title desc', () => {
   const articles = ref([
     makeArticle(1, { title: 'Beta' }),

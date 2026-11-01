@@ -267,6 +267,13 @@ Rules:
 - End state: `Done` in Project + Issue closed after implementation
 - Do not leave completed code changes without backlog state closure
 
+## Icon Alignment and Visual QA
+
+- For icon-only controls, explicitly reset inherited button padding and line-height; do not assume `place-items: center` or `align-items: center` is sufficient.
+- Center both the icon element box and the visible glyph optically within the control. Verify bounding boxes and inspect a browser screenshot at desktop and mobile breakpoints.
+- Keep the control's intended hit area and accessible label unchanged when adjusting icon alignment.
+- Avoid arbitrary per-icon transforms unless visual measurement shows they are needed.
+
 ## Repository Hygiene (Local Tooling Files)
 
 Local assistant/helper artifacts are not part of production source code and must never be committed.
