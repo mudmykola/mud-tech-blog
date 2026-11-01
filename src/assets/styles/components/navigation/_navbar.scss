@@ -112,6 +112,11 @@
   letter-spacing: -0.3px;
 }
 
+.mm-nav-mobile-top .mm-logo__mark {
+  width: 38px;
+  height: 28px;
+}
+
 .mm-nav-mobile-top__meta {
   justify-self: end;
   min-width: 0;
@@ -192,6 +197,11 @@
     font-size: 0.98rem;
   }
 
+  .mm-nav-mobile-top .mm-logo__mark {
+    width: 32px;
+    height: 24px;
+  }
+
   .mm-nav-mobile-top__meta {
     gap: 5px;
     padding: 3px;
@@ -211,6 +221,12 @@
     min-width: 58px;
     font-size: 0.66rem;
     padding: 0 8px;
+  }
+}
+
+@media (max-width: 380px) {
+  .mm-nav-mobile-top__current {
+    display: none;
   }
 }
 

@@ -4,42 +4,27 @@
   overflow: hidden;
   border-radius: 22px;
   padding: 16px;
-  background: var(--surface-grad-1);
+  background:
+    radial-gradient(ellipse at 88% 58%, color-mix(in srgb, var(--color-warning) 20%, transparent), transparent 40%),
+    var(--surface-grad-1);
   border: 1px solid var(--border-soft);
   box-shadow:
     10px 10px 22px rgba(27, 30, 34, 0.82),
     -6px -6px 12px rgba(81, 85, 93, 0.34);
 }
 
-.mm-hero::before,
-.mm-hero::after {
+.mm-hero__artwork {
   position: absolute;
   z-index: 0;
+  right: -4px;
+  bottom: -10px;
+  width: clamp(260px, 34%, 460px);
+  height: calc(100% + 20px);
+  object-fit: contain;
+  object-position: right bottom;
+  filter: drop-shadow(0 12px 18px rgba(20, 22, 26, 0.38));
   pointer-events: none;
-  font-family: 'Material Design Icons';
-  line-height: 1;
-}
-
-.mm-hero::before {
-  content: '\F0BBF';
-  top: 12px;
-  right: clamp(18px, 4vw, 44px);
-  color: color-mix(in srgb, var(--color-warning) 70%, var(--color-text) 30%);
-  font-size: clamp(28px, 3.8vw, 40px);
-  opacity: 0.52;
-  transform: rotate(8deg);
-  filter: drop-shadow(3px 4px 6px rgba(20, 22, 26, 0.34));
-}
-
-.mm-hero::after {
-  content: '\F0C93';
-  top: 38px;
-  right: clamp(56px, 7vw, 82px);
-  color: var(--color-accent-light);
-  font-size: clamp(18px, 2.2vw, 24px);
-  opacity: 0.68;
-  transform: rotate(-14deg);
-  animation: mm-autumn-leaf-drift 5s ease-in-out infinite;
+  user-select: none;
 }
 
 .mm-hero__orb {
@@ -78,15 +63,13 @@
   font-size: 0.74rem;
   color: var(--color-text-soft);
   background: var(--surface-grad-1);
-  border: 1px solid color-mix(in srgb, var(--color-warning) 24%, var(--border-soft));
+  border: 1px solid color-mix(in srgb, var(--color-warning) 38%, var(--border-soft));
 }
 
-.mm-hero__pill::after {
-  content: '\F0C93';
-  color: color-mix(in srgb, var(--color-warning) 70%, var(--color-text) 30%);
-  font-family: 'Material Design Icons';
-  font-size: 0.95rem;
-  line-height: 1;
+.mm-hero__content {
+  position: relative;
+  z-index: 1;
+  max-width: 74%;
 }
 
 .mm-hero__title {
@@ -188,37 +171,31 @@
   }
 }
 
-@keyframes mm-autumn-leaf-drift {
-  0%,
-  100% {
-    transform: translateY(0) rotate(-14deg);
-  }
-
-  50% {
-    transform: translateY(4px) rotate(-3deg);
-  }
-}
-
 @media (max-width: 640px) {
   .mm-hero {
     border-radius: 14px;
     padding: 12px;
   }
 
+  .mm-hero__artwork {
+    top: -14px;
+    right: -5px;
+    bottom: auto;
+    width: 104px;
+    height: 70px;
+    opacity: 0.96;
+  }
+
+  .mm-hero__content {
+    max-width: 100%;
+  }
+
   .mm-hero__subtitle {
     display: none;
   }
 
-  .mm-hero::before {
-    top: 9px;
-    right: 12px;
-    font-size: 24px;
-  }
-
-  .mm-hero::after {
-    top: 34px;
-    right: 43px;
-    font-size: 17px;
+  .mm-hero__title {
+    max-width: calc(100% - 62px);
   }
 
   .mm-hero__meta {
@@ -248,10 +225,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mm-hero::after {
-    animation: none;
-  }
-
   .mm-hero__quick-btn {
     transition: none;
   }
