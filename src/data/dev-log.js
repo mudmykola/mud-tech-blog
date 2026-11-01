@@ -1,5 +1,62 @@
 export const devLogEntries = [
   {
+    id: 'devlog-110',
+    date: '2026-11-01T17:27:49+02:00',
+    type: 'Feature',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.home.hero.quick-actions.surprise.title',
+    summaryKey: 'updates.home.hero.quick-actions.surprise.summary',
+    title: 'Додано дію «Мене здивуй» для відкриття випадкової статті',
+    summary:
+      'У hero можна перейти до випадкового матеріалу; вибір уникає останньої та попередньої статті, якщо доступні інші варіанти.',
+    details: [
+      'Дію додано замість дубльованого переходу до каталогу статей.',
+      'Вибір працює на вже завантаженому списку та безпечно обробляє порожній або короткий список.',
+      'Додано unit-тести для уникнення повтору та граничних випадків.',
+    ],
+    route: '/',
+    routeLabelKey: 'nav.home',
+    githubIssue: '#125',
+  },
+  {
+    id: 'devlog-109',
+    date: '2026-11-01T17:07:20+02:00',
+    type: 'Improvement',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.home.hero.quick-actions.title',
+    summaryKey: 'updates.home.hero.quick-actions.summary',
+    title: 'Оновлено швидкі дії у hero головної сторінки',
+    summary:
+      'Головна дія тепер відкриває найновішу статтю, а каталог і фільтри залишилися поруч як другорядні переходи.',
+    details: [
+      'Додано динамічний перехід до останньої статті та безпечний перехід у каталог, коли список ще порожній.',
+      'Посилання «Про мене» прибрано з hero, оскільки воно є в основній навігації.',
+      'На мобільних підписи дій залишаються видимими, а кнопки мають зручну висоту для натискання.',
+    ],
+    route: '/',
+    routeLabelKey: 'nav.home',
+    githubIssue: '#124',
+  },
+  {
+    id: 'devlog-108',
+    date: '2026-11-01T16:38:16+02:00',
+    type: 'Improvement',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.home.section.archive-meta.title',
+    summaryKey: 'updates.home.section.archive-meta.summary',
+    title: 'Перенесено метадані до заголовка секції статей',
+    summary:
+      'Hero звільнено від статистики. Кількість матеріалів і дату останньої публікації тепер показано поруч із заголовком секції статей.',
+    details: [
+      'Видалено кількість статей, дату, частку видачі та сортування з hero.',
+      'Заголовок секції доповнено компактним лічильником та датою останньої публікації.',
+      'На мобільних метадані переносяться під заголовок і можуть складатися на кілька рядків.',
+    ],
+    route: '/',
+    routeLabelKey: 'nav.home',
+    githubIssue: '#123',
+  },
+  {
     id: 'devlog-107',
     date: '2026-11-01T15:51:42+02:00',
     type: 'Improvement',
