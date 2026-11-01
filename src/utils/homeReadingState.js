@@ -1,5 +1,26 @@
 const LAST_READ_KEY = 'mud-tech-blog:last-read-article'
-const SAVED_ARTICLES_KEY = 'mud-tech-blog:saved-articles'
+export const SAVED_ARTICLES_KEY = 'mud-tech-blog:saved-articles'
+
+export const normalizeSavedArticleHandles = handles =>
+  Array.isArray(handles)
+    ? [
+        ...new Set(
+          handles
+            .filter(handle => typeof handle === 'string' && handle.trim())
+            .map(handle => handle.trim())
+        ),
+      ]
+    : []
+
+export const toggleSavedArticleHandle = (handles, handle) => {
+  const normalized = normalizeSavedArticleHandles(handles)
+  const cleanHandle = typeof handle === 'string' ? handle.trim() : ''
+  if (!cleanHandle) return normalized
+
+  return normalized.includes(cleanHandle)
+    ? normalized.filter(savedHandle => savedHandle !== cleanHandle)
+    : [...normalized, cleanHandle]
+}
 
 const getStorage = () => {
   try {
@@ -12,7 +33,7 @@ const getStorage = () => {
 const readJson = (key, fallback) => {
   try {
     const storage = getStorage()
-    return storage ? JSON.parse(storage.getItem(key) || 'null') ?? fallback : fallback
+    return storage ? (JSON.parse(storage.getItem(key) || 'null') ?? fallback) : fallback
   } catch {
     return fallback
   }
@@ -38,9 +59,7 @@ export const saveLastReadArticle = handle => {
 
 export const getSavedArticleHandles = () => {
   const handles = readJson(SAVED_ARTICLES_KEY, [])
-  return Array.isArray(handles)
-    ? [...new Set(handles.filter(handle => typeof handle === 'string' && handle.trim()))]
-    : []
+  return normalizeSavedArticleHandles(handles)
 }
 
 export const saveArticleHandles = handles => {
@@ -49,7 +68,7 @@ export const saveArticleHandles = handles => {
   try {
     const storage = getStorage()
     if (!storage) return false
-    const normalized = [...new Set(handles.filter(handle => typeof handle === 'string' && handle.trim()))]
+    const normalized = normalizeSavedArticleHandles(handles)
     storage.setItem(SAVED_ARTICLES_KEY, JSON.stringify(normalized))
     return true
   } catch {

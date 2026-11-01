@@ -4,8 +4,10 @@ import {
   estimateReadingMinutes,
   getLastReadArticle,
   getSavedArticleHandles,
+  normalizeSavedArticleHandles,
   saveArticleHandles,
   saveLastReadArticle,
+  toggleSavedArticleHandle,
 } from '../src/utils/homeReadingState.js'
 
 const createStorage = () => {
@@ -29,6 +31,15 @@ test('home reading state: normalizes saved handles and removes duplicates', () =
 
   assert.equal(saveArticleHandles(['vue', '', 'vue', null, 'shopify']), true)
   assert.deepEqual(getSavedArticleHandles(), ['vue', 'shopify'])
+})
+
+test('home reading state: toggles saved article handles without duplicates', () => {
+  const saved = ['vue', 'shopify']
+
+  assert.deepEqual(toggleSavedArticleHandle(saved, '  vue '), ['shopify'])
+  assert.deepEqual(toggleSavedArticleHandle(saved, 'react'), ['vue', 'shopify', 'react'])
+  assert.deepEqual(toggleSavedArticleHandle(saved, ' '), saved)
+  assert.deepEqual(normalizeSavedArticleHandles([' vue ', 'vue', null]), ['vue'])
 })
 
 test('home reading state: malformed persisted data falls back safely', () => {

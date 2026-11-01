@@ -3,9 +3,12 @@
   import { useRoute, useRouter } from 'vue-router'
   import Logo from '@/components/ui/Logo.vue'
   import ThemePaletteSwitcher from '@/components/ui/ThemePaletteSwitcher.vue'
+  import { useSavedArticles } from '@/composables/useSavedArticles'
+  import savedArticlesText from '@/data/saved-articles.json'
 
   const route = useRoute()
   const router = useRouter()
+  const { savedArticleCount, savedLibraryOpen, openSavedLibrary } = useSavedArticles()
 
   const navLinks = computed(() =>
     router
@@ -75,6 +78,21 @@
 
         <div class="mm-nav__widgets">
           <ThemePaletteSwitcher />
+          <button
+            class="mm-nav__bookmark"
+            type="button"
+            aria-haspopup="dialog"
+            aria-controls="mm-saved-library"
+            :aria-expanded="savedLibraryOpen"
+            :aria-label="`${savedArticlesText.navLabel}: ${savedArticleCount}`"
+            :title="savedArticlesText.navLabel"
+            @click="openSavedLibrary"
+          >
+            <v-icon icon="mdi-bookmark-multiple-outline" size="18" aria-hidden="true" />
+            <span v-if="savedArticleCount" class="mm-nav__bookmark-count" aria-hidden="true">
+              {{ savedArticleCount }}
+            </span>
+          </button>
           <div class="mm-nav-widget">
             <v-icon icon="mdi-clock-time-eight-outline" size="16" />
             <span>{{ clock }}</span>
@@ -98,6 +116,21 @@
           <v-icon icon="mdi-clock-outline" size="14" />
           <span>{{ clock }}</span>
         </div>
+        <button
+          class="mm-nav__bookmark mm-nav__bookmark--mobile"
+          type="button"
+          aria-haspopup="dialog"
+          aria-controls="mm-saved-library"
+          :aria-expanded="savedLibraryOpen"
+          :aria-label="`${savedArticlesText.navLabel}: ${savedArticleCount}`"
+          :title="savedArticlesText.navLabel"
+          @click="openSavedLibrary"
+        >
+          <v-icon icon="mdi-bookmark-multiple-outline" size="17" aria-hidden="true" />
+          <span v-if="savedArticleCount" class="mm-nav__bookmark-count" aria-hidden="true">
+            {{ savedArticleCount }}
+          </span>
+        </button>
         <ThemePaletteSwitcher compact />
       </div>
     </div>

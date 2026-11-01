@@ -1,5 +1,42 @@
 export const devLogEntries = [
   {
+    id: 'devlog-123',
+    date: '2026-11-01T20:58:00+02:00',
+    type: 'Fix',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.navigation.bookmark-hover.title',
+    summaryKey: 'updates.navigation.bookmark-hover.summary',
+    title: 'Узгоджено hover закладок із поверхнею навігації',
+    summary:
+      'Кнопка збережених статей більше не успадковує помаранчеву заливку глобального hover: фон лишається в палітрі навігації, а акцент зосереджений на іконці та рамці.',
+    details: [
+      'Виправлення діє для desktop і mobile та використовує theme-токени для темної і світлої палітр.',
+      'Глобальна поведінка інших кнопок і бейдж кількості закладок не змінювалися.',
+    ],
+    route: '/',
+    routeLabelKey: 'nav.home',
+    githubIssue: '#140',
+  },
+  {
+    id: 'devlog-122',
+    date: '2026-11-01T20:48:00+02:00',
+    type: 'Feature',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.saved-articles.library.title',
+    summaryKey: 'updates.saved-articles.library.summary',
+    title: 'Додано глобальну бібліотеку збережених статей',
+    summary:
+      'Закладки доступні з desktop і mobile навігації у спільній модалці; зберігати матеріали можна на картках і сторінці статті.',
+    details: [
+      'Спільний стан використовує сумісний localStorage-формат і синхронізується між вкладками браузера.',
+      'Бібліотека показує картки з темою та часом читання, дозволяє відкрити статтю або прибрати закладку.',
+      'Список завантажується лише під час першого відкриття модалки, а порожній та помилковий стани мають окремі дії.',
+    ],
+    route: '/',
+    routeLabelKey: 'nav.home',
+    githubIssue: '#139',
+  },
+  {
     id: 'devlog-121',
     date: '2026-11-01T19:57:00+02:00',
     type: 'Improvement',

@@ -23,6 +23,7 @@
   } from '@/utils/jsonld'
   import { ANALYTICS_EVENTS, ANALYTICS_PARAMS } from '@/analytics/events'
   import { trackEvent } from '@/firebase'
+  import { useSavedArticles } from '@/composables/useSavedArticles'
   import { selectSurpriseArticle } from '@/utils/selectSurpriseArticle'
   import { filterHomeArticles } from '@/utils/filterHomeArticles'
   import {
@@ -30,12 +31,7 @@
     HOME_ARTICLE_BATCH_SIZE,
     HOME_INITIAL_BATCH_SIZE,
   } from '@/utils/homeArticleBatch'
-  import {
-    estimateReadingMinutes,
-    getLastReadArticle,
-    getSavedArticleHandles,
-    saveArticleHandles,
-  } from '@/utils/homeReadingState'
+  import { estimateReadingMinutes, getLastReadArticle } from '@/utils/homeReadingState'
   import discoveryText from '@/data/home-quick-actions.json'
 
   const uiText = {
@@ -50,13 +46,16 @@
   }
 
   const articles = ref([])
+  const {
+    savedArticleHandles,
+    toggleSavedArticle: toggleSavedArticleInStore,
+  } = useSavedArticles()
   const router = useRouter()
   const loading = ref(true)
   const searchQuery = ref('')
   const sortBy = ref('date_desc')
   const lastSurpriseHandle = ref('')
   const lastReadHandle = ref('')
-  const savedArticleHandles = ref([])
   const selectedTopic = ref('')
   const activeHomeTab = ref('articles')
   const discoveryOpen = ref(false)
@@ -88,7 +87,6 @@
 
   onMounted(async () => {
     lastReadHandle.value = getLastReadArticle()
-    savedArticleHandles.value = getSavedArticleHandles()
     articles.value = await getBlogArticles()
     loading.value = false
     useMetaTags()
@@ -154,10 +152,7 @@
 
   const toggleSavedArticle = handle => {
     if (!handle) return
-    savedArticleHandles.value = savedArticleHandles.value.includes(handle)
-      ? savedArticleHandles.value.filter(savedHandle => savedHandle !== handle)
-      : [...savedArticleHandles.value, handle]
-    saveArticleHandles(savedArticleHandles.value)
+    toggleSavedArticleInStore(handle)
     displayedArticleLimit.value = HOME_INITIAL_BATCH_SIZE
   }
 
