@@ -1,5 +1,43 @@
 export const devLogEntries = [
   {
+    id: 'devlog-107',
+    date: '2026-11-01T15:51:42+02:00',
+    type: 'Improvement',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.ui.navigation.fox.logo.title',
+    summaryKey: 'updates.ui.navigation.fox.logo.summary',
+    title: 'Додано компактний логотип-лисицю до desktop і mobile хедера',
+    summary:
+      'Текстовий логотип доповнено горизонтальною SVG-емблемою лисиці, що визирає з браузерної лінії. Назва Mud Tech Blog лишається текстом, а знак адаптується до розміру навігації.',
+    details: [
+      'Створено окремий векторний знак із помаранчевою лисицею та курсором.',
+      'Додано емблему до спільного Logo-компонента для desktop і mobile навігації.',
+      'Збережено HTML wordmark, доступну назву посилання та responsive-розміри.',
+    ],
+    route: '/',
+    routeLabelKey: 'nav.home',
+    githubIssue: '#120',
+  },
+  {
+    id: 'devlog-106',
+    date: '2026-11-01T14:10:12+02:00',
+    type: 'Improvement',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.ui.seasonal.autumn.hero.artwork.title',
+    summaryKey: 'updates.ui.seasonal.autumn.hero.artwork.summary',
+    title: 'Hero головної отримав реалістичну геловінську ілюстрацію',
+    summary:
+      'Дрібні сезонні гліфи замінено на яскраву гарбузову композицію з теплим світлом і кленовим листям. Ілюстрація адаптується до мобільного hero та оптимізована у WebP.',
+    details: [
+      'Створено окрему прозору WebP-ілюстрацію гарбуза з осіннім листям розміром близько 268 KB.',
+      'На десктопі зображення доповнює праву частину hero; на мобільних компактно масштабується та не перекриває заголовок.',
+      'Додано тепле тематичне підсвічення без зміни глобальної палітри блогу.',
+    ],
+    route: '/',
+    routeLabelKey: 'nav.home',
+    githubIssue: '#118',
+  },
+  {
     id: 'devlog-105',
     date: '2026-11-01T13:41:37+02:00',
     type: 'Improvement',

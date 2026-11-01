@@ -1,8 +1,16 @@
 .mm-logo {
   display: flex;
   align-items: center;
+  flex: 0 0 auto;
   text-decoration: none;
-  gap: 4px;
+  gap: 6px;
+}
+
+.mm-logo__mark {
+  display: block;
+  width: 44px;
+  height: 32px;
+  flex: 0 0 auto;
 }
 
 .mm-logo__img {
@@ -17,6 +25,7 @@
   color: var(--color-text);
   display: flex;
   gap: 3px;
+  white-space: nowrap;
 }
 
 .mm-logo__accent {
