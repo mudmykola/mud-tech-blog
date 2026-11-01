@@ -1,4 +1,8 @@
 <script setup>
+  import quickActionText from '@/data/home-quick-actions.json'
+
+  const emit = defineEmits(['surprise-me'])
+
   defineProps({
     title: {
       type: String,
@@ -8,25 +12,9 @@
       type: String,
       default: 'Читайте останні технологічні статті та новини!',
     },
-    totalArticles: {
-      type: Number,
-      default: 0,
-    },
-    filteredArticles: {
-      type: Number,
-      default: 0,
-    },
-    activeSortLabel: {
-      type: String,
-      default: '-',
-    },
-    latestPublished: {
-      type: String,
-      default: '-',
-    },
-    filteredShare: {
-      type: String,
-      default: '0%',
+    latestArticle: {
+      type: Object,
+      default: null,
     },
   })
 </script>
@@ -58,37 +46,38 @@
         {{ subtitle }}
       </p>
 
-      <div class="mm-hero__meta">
-        <span class="mm-hero__meta-chip">
-          <v-icon icon="mdi-newspaper-variant-outline" size="14" />
-          {{ totalArticles }} статей
-        </span>
-        <span class="mm-hero__meta-chip">
-          <v-icon icon="mdi-chart-arc" size="14" />
-          {{ filteredShare }} у видачі
-        </span>
-        <span class="mm-hero__meta-chip">
-          <v-icon icon="mdi-sort-variant" size="14" />
-          {{ activeSortLabel }}
-        </span>
-        <span class="mm-hero__meta-chip">
-          <v-icon icon="mdi-calendar-clock-outline" size="14" />
-          {{ latestPublished }}
-        </span>
-      </div>
-
       <div class="mm-hero__quick">
-        <router-link class="mm-hero__quick-btn" to="/blog">
+        <router-link
+          v-if="latestArticle?.handle"
+          class="mm-hero__quick-btn mm-hero__quick-btn--primary"
+          :to="{ name: 'article', params: { slug: latestArticle.handle } }"
+          :aria-label="`${quickActionText.latestArticle}: ${latestArticle.title}`"
+        >
+          <v-icon icon="mdi-newspaper-variant-outline" size="18" />
+          <span>{{ quickActionText.latestArticle }}</span>
+          <v-icon class="mm-hero__quick-arrow" icon="mdi-arrow-top-right" size="18" />
+        </router-link>
+        <router-link
+          v-else
+          class="mm-hero__quick-btn mm-hero__quick-btn--primary"
+          :to="{ name: 'blog' }"
+        >
           <v-icon icon="mdi-book-open-page-variant-outline" size="18" />
-          <span>Статті</span>
+          <span>{{ quickActionText.noLatestArticle }}</span>
+          <v-icon class="mm-hero__quick-arrow" icon="mdi-arrow-top-right" size="18" />
         </router-link>
-        <router-link class="mm-hero__quick-btn" to="/about">
-          <v-icon icon="mdi-account-circle-outline" size="18" />
-          <span>Про мене</span>
-        </router-link>
+        <button
+          class="mm-hero__quick-btn"
+          type="button"
+          :disabled="!latestArticle?.handle"
+          @click="emit('surprise-me')"
+        >
+          <v-icon icon="mdi-shuffle-variant" size="18" />
+          <span>{{ quickActionText.surpriseMe }}</span>
+        </button>
         <a class="mm-hero__quick-btn" href="#home-controls">
           <v-icon icon="mdi-tune-variant" size="18" />
-          <span>Фільтри</span>
+          <span>{{ quickActionText.filters }}</span>
         </a>
       </div>
     </div>
