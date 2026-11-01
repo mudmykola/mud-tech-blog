@@ -1,6 +1,7 @@
 <script setup>
   import { onMounted, ref } from 'vue'
   import NavigationComponent from '@/components/navigation/NavigationComponent.vue'
+  import SavedArticlesDialog from '@/components/navigation/SavedArticlesDialog.vue'
   import SpinnerComponent from '@/components/ui/SpinnerComponent.vue'
   import FooterComponent from '@/components/footer/FooterComponent.vue'
   import InstallPWA from '@/components/pwa/InstallPWA.vue'
@@ -18,6 +19,7 @@
   <div class="layout">
     <InstallPWA />
     <NavigationComponent />
+    <SavedArticlesDialog />
     <SpinnerComponent v-if="loading" :loading="loading" />
     <main v-else>
       <slot />

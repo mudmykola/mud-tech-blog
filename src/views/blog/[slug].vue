@@ -19,9 +19,12 @@
   } from '@/utils/jsonld'
   import { useJsonLd } from '@/composables/useJsonLd'
   import { saveLastReadArticle } from '@/utils/homeReadingState'
+  import { useSavedArticles } from '@/composables/useSavedArticles'
+  import savedArticlesText from '@/data/saved-articles.json'
 
   const route = useRoute()
   const router = useRouter()
+  const { savedArticleHandles, toggleSavedArticle } = useSavedArticles()
 
   const DISQUS_SHORTNAME = import.meta.env.VITE_DISQUS_SHORTNAME
   const TWITTER_SITE = import.meta.env.VITE_TWITTER_SITE || ''
@@ -72,6 +75,17 @@
     const words = stripHtml(article.value.contentHtml).split(' ').filter(Boolean).length
     return Math.max(1, Math.ceil(words / 200))
   })
+
+  const isArticleSaved = computed(() =>
+    Boolean(article.value?.handle && savedArticleHandles.value.includes(article.value.handle))
+  )
+  const articleSaveLabel = computed(
+    () =>
+      `${isArticleSaved.value ? savedArticlesText.removeSavedArticle : savedArticlesText.saveArticle}: ${article.value?.title || ''}`
+  )
+  const articleSaveTitle = computed(() =>
+    isArticleSaved.value ? savedArticlesText.savedArticle : savedArticlesText.saveArticle
+  )
 
   const formattedDate = computed(() => {
     if (!article.value?.publishedAt) return '-'
@@ -421,13 +435,29 @@
 
     <section v-else class="mm-post">
       <header class="mm-post__hero">
-        <nav class="mm-post__breadcrumbs" aria-label="Breadcrumbs">
-          <template v-for="(crumb, index) in breadcrumbs" :key="`${crumb.title}-${index}`">
-            <router-link v-if="crumb.to" :to="crumb.to">{{ crumb.title }}</router-link>
-            <span v-else>{{ crumb.title }}</span>
-            <v-icon v-if="index < breadcrumbs.length - 1" icon="mdi-chevron-right" size="14" />
-          </template>
-        </nav>
+        <div class="mm-post__breadcrumb-row">
+          <nav class="mm-post__breadcrumbs" aria-label="Breadcrumbs">
+            <template v-for="(crumb, index) in breadcrumbs" :key="`${crumb.title}-${index}`">
+              <router-link v-if="crumb.to" :to="crumb.to">{{ crumb.title }}</router-link>
+              <span v-else>{{ crumb.title }}</span>
+              <v-icon v-if="index < breadcrumbs.length - 1" icon="mdi-chevron-right" size="14" />
+            </template>
+          </nav>
+          <button
+            class="mm-post__bookmark"
+            type="button"
+            :aria-pressed="isArticleSaved"
+            :aria-label="articleSaveLabel"
+            :title="articleSaveTitle"
+            @click="toggleSavedArticle(article.handle)"
+          >
+            <v-icon
+              :icon="isArticleSaved ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
+              size="18"
+              aria-hidden="true"
+            />
+          </button>
+        </div>
 
         <div class="mm-post__meta-row">
           <div class="mm-post__chips">
