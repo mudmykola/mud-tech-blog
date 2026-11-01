@@ -1,5 +1,23 @@
 export const devLogEntries = [
   {
+    id: 'devlog-124',
+    date: '2026-11-01T22:43:00+02:00',
+    type: 'Improvement',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.navigation.theme-switcher.segmented.title',
+    summaryKey: 'updates.navigation.theme-switcher.segmented.summary',
+    title: 'Зроблено перемикач тем компактним та іконковим',
+    summary:
+      'На desktop і mobile перемикання тем працює двома іконками без текстових підписів; назва з’являється в підказці під час наведення або клавіатурного фокусу.',
+    details: [
+      'Збережено зрозумілий активний стан, доступні назви для скринрідерів і зручну область натискання на мобільному.',
+      'Збереження вибору теми та її синхронізація через наявний composable залишилися без змін.',
+    ],
+    route: '/',
+    routeLabelKey: 'nav.home',
+    githubIssue: '#47',
+  },
+  {
     id: 'devlog-123',
     date: '2026-11-01T20:58:00+02:00',
     type: 'Fix',

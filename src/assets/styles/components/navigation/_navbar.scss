@@ -294,6 +294,26 @@
 }
 
 @media (max-width: 380px) {
+  .mm-nav-mobile-top .mm-logo__text {
+    font-size: 0.9rem;
+  }
+
+  .mm-nav-mobile-top__meta {
+    gap: 3px;
+    padding: 2px;
+  }
+
+  .mm-nav-mobile-top__clock {
+    min-width: 50px;
+    gap: 3px;
+    padding: 0 6px;
+  }
+
+  .mm-nav__bookmark--mobile {
+    width: 26px;
+    height: 26px;
+  }
+
   .mm-nav-mobile-top__current {
     display: none;
   }
