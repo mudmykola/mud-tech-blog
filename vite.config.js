@@ -33,6 +33,10 @@ export default defineConfig({
     }),
   ],
   css: ['@/assets/styles/main.scss'],
+  server: {
+    port: 5174,
+    strictPort: true,
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

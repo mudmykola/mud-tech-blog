@@ -1,5 +1,24 @@
 export const devLogEntries = [
   {
+    id: 'devlog-105',
+    date: '2026-11-01T13:41:37+02:00',
+    type: 'Improvement',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.ui.seasonal.autumn.hero.title',
+    summaryKey: 'updates.ui.seasonal.autumn.hero.summary',
+    title: 'Додано осінні акценти й покращено доступність hero на головній',
+    summary:
+      'Головну сторінку доповнено стриманими кленовими й гарбузовими деталями в наявній палітрі. Швидкі дії отримали чіткіший keyboard focus, кращі touch-розміри та підтримку reduced motion.',
+    details: [
+      'Декоративні сезонні іконки використовують наявний MDI-шрифт і кольори активної теми.',
+      'Hover-ефекти застосовуються лише на пристроях із точним вказівником; keyboard focus став помітнішим.',
+      'На мобільних збільшено висоту швидких кнопок, анімація вимикається для prefers-reduced-motion.',
+    ],
+    route: '/',
+    routeLabelKey: 'nav.home',
+    githubIssue: '#118',
+  },
+  {
     id: 'devlog-104',
     date: '2026-04-10T19:42:00+03:00',
     type: 'Fix',

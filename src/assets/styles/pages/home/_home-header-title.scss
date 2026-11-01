@@ -1,5 +1,6 @@
 .mm-hero {
   position: relative;
+  isolation: isolate;
   overflow: hidden;
   border-radius: 22px;
   padding: 16px;
@@ -10,8 +11,40 @@
     -6px -6px 12px rgba(81, 85, 93, 0.34);
 }
 
+.mm-hero::before,
+.mm-hero::after {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  font-family: 'Material Design Icons';
+  line-height: 1;
+}
+
+.mm-hero::before {
+  content: '\F0BBF';
+  top: 12px;
+  right: clamp(18px, 4vw, 44px);
+  color: color-mix(in srgb, var(--color-warning) 70%, var(--color-text) 30%);
+  font-size: clamp(28px, 3.8vw, 40px);
+  opacity: 0.52;
+  transform: rotate(8deg);
+  filter: drop-shadow(3px 4px 6px rgba(20, 22, 26, 0.34));
+}
+
+.mm-hero::after {
+  content: '\F0C93';
+  top: 38px;
+  right: clamp(56px, 7vw, 82px);
+  color: var(--color-accent-light);
+  font-size: clamp(18px, 2.2vw, 24px);
+  opacity: 0.68;
+  transform: rotate(-14deg);
+  animation: mm-autumn-leaf-drift 5s ease-in-out infinite;
+}
+
 .mm-hero__orb {
   position: absolute;
+  z-index: 0;
   border-radius: 999px;
   opacity: 0.32;
   pointer-events: none;
@@ -45,10 +78,20 @@
   font-size: 0.74rem;
   color: var(--color-text-soft);
   background: var(--surface-grad-1);
-  border: 1px solid var(--border-soft);
+  border: 1px solid color-mix(in srgb, var(--color-warning) 24%, var(--border-soft));
+}
+
+.mm-hero__pill::after {
+  content: '\F0C93';
+  color: color-mix(in srgb, var(--color-warning) 70%, var(--color-text) 30%);
+  font-family: 'Material Design Icons';
+  font-size: 0.95rem;
+  line-height: 1;
 }
 
 .mm-hero__title {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -64,6 +107,8 @@
 }
 
 .mm-hero__subtitle {
+  position: relative;
+  z-index: 1;
   margin-top: 6px;
   color: var(--color-text-soft);
   font-size: 0.92rem;
@@ -71,6 +116,8 @@
 }
 
 .mm-hero__meta {
+  position: relative;
+  z-index: 1;
   margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
@@ -92,6 +139,8 @@
 }
 
 .mm-hero__quick {
+  position: relative;
+  z-index: 1;
   margin-top: 10px;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -99,7 +148,7 @@
 }
 
 .mm-hero__quick-btn {
-  min-height: 40px;
+  min-height: 42px;
   border-radius: 10px;
   display: inline-flex;
   align-items: center;
@@ -111,11 +160,43 @@
   color: var(--color-text);
   font-weight: 700;
   font-size: 0.8rem;
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
 }
 
-.mm-hero__quick-btn:hover {
+.mm-hero__pill,
+.mm-hero__quick-btn {
+  position: relative;
+  z-index: 1;
+}
+
+.mm-hero__quick-btn:focus-visible {
+  outline: 2px solid var(--color-accent-light);
+  outline-offset: 3px;
   border-color: var(--accent-border-strong);
-  color: var(--text-accent-soft);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mm-hero__quick-btn:hover {
+    border-color: var(--accent-border-strong);
+    color: var(--text-accent-soft);
+    box-shadow: var(--shadow-hover-elev);
+    transform: translateY(-1px);
+  }
+}
+
+@keyframes mm-autumn-leaf-drift {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-14deg);
+  }
+
+  50% {
+    transform: translateY(4px) rotate(-3deg);
+  }
 }
 
 @media (max-width: 640px) {
@@ -126,6 +207,18 @@
 
   .mm-hero__subtitle {
     display: none;
+  }
+
+  .mm-hero::before {
+    top: 9px;
+    right: 12px;
+    font-size: 24px;
+  }
+
+  .mm-hero::after {
+    top: 34px;
+    right: 43px;
+    font-size: 17px;
   }
 
   .mm-hero__meta {
@@ -145,11 +238,21 @@
   }
 
   .mm-hero__quick-btn {
-    min-height: 36px;
+    min-height: 40px;
     border-radius: 9px;
   }
 
   .mm-hero__quick-btn span {
     display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mm-hero::after {
+    animation: none;
+  }
+
+  .mm-hero__quick-btn {
+    transition: none;
   }
 }
