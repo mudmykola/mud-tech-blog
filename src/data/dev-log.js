@@ -1,5 +1,23 @@
 export const devLogEntries = [
   {
+    id: 'devlog-125',
+    date: '2026-11-02T10:32:00+02:00',
+    type: 'Fix',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.home.sticky-stack.click.title',
+    summaryKey: 'updates.home.sticky-stack.click.summary',
+    title: 'Виправлено переходи з карток у sticky-стеку',
+    summary:
+      'Під час наведення або клавіатурного фокусу картка виходить на передній план, щоб сусідній sticky-шар не перехоплював її посилання на статтю.',
+    details: [
+      'Виправлення обмежене desktop-ефектом sticky stack і не змінює звичайну сітку чи mobile layout.',
+      'Клік по відкритій частині картки веде на відповідну статтю.',
+    ],
+    route: '/',
+    routeLabelKey: 'nav.home',
+    githubIssue: '#144',
+  },
+  {
     id: 'devlog-124',
     date: '2026-11-01T22:43:00+02:00',
     type: 'Improvement',

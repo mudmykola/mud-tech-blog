@@ -1038,6 +1038,11 @@
     z-index: 3;
   }
 
+  .articles-grid__stack-card:hover,
+  .articles-grid__stack-card:focus-within {
+    z-index: 4;
+  }
+
   .articles-grid__remaining {
     margin-top: -42px;
   }
