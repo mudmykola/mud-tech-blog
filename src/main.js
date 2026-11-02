@@ -9,6 +9,7 @@ import { vuetify } from './plugins/vuetify'
 import { initThemePalette } from './composables/useThemePalette'
 import { enforceCanonicalRedirect } from './utils/canonical'
 import { initFirebaseAnalytics, trackPageView } from './firebase'
+import { getPageViewRoute } from './analytics/pageViewRoute'
 
 const head = createHead()
 initThemePalette()
@@ -23,8 +24,7 @@ const loadAdSenseScript = () => {
   const adSenseScript = document.createElement('script')
   adSenseScript.async = true
   adSenseScript.crossOrigin = 'anonymous'
-  adSenseScript.src =
-    `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT_ID}`
+  adSenseScript.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT_ID}`
   adSenseScript.dataset.mmAdsense = 'true'
   adSenseScript.onerror = () => {
     console.warn('[adsense] Script blocked or unavailable')
@@ -34,11 +34,14 @@ const loadAdSenseScript = () => {
 }
 
 if (!redirectedToCanonical) {
-  router.afterEach(to => {
+  router.afterEach((to, from) => {
+    const pageRoute = getPageViewRoute(to, from)
+    if (!pageRoute) return
+
     trackPageView({
-      path: to.fullPath,
+      path: pageRoute.path,
       title: document.title,
-      location: window.location.href,
+      location: new URL(pageRoute.locationPath, window.location.origin).href,
     })
   })
 
