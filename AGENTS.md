@@ -269,6 +269,11 @@ Rules:
 
 ## Icon Alignment and Visual QA
 
+- Desktop navigation should use one clear hierarchy (brand, primary routes, utilities); avoid nesting separate pill surfaces inside another navigation surface.
+- Prefer a restrained active-route indicator and readable text over a large filled navigation button; verify contrast in both palettes.
+- Use CSS for simple navigation-state motion, animate only opacity/transform/color, and disable nonessential transitions under `prefers-reduced-motion`.
+- Choose icons by action semantics and avoid showing the same glyph twice for one state in the same viewport; when adjacent navigation already identifies the active route, use a label or a simple status marker instead of repeating its route icon.
+- Keep mobile navigation glyphs compact (typically 14-19px in utility controls and 18-20px in primary navigation); reduce glyph size without shrinking the control's hit area.
 - For icon-only controls, explicitly reset inherited button padding and line-height; do not assume `place-items: center` or `align-items: center` is sufficient.
 - Center both the icon element box and the visible glyph optically within the control. Verify bounding boxes and inspect a browser screenshot at desktop and mobile breakpoints.
 - Keep the control's intended hit area and accessible label unchanged when adjusting icon alignment.

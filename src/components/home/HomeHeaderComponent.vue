@@ -13,13 +13,14 @@
 
 <template>
   <section class="mm-hero">
-    <img
-      class="mm-hero__artwork"
-      src="/images/seasonal-halloween.webp"
-      alt=""
-      aria-hidden="true"
-      decoding="async"
-    />
+    <picture class="mm-hero__artwork">
+      <source
+        media="(max-width: 640px)"
+        srcset="/images/seasonal-autumn-tech-mobile.webp"
+        type="image/webp"
+      />
+      <img src="/images/seasonal-autumn-tech.webp" alt="" aria-hidden="true" decoding="async" />
+    </picture>
     <div class="mm-hero__orb mm-hero__orb--one" />
     <div class="mm-hero__orb mm-hero__orb--two" />
 

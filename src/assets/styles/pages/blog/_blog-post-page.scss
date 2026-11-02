@@ -184,7 +184,11 @@
   overflow: hidden;
   border: 1px solid var(--border-soft);
   background:
-    radial-gradient(circle at 18% 22%, color-mix(in srgb, var(--color-accent) 16%, transparent), transparent 50%),
+    radial-gradient(
+      circle at 18% 22%,
+      color-mix(in srgb, var(--color-accent) 16%, transparent),
+      transparent 50%
+    ),
     var(--surface-grad-1);
   min-height: clamp(220px, 32vw, 400px);
   display: grid;
@@ -448,7 +452,7 @@
     padding: 2px 7px;
     font-size: 0.9em;
     font-weight: 700;
-     min-width: max-content;
+    min-width: max-content;
   }
 
   pre {
@@ -456,8 +460,11 @@
     font-family: 'JetBrains Mono', monospace;
     border-radius: 14px;
     border: 1px solid var(--border-strong);
-    background:
-      linear-gradient(180deg, color-mix(in srgb, var(--color-bg-elevated) 74%, #000000 26%), var(--code-bg));
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-bg-elevated) 74%, #000000 26%),
+      var(--code-bg)
+    );
     color: var(--color-text);
     padding: 14px 14px;
     margin: 2px 0;
@@ -788,23 +795,28 @@ html[data-theme-palette='light'] {
   }
 
   .mm-post__meta-row {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
-  }
-
-  .mm-post__chips {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    flex-direction: row;
+    align-items: flex-start;
     gap: 6px;
   }
 
+  .mm-post__chips {
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .mm-post__meta-row > .mm-post-action {
+    display: none;
+  }
+
   .mm-post-chip {
-    justify-content: center;
-    min-height: 32px;
-    font-size: 0.74rem;
+    max-width: 100%;
+    min-height: 28px;
+    font-size: 0.68rem;
     line-height: 1.05;
-    padding: 0 7px;
+    padding: 0 8px;
   }
 
   .mm-post-action {
@@ -921,12 +933,6 @@ html[data-theme-palette='light'] {
   }
 
   .mm-post__footer-actions {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 420px) {
-  .mm-post__chips {
     grid-template-columns: 1fr;
   }
 }
