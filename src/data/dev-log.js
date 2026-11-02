@@ -1,5 +1,23 @@
 export const devLogEntries = [
   {
+    id: 'devlog-137',
+    date: '2026-11-02T13:15:00+02:00',
+    type: 'Fix',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.blog.post.mobile-overflow.title',
+    summaryKey: 'updates.blog.post.mobile-overflow.summary',
+    title: 'Виправлено адаптивність мобільної сторінки статті',
+    summary:
+      'Контент статті, довгі inline-фрагменти коду та блок підтримки більше не розтягують сторінку за межі екрана; hero-зображення стало компактнішим без обрізання.',
+    details: [
+      'На мобільних grid-елементи й довгі слова/inline code переносяться в межах доступної ширини, а блок підтримки коректно стискається.',
+      'Перевірено сторінку статті на ширинах 320, 390 і 640 px без горизонтального переповнення.',
+    ],
+    route: '/blog/:slug',
+    routeLabelKey: 'nav.blog',
+    githubIssue: '#159',
+  },
+  {
     id: 'devlog-136',
     date: '2026-11-02T12:54:00+02:00',
     type: 'Improvement',
