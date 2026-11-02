@@ -19,6 +19,7 @@
   } from '@/utils/jsonld'
   import { useJsonLd } from '@/composables/useJsonLd'
   import { saveLastReadArticle } from '@/utils/homeReadingState'
+  import { markArticleAsRead } from '@/utils/blogReadingHistory'
   import { useSavedArticles } from '@/composables/useSavedArticles'
   import savedArticlesText from '@/data/saved-articles.json'
 
@@ -44,7 +45,11 @@
   let disqusObserver = null
   let readProgressRaf = null
 
-  const stripHtml = value => (value || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+  const stripHtml = value =>
+    (value || '')
+      .replace(/<[^>]*>/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
   const trimSeoText = (value, maxLength) => {
     const plain = String(value || '')
       .replace(/\s+/g, ' ')
@@ -54,7 +59,10 @@
 
     const draft = plain.slice(0, maxLength + 1)
     const wordBoundary = draft.lastIndexOf(' ')
-    const clipped = wordBoundary > Math.floor(maxLength * 0.62) ? draft.slice(0, wordBoundary) : plain.slice(0, maxLength)
+    const clipped =
+      wordBoundary > Math.floor(maxLength * 0.62)
+        ? draft.slice(0, wordBoundary)
+        : plain.slice(0, maxLength)
     return `${clipped.trim()}…`
   }
   const toAbsoluteUrl = value => {
@@ -131,13 +139,17 @@
   )
 
   useHead(() => {
-    const robots = String(route.meta?.robots || 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1')
-    const title = article.value ? `${seoPostTitle.value} | Mud' Tech Blog` : "Стаття | Mud' Tech Blog"
+    const robots = String(
+      route.meta?.robots ||
+        'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1'
+    )
+    const title = article.value
+      ? `${seoPostTitle.value} | Mud' Tech Blog`
+      : "Стаття | Mud' Tech Blog"
     const description = article.value
       ? summaryText.value || 'Практична стаття Mud Tech Blog про веб-розробку.'
       : 'Матеріал Mud Tech Blog про frontend, інструменти та сучасну веб-розробку.'
-    const canonical =
-      canonicalUrl.value || buildCanonicalUrl(route.path || '/blog')
+    const canonical = canonicalUrl.value || buildCanonicalUrl(route.path || '/blog')
     const image = toAbsoluteUrl(article.value?.image?.url || '/pwa-512x512.png')
 
     return {
@@ -336,6 +348,7 @@
 
       if (!readCompleted.value && progress >= 0.9) {
         readCompleted.value = true
+        markArticleAsRead(article.value.handle)
         trackEvent(ANALYTICS_EVENTS.ARTICLE_READ_COMPLETE, {
           [ANALYTICS_PARAMS.ROUTE]: `/blog/${article.value.handle}`,
           [ANALYTICS_PARAMS.ARTICLE_HANDLE]: article.value.handle,
@@ -526,7 +539,11 @@
               <button class="mm-share-btn" @click="shareOnTelegram" aria-label="Telegram">
                 <v-icon size="20" icon="mdi-send-variant" />
               </button>
-              <button class="mm-share-btn mm-share-btn--copy" @click="copyLink" aria-label="Copy link">
+              <button
+                class="mm-share-btn mm-share-btn--copy"
+                @click="copyLink"
+                aria-label="Copy link"
+              >
                 <v-icon size="20" icon="mdi-link-variant" />
               </button>
             </div>
@@ -542,7 +559,10 @@
         </article>
 
         <aside class="mm-post__sidebar">
-          <figure v-if="article.image" class="mm-post__hero-image mm-post__hero-image--sidebar d-none d-md-block">
+          <figure
+            v-if="article.image"
+            class="mm-post__hero-image mm-post__hero-image--sidebar d-none d-md-block"
+          >
             <img v-bind="heroImageAttrs" class="mm-post__hero-image-el" />
           </figure>
 
@@ -562,12 +582,18 @@
               <button class="mm-share-btn" @click="shareOnTelegram" aria-label="Telegram">
                 <v-icon size="20" icon="mdi-send-variant" />
               </button>
-              <button class="mm-share-btn mm-share-btn--copy" @click="copyLink" aria-label="Copy link">
+              <button
+                class="mm-share-btn mm-share-btn--copy"
+                @click="copyLink"
+                aria-label="Copy link"
+              >
                 <v-icon size="20" icon="mdi-link-variant" />
               </button>
             </div>
 
-            <p class="mm-post__share-note">{{ copied ? 'Посилання скопійовано' : 'Скопіюй або поділись у соцмережах' }}</p>
+            <p class="mm-post__share-note">
+              {{ copied ? 'Посилання скопійовано' : 'Скопіюй або поділись у соцмережах' }}
+            </p>
           </section>
 
           <section class="mm-post__donation">
