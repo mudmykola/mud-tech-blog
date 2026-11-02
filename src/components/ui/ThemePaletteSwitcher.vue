@@ -25,7 +25,7 @@
       :aria-pressed="item.key === currentPalette"
       @click="setPalette(item.key)"
     >
-      <v-icon :icon="item.icon" :size="compact ? 16 : 17" aria-hidden="true" />
+      <v-icon :icon="item.icon" :size="compact ? 14 : 17" aria-hidden="true" />
       <span class="mm-theme-switcher__tooltip" aria-hidden="true">{{ item.label }}</span>
     </button>
   </div>

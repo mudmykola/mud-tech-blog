@@ -144,6 +144,33 @@
   }
 
   const tagStats = computed(() => getBlogTopicStats(articles.value))
+  const mobileHeroOpen = ref(false)
+  const heroDetailsOpen = computed(() => !isFilterSheet.value || mobileHeroOpen.value)
+  const formatUkCount = (count, forms) => {
+    const lastTwoDigits = count % 100
+    const lastDigit = count % 10
+    const formIndex =
+      lastTwoDigits >= 11 && lastTwoDigits <= 14
+        ? 2
+        : lastDigit === 1
+          ? 0
+          : lastDigit >= 2 && lastDigit <= 4
+            ? 1
+            : 2
+
+    return `${count} ${forms[formIndex]}`
+  }
+  const mobileHeroSummary = computed(() => {
+    if (loading.value) return blogPageText.hero.overviewLoading
+
+    return [
+      formatUkCount(articles.value.length, blogPageText.hero.overviewArticleForms),
+      formatUkCount(tagStats.value.length, blogPageText.hero.overviewTopicForms),
+    ].join(' · ')
+  })
+  const handleHeroDetailsToggle = event => {
+    if (isFilterSheet.value) mobileHeroOpen.value = event.currentTarget.open
+  }
   const authorStats = computed(() => {
     const counts = new Map()
     articles.value.forEach(article => {
@@ -703,110 +730,132 @@
           </button>
         </div>
 
-        <div class="mm-blog__stats" role="group" :aria-label="blogPageText.hero.statsLabel">
-          <div class="mm-blog-stat">
-            <v-icon icon="mdi-bookshelf" size="16" aria-hidden="true" />
-            <span>{{ blogPageText.hero.totalArticles }}</span>
-            <strong>{{ loading ? '—' : articles.length }}</strong>
-          </div>
-          <div class="mm-blog-stat mm-blog-stat--results" aria-live="polite">
-            <v-icon icon="mdi-view-grid-outline" size="16" aria-hidden="true" />
-            <span>{{ blogPageText.hero.results }}</span>
-            <Transition name="mm-count" mode="out-in">
-              <strong :key="filteredArticles.length">
-                {{ loading ? '—' : filteredArticles.length }}
-              </strong>
-            </Transition>
-          </div>
-          <button
-            class="mm-blog-stat mm-blog-stat--button"
-            :class="{ 'mm-blog-stat--active': periodDays === 30 }"
-            type="button"
-            :aria-pressed="periodDays === 30"
-            :title="
-              periodDays === 30
-                ? blogPageText.hero.recentFilterActive
-                : blogPageText.hero.newIn30Days
-            "
-            @click="toggleRecentFilter"
-          >
-            <v-icon icon="mdi-calendar-arrow-right" size="16" aria-hidden="true" />
-            <span>{{ blogPageText.hero.newIn30Days }}</span>
-            <strong>{{ loading ? '—' : recentArticleCount }}</strong>
-          </button>
-          <div class="mm-blog-stat">
-            <v-icon icon="mdi-tag-multiple-outline" size="16" aria-hidden="true" />
-            <span>{{ blogPageText.hero.topics }}</span>
-            <strong>{{ loading ? '—' : tagStats.length }}</strong>
-          </div>
-          <div class="mm-blog-stat mm-blog-stat--latest">
-            <v-icon icon="mdi-calendar-month-outline" size="16" aria-hidden="true" />
-            <span>{{ blogPageText.hero.latest }}</span>
-            <strong>{{ loading ? '—' : lastPublishedDate }}</strong>
-          </div>
-        </div>
-
-        <div class="mm-blog__topics">
-          <div class="mm-blog__topics-label">
-            <v-icon icon="mdi-chart-donut-variant" size="16" aria-hidden="true" />
-            <span>{{ blogPageText.hero.popularTopics }}</span>
-            <button
-              class="mm-blog__explore-topics"
-              type="button"
-              :disabled="loading"
-              @click="openTopicExplorer('all')"
-            >
-              {{ blogPageText.hero.exploreTopics }}
-              <v-icon icon="mdi-arrow-top-right" size="14" aria-hidden="true" />
-            </button>
-          </div>
-
-          <div
-            class="mm-blog__top-tags"
-            role="group"
-            :aria-label="blogPageText.hero.topicFiltersLabel"
-          >
-            <button
-              class="mm-blog-topic"
-              :class="{ 'mm-blog-topic--active': !hasSelectedTopics }"
-              type="button"
-              :disabled="loading"
-              :aria-pressed="!hasSelectedTopics"
-              @click="selectTag('all')"
-            >
-              <span>{{ blogPageText.hero.allTopics }}</span>
-              <strong>{{ loading ? '—' : articles.length }}</strong>
-            </button>
-
-            <button
-              v-for="item in topTagsPreview"
-              :key="item.label"
-              class="mm-blog-topic"
-              :class="{ 'mm-blog-topic--active': isTopicSelected(item.label) }"
-              type="button"
-              :disabled="loading"
-              :aria-pressed="isTopicSelected(item.label)"
-              @click="selectTag(item.label)"
-            >
-              <span>{{ item.label }}</span>
-              <strong>{{ item.count }}</strong>
-              <v-icon
-                v-if="item.trendDelta > 0"
-                icon="mdi-trending-up"
-                size="13"
-                :title="blogPageText.hero.trending"
-                :aria-label="blogPageText.hero.trending"
-              />
-              <span class="mm-blog-topic__bar" aria-hidden="true">
-                <i :style="topicShareStyle(item.count)" />
-              </span>
-            </button>
-
-            <span v-if="loading" class="mm-blog__topics-loading">
-              {{ blogPageText.hero.loadingTopics }}
+        <details
+          class="mm-blog__hero-details"
+          :open="heroDetailsOpen"
+          @toggle="handleHeroDetailsToggle"
+        >
+          <summary class="mm-blog__hero-disclosure" aria-controls="mm-blog-hero-overview">
+            <span class="mm-blog__hero-disclosure-label">
+              <v-icon icon="mdi-chart-box-outline" size="17" aria-hidden="true" />
+              {{ blogPageText.hero.mobileOverview }}
             </span>
+            <span class="mm-blog__hero-disclosure-summary">{{ mobileHeroSummary }}</span>
+            <v-icon
+              class="mm-blog__hero-disclosure-chevron"
+              icon="mdi-chevron-down"
+              size="18"
+              aria-hidden="true"
+            />
+          </summary>
+
+          <div id="mm-blog-hero-overview" class="mm-blog__hero-details-content">
+            <div class="mm-blog__stats" role="group" :aria-label="blogPageText.hero.statsLabel">
+              <div class="mm-blog-stat">
+                <v-icon icon="mdi-bookshelf" size="16" aria-hidden="true" />
+                <span>{{ blogPageText.hero.totalArticles }}</span>
+                <strong>{{ loading ? '—' : articles.length }}</strong>
+              </div>
+              <div class="mm-blog-stat mm-blog-stat--results" aria-live="polite">
+                <v-icon icon="mdi-view-grid-outline" size="16" aria-hidden="true" />
+                <span>{{ blogPageText.hero.results }}</span>
+                <Transition name="mm-count" mode="out-in">
+                  <strong :key="filteredArticles.length">
+                    {{ loading ? '—' : filteredArticles.length }}
+                  </strong>
+                </Transition>
+              </div>
+              <button
+                class="mm-blog-stat mm-blog-stat--button"
+                :class="{ 'mm-blog-stat--active': periodDays === 30 }"
+                type="button"
+                :aria-pressed="periodDays === 30"
+                :title="
+                  periodDays === 30
+                    ? blogPageText.hero.recentFilterActive
+                    : blogPageText.hero.newIn30Days
+                "
+                @click="toggleRecentFilter"
+              >
+                <v-icon icon="mdi-calendar-arrow-right" size="16" aria-hidden="true" />
+                <span>{{ blogPageText.hero.newIn30Days }}</span>
+                <strong>{{ loading ? '—' : recentArticleCount }}</strong>
+              </button>
+              <div class="mm-blog-stat">
+                <v-icon icon="mdi-tag-multiple-outline" size="16" aria-hidden="true" />
+                <span>{{ blogPageText.hero.topics }}</span>
+                <strong>{{ loading ? '—' : tagStats.length }}</strong>
+              </div>
+              <div class="mm-blog-stat mm-blog-stat--latest">
+                <v-icon icon="mdi-calendar-month-outline" size="16" aria-hidden="true" />
+                <span>{{ blogPageText.hero.latest }}</span>
+                <strong>{{ loading ? '—' : lastPublishedDate }}</strong>
+              </div>
+            </div>
+
+            <div class="mm-blog__topics">
+              <div class="mm-blog__topics-label">
+                <v-icon icon="mdi-chart-donut-variant" size="16" aria-hidden="true" />
+                <span>{{ blogPageText.hero.popularTopics }}</span>
+                <button
+                  class="mm-blog__explore-topics"
+                  type="button"
+                  :disabled="loading"
+                  @click="openTopicExplorer('all')"
+                >
+                  {{ blogPageText.hero.exploreTopics }}
+                  <v-icon icon="mdi-arrow-top-right" size="14" aria-hidden="true" />
+                </button>
+              </div>
+
+              <div
+                class="mm-blog__top-tags"
+                role="group"
+                :aria-label="blogPageText.hero.topicFiltersLabel"
+              >
+                <button
+                  class="mm-blog-topic"
+                  :class="{ 'mm-blog-topic--active': !hasSelectedTopics }"
+                  type="button"
+                  :disabled="loading"
+                  :aria-pressed="!hasSelectedTopics"
+                  @click="selectTag('all')"
+                >
+                  <span>{{ blogPageText.hero.allTopics }}</span>
+                  <strong>{{ loading ? '—' : articles.length }}</strong>
+                </button>
+
+                <button
+                  v-for="item in topTagsPreview"
+                  :key="item.label"
+                  class="mm-blog-topic"
+                  :class="{ 'mm-blog-topic--active': isTopicSelected(item.label) }"
+                  type="button"
+                  :disabled="loading"
+                  :aria-pressed="isTopicSelected(item.label)"
+                  @click="selectTag(item.label)"
+                >
+                  <span>{{ item.label }}</span>
+                  <strong>{{ item.count }}</strong>
+                  <v-icon
+                    v-if="item.trendDelta > 0"
+                    icon="mdi-trending-up"
+                    size="13"
+                    :title="blogPageText.hero.trending"
+                    :aria-label="blogPageText.hero.trending"
+                  />
+                  <span class="mm-blog-topic__bar" aria-hidden="true">
+                    <i :style="topicShareStyle(item.count)" />
+                  </span>
+                </button>
+
+                <span v-if="loading" class="mm-blog__topics-loading">
+                  {{ blogPageText.hero.loadingTopics }}
+                </span>
+              </div>
+            </div>
           </div>
-        </div>
+        </details>
       </header>
 
       <div class="mm-blog__layout">
