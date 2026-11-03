@@ -1,5 +1,41 @@
 export const devLogEntries = [
   {
+    id: 'devlog-140',
+    date: '2026-11-04T00:37:00+02:00',
+    type: 'Improvement',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.about.avatar.portrait.title',
+    summaryKey: 'updates.about.avatar.portrait.summary',
+    title: 'Оновлено портрет автора на сторінці «Про мене»',
+    summary:
+      'У About header встановлено надане фото автора та оптимізовано його у WebP для швидшого завантаження без помітної втрати якості.',
+    details: [
+      'Зображення 1254×1254 оптимізовано до WebP приблизно 53 KB; оригінальний PNG залишився незмінним.',
+      'Збережено наявні кадрування, alt-текст і адаптивний вигляд портретної картки.',
+    ],
+    route: '/about',
+    routeLabelKey: 'nav.about',
+    githubIssue: '#163',
+  },
+  {
+    id: 'devlog-139',
+    date: '2026-11-04T00:33:00+02:00',
+    type: 'Improvement',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.about.editorial-header.title',
+    summaryKey: 'updates.about.editorial-header.summary',
+    title: 'Оновлено профільний header сторінки «Про мене»',
+    summary:
+      'About header отримав редакційну композицію з портретом, чіткою типографікою, спеціалізаціями та компактним фактом про eCommerce-проєкти.',
+    details: [
+      'Додано виразну портретну рамку, тематичні іконки та контрастну ієрархію в темній і світлій палітрах.',
+      'Мобільна версія ущільнює портрет та ідентичність в один ряд і не створює горизонтального переповнення на вузькому екрані.',
+    ],
+    route: '/about',
+    routeLabelKey: 'nav.about',
+    githubIssue: '#162',
+  },
+  {
     id: 'devlog-138',
     date: '2026-11-03T17:28:00+02:00',
     type: 'Improvement',
