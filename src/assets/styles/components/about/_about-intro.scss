@@ -1,33 +1,199 @@
 .mm-about-intro {
-  border-radius: 20px;
-  padding: 14px;
+  min-width: 0;
+  padding: 18px;
   border: 1px solid var(--border-soft);
-  background: var(--surface-grad-2);
-  box-shadow:
-    10px 10px 20px rgba(29, 31, 36, 0.8),
-    -4px -4px 10px rgba(82, 88, 97, 0.26);
+  border-radius: 22px;
+  background:
+    radial-gradient(ellipse at 100% 0%, var(--accent-ring), transparent 38%), var(--surface-grad-2);
+  box-shadow: var(--shadow-strong);
 }
 
-.mm-about-intro__wrapper {
-  display: grid;
-  gap: 10px;
+.mm-about-intro .mm-about-section-head {
+  width: 100%;
+  display: flex;
+  margin-bottom: 12px;
 }
 
-.mm-about-intro__text {
+.mm-about-intro__section-index,
+.mm-stack__section-index {
+  margin-left: auto;
+  color: var(--color-text-muted);
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+}
+
+.mm-about-intro__lead {
+  max-width: 760px;
   margin: 0;
-  font-size: 0.95rem;
-  line-height: 1.66;
-  color: var(--color-text-soft);
+  color: var(--color-text);
+  font-size: clamp(1rem, 1.7vw, 1.2rem);
+  font-weight: 650;
+  line-height: 1.55;
 }
 
-@media (max-width: 640px) {
+.mm-about-intro__practices {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mm-about-intro__practice {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--border-default);
+  border-radius: 14px;
+  background: var(--surface-grad-3);
+}
+
+.mm-about-intro__practice-icon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--accent-border-soft);
+  border-radius: 11px;
+  background: var(--accent-bg-soft);
+  color: var(--color-accent-light);
+}
+
+.mm-about-intro__practice-copy {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.mm-about-intro__practice-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  color: var(--color-text);
+
+  strong {
+    font-size: 0.9rem;
+    font-weight: 850;
+  }
+}
+
+.mm-about-intro__practice-number {
+  color: var(--color-accent-light);
+  font-size: 0.62rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+}
+
+.mm-about-intro__practice-description {
+  color: var(--color-text-soft);
+  font-size: 0.76rem;
+  line-height: 1.48;
+}
+
+.mm-about-intro__note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 14px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-soft);
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  line-height: 1.5;
+
+  .v-icon {
+    flex: 0 0 auto;
+    margin-top: 1px;
+    color: var(--color-accent-light);
+  }
+}
+
+@media (max-width: 760px) {
   .mm-about-intro {
-    border-radius: 16px;
-    padding: 12px;
+    padding: 15px;
+    border-radius: 19px;
   }
 
-  .mm-about-intro__text {
-    font-size: 0.86rem;
-    line-height: 1.58;
+  .mm-about-intro__practices {
+    grid-template-columns: 1fr;
+    gap: 7px;
+    margin-top: 13px;
+  }
+
+  .mm-about-intro__practice {
+    grid-template-columns: 32px 92px minmax(0, 1fr);
+    align-items: center;
+    gap: 8px;
+    padding: 9px 10px;
+  }
+
+  .mm-about-intro__practice-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .mm-about-intro__practice-copy {
+    display: contents;
+  }
+
+  .mm-about-intro__practice-heading {
+    gap: 6px;
+  }
+
+  .mm-about-intro__practice-heading strong {
+    font-size: 0.82rem;
+  }
+
+  .mm-about-intro__practice-description {
+    font-size: 0.74rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .mm-about-intro__section-index {
+    display: none;
+  }
+
+  .mm-about-intro__lead {
+    font-size: 0.94rem;
+    line-height: 1.5;
+  }
+
+  .mm-about-intro__practice {
+    grid-template-columns: 30px minmax(74px, auto) minmax(0, 1fr);
+    gap: 7px;
+    padding: 8px;
+  }
+
+  .mm-about-intro__practice-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .mm-about-intro__practice-heading {
+    gap: 4px;
+  }
+
+  .mm-about-intro__practice-heading strong {
+    font-size: 0.78rem;
+  }
+
+  .mm-about-intro__practice-number {
+    font-size: 0.56rem;
+  }
+
+  .mm-about-intro__practice-description {
+    font-size: 0.7rem;
+  }
+
+  .mm-about-intro__note {
+    margin-top: 11px;
+    font-size: 0.75rem;
   }
 }
