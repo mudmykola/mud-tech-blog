@@ -66,21 +66,6 @@
   );
 }
 
-.mm-hero__pill {
-  width: max-content;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 8px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 0.74rem;
-  color: var(--color-text-soft);
-  background: var(--surface-grad-1);
-  border: 1px solid color-mix(in srgb, var(--color-warning) 38%, var(--border-soft));
-}
-
 .mm-hero__content {
   position: relative;
   z-index: 1;
@@ -165,7 +150,6 @@
   margin-left: auto;
 }
 
-.mm-hero__pill,
 .mm-hero__quick-btn {
   position: relative;
   z-index: 1;

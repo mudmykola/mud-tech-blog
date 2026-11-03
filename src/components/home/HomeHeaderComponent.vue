@@ -25,11 +25,6 @@
     <div class="mm-hero__orb mm-hero__orb--two" />
 
     <div class="mm-hero__content">
-      <div class="mm-hero__pill">
-        <v-icon icon="mdi-lightning-bolt-outline" size="16" />
-        Tech feed
-      </div>
-
       <h1 class="mm-hero__title">
         <v-icon class="mm-hero__title-icon" icon="mdi-lightning-bolt-circle" size="30" />
         {{ title }}
