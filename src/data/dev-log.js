@@ -1,5 +1,23 @@
 export const devLogEntries = [
   {
+    id: 'devlog-138',
+    date: '2026-11-03T17:28:00+02:00',
+    type: 'Improvement',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.core.debug-output.title',
+    summaryKey: 'updates.core.debug-output.summary',
+    title: 'Прибрано debug-вивід і невикористану конфігурацію',
+    summary:
+      'Видалено читання VITE_SERVER_IP та рутинні success-повідомлення PWA install і service worker; повідомлення про помилки залишилися.',
+    details: [
+      'Прибрано debug-логи встановлення PWA та успішної реєстрації service worker, не змінюючи поведінку банера чи реєстрації.',
+      'Збережено звітність про помилки Shopify API, service worker, AdSense, clipboard і некоректні JSON-LD дані.',
+    ],
+    route: 'app runtime',
+    routeLabelKey: 'nav.home',
+    githubIssue: '#28',
+  },
+  {
     id: 'devlog-137',
     date: '2026-11-02T13:15:00+02:00',
     type: 'Fix',

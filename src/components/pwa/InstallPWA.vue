@@ -10,7 +10,6 @@
     if (localStorage.getItem('pwaDismissed')) return
 
     window.addEventListener('beforeinstallprompt', e => {
-      console.log('📲 beforeinstallprompt FIRED')
       e.preventDefault()
       deferredPrompt.value = e
       showBanner.value = true
@@ -25,12 +24,7 @@
     if (!deferredPrompt.value) return
     deferredPrompt.value.prompt()
 
-    const { outcome } = await deferredPrompt.value.userChoice
-    console.log('Install outcome:', outcome)
-
-    if (outcome === 'accepted') {
-      console.log('👍 Installed')
-    }
+    await deferredPrompt.value.userChoice
     deferredPrompt.value = null
     showBanner.value = false
   }

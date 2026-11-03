@@ -26,7 +26,7 @@ const routes = [
     meta: {
       title: 'Блог статей про Frontend, Vue та eCommerce | Mud Tech Blog',
       description:
-        "У розділі блогу зібрані практичні статті про frontend, Vue, Shopify, eCommerce архітектуру та оптимізацію продуктивності. Читай покрокові матеріали з реальними прикладами впровадження.",
+        'У розділі блогу зібрані практичні статті про frontend, Vue, Shopify, eCommerce архітектуру та оптимізацію продуктивності. Читай покрокові матеріали з реальними прикладами впровадження.',
       showInNav: true,
       label: 'Блог',
       icon: 'mdi-post-outline',
@@ -76,19 +76,14 @@ const router = createRouter({
   routes,
 })
 
-const serverIp = import.meta.env.VITE_SERVER_IP
 const twitterSite = import.meta.env.VITE_TWITTER_SITE || ''
-if (!serverIp) {
-  console.warn('VITE_SERVER_IP не встановлено')
-} else {
-  console.log('IP:', serverIp)
-}
 
 router.afterEach(to => {
   // Article page manages its SEO head in component to avoid competing updates.
   if (to.name === 'article') return
 
-  const defaultRobots = 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1'
+  const defaultRobots =
+    'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1'
   const canonicalUrl = buildCanonicalUrl(to.path)
   const description = to.meta.description || 'Технологічний блог про новітні тренди.'
   const title = to.meta.title || "Mud' Tech Blog"
