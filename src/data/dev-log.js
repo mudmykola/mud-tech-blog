@@ -1,5 +1,22 @@
 export const devLogEntries = [
   {
+    id: 'devlog-148',
+    date: '2026-11-04T01:36:00+02:00',
+    type: 'Improvement',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.home.hero.remove-static-pill.title',
+    summaryKey: 'updates.home.hero.remove-static-pill.summary',
+    title: 'Прибрано статичний бейдж із hero головної',
+    summary:
+      'З hero-блоку видалено декоративний напис «Tech feed», який не відображав динамічний стан і не додавав корисної інформації.',
+    details: [
+      'Збережено заголовок, опис, сезонну ілюстрацію та швидкі дії; видалено невикористані стилі бейджа.',
+    ],
+    route: '/',
+    routeLabelKey: 'nav.home',
+    githubIssue: '#173',
+  },
+  {
     id: 'devlog-147',
     date: '2026-11-04T01:29:00+02:00',
     type: 'Fix',
