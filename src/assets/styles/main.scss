@@ -12,8 +12,14 @@
 @use '@/assets/styles/components/donation/donation-section';
 @use '@/assets/styles/components/ui/theme-switcher';
 @use '@/assets/styles/components/ui/logo';
+@use '@/assets/styles/components/ui/scroll-progress-bar';
+@use '@/assets/styles/components/ui/spinner';
 @use '@/assets/styles/components/footer/footer';
 @use '@/assets/styles/components/pwa/install-pwa';
+@use '@/assets/styles/components/skeleton/article-cards-skeleton';
+@use '@/assets/styles/components/skeleton/blog-post-skeleton';
+@use '@/assets/styles/components/skeleton/blog-sidebar-skeleton';
+@use '@/assets/styles/components/skeleton/related-posts-skeleton';
 
 @use '@/assets/styles/components/article/article-card.scss';
 

@@ -28,15 +28,3 @@
   // 💡 expose функцію
   defineExpose({ updateScroll })
 </script>
-
-<style>
-  .scroll-progress-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 4px;
-    background-color: var(--color-accent-light); /* Tailwind yellow-400 */
-    z-index: 9999;
-    transition: width 0.2s ease;
-  }
-</style>
