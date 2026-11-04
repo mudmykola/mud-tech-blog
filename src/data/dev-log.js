@@ -1,5 +1,22 @@
 export const devLogEntries = [
   {
+    id: 'devlog-155',
+    date: '2026-11-04T18:38:05+02:00',
+    type: 'Fix',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.core.composables.harden.title',
+    summaryKey: 'updates.core.composables.harden.summary',
+    title: 'Підвищено надійність composables і асинхронних маршрутів',
+    summary:
+      'Захищено перемикання теми від недоступного localStorage, прибрано застарілі SEO-оновлення після переходу зі сторінки та виправлено оновлення оптимізованих зображень при заміні статті.',
+    details: [
+      'Фільтрацію статей оптимізовано без зміни результатів, додано регресійні тести для storage, зображень і пошукових параметрів.',
+    ],
+    route: 'app runtime',
+    routeLabelKey: 'nav.home',
+    githubIssue: '#182',
+  },
+  {
     id: 'devlog-154',
     date: '2026-11-04T18:18:37+02:00',
     type: 'Refactor',

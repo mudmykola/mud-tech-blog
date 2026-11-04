@@ -65,6 +65,7 @@
   })
 
   const goTo = slug => router.push(`/blog/${slug}`)
+  const imageAttrs = post => useOptimizedImage(post.image?.url, post.title, 600).attributes.value
 </script>
 
 <template>
@@ -93,10 +94,7 @@
       >
         <div class="mm-card__glow" />
 
-        <img
-          class="mm-card__img"
-          v-bind="useOptimizedImage(post.image?.url, post.title, 600).attributes"
-        />
+        <img class="mm-card__img" v-bind="imageAttrs(post)" />
 
         <v-chip v-if="post.tags?.length" class="mm-card__tag" size="small" variant="flat">
           <v-icon class="mr-1" icon="mdi-tag-outline" size="14" />

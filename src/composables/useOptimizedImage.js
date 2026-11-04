@@ -1,4 +1,4 @@
-import { computed } from 'vue'
+import { computed, toValue } from 'vue'
 
 export function useOptimizedImage(rawUrl, alt = 'Image', maxWidth = 900, options = {}) {
   const {
@@ -9,66 +9,49 @@ export function useOptimizedImage(rawUrl, alt = 'Image', maxWidth = 900, options
     style = 'width:100%;height:auto;display:block;border-radius:inherit;',
   } = options
 
-  if (!rawUrl) {
-    return {
-      attributes: {
-        src: '',
-        alt,
-        title: alt,
+  return {
+    attributes: computed(() => {
+      const source = toValue(rawUrl) || ''
+      const imageAlt = toValue(alt) || 'Image'
+      const width = toValue(maxWidth) || 900
+      const commonAttributes = {
+        alt: imageAlt,
+        title: imageAlt,
         loading,
         decoding,
         ...(fetchpriority ? { fetchpriority } : {}),
-      },
-    }
-  }
+      }
 
-  const baseUrl = rawUrl.split('?')[0]
-  const originalParams = rawUrl.includes('?') ? '?' + rawUrl.split('?')[1] : ''
+      if (!source) return { src: '', ...commonAttributes }
 
-  const tryWebp = !baseUrl.endsWith('.gif')
-  const buildResponsiveWidths = width => {
-    const predefined = [360, 560, 760, 960, 1200, 1600]
-    const limited = predefined.filter(value => value <= width)
-    return [...new Set([...limited, width])].sort((a, b) => a - b)
-  }
-  const responsiveWidths = buildResponsiveWidths(maxWidth)
+      const baseUrl = source.split('?')[0]
+      const originalParams = source.includes('?') ? '?' + source.split('?')[1] : ''
+      const tryWebp = !baseUrl.toLowerCase().endsWith('.gif')
+      const responsiveWidths = [360, 560, 760, 960, 1200, 1600]
+        .filter(value => value <= width)
+        .concat(width)
+        .filter((value, index, values) => values.indexOf(value) === index)
+        .sort((a, b) => a - b)
+      const make = (imageWidth, format) =>
+        !tryWebp && format === 'webp'
+          ? `${baseUrl}${originalParams}`
+          : `${baseUrl}?width=${imageWidth}&format=${format}`
+      const bestWidth = responsiveWidths.at(-1) || width
+      const sizes =
+        customSizes ||
+        `(max-width: 600px) 360px,\n     (max-width: 900px) 560px,\n     (max-width: 1200px) 700px,\n     ${width}px`
 
-  const make = (w, fmt) => {
-    if (!tryWebp && fmt === 'webp') return `${baseUrl}${originalParams}`
-    return `${baseUrl}?width=${w}&format=${fmt}`
-  }
-
-  const src = computed(() => {
-    if (!tryWebp) return `${baseUrl}${originalParams}`
-    const bestWidth = responsiveWidths[responsiveWidths.length - 1] || maxWidth
-    return make(bestWidth, 'webp')
-  })
-
-  const srcset = computed(() => {
-    if (!tryWebp) {
-      return `${baseUrl}${originalParams} ${maxWidth}w`
-    }
-    return responsiveWidths.map(width => `${make(width, 'webp')} ${width}w`).join(', ')
-  })
-
-  const sizes =
-    customSizes ||
-    `(max-width: 600px) 360px,
-     (max-width: 900px) 560px,
-     (max-width: 1200px) 700px,
-     ${maxWidth}px`
-
-  return {
-    attributes: {
-      src: src.value,
-      srcset: srcset.value,
-      sizes,
-      alt,
-      title: alt,
-      loading,
-      decoding,
-      ...(fetchpriority ? { fetchpriority } : {}),
-      style,
-    },
+      return {
+        src: tryWebp ? make(bestWidth, 'webp') : `${baseUrl}${originalParams}`,
+        srcset: tryWebp
+          ? responsiveWidths
+              .map(imageWidth => `${make(imageWidth, 'webp')} ${imageWidth}w`)
+              .join(', ')
+          : `${baseUrl}${originalParams} ${width}w`,
+        sizes,
+        ...commonAttributes,
+        style,
+      }
+    }),
   }
 }

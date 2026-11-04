@@ -42,6 +42,7 @@
   const readHalfReached = ref(false)
   const readCompleted = ref(false)
   let loadRequestId = 0
+  let scrollRefreshTimeout = null
   let disqusObserver = null
   let readProgressRaf = null
 
@@ -117,7 +118,7 @@
       fetchpriority: 'high',
       sizes: '(max-width: 600px) 100vw, (max-width: 960px) 94vw, (max-width: 1400px) 74vw, 1120px',
       style: 'width:100%;height:100%;display:block;',
-    }).attributes
+    }).attributes.value
   })
 
   const nextArticle = computed(() => {
@@ -188,7 +189,8 @@
         article.value = cachedArticle
         loading.value = false
         window.scrollTo({ top: 0, behavior: 'auto' })
-        setTimeout(() => {
+        clearTimeout(scrollRefreshTimeout)
+        scrollRefreshTimeout = setTimeout(() => {
           scrollBarRef.value?.updateScroll()
         }, 120)
         return
@@ -203,7 +205,8 @@
     loading.value = false
 
     window.scrollTo({ top: 0, behavior: 'auto' })
-    setTimeout(() => {
+    clearTimeout(scrollRefreshTimeout)
+    scrollRefreshTimeout = setTimeout(() => {
       scrollBarRef.value?.updateScroll()
     }, 120)
   }
@@ -418,6 +421,8 @@
   })
 
   onBeforeUnmount(() => {
+    loadRequestId += 1
+    clearTimeout(scrollRefreshTimeout)
     resetDisqusObserver()
     window.removeEventListener('scroll', queueReadProgressCheck)
     window.removeEventListener('resize', queueReadProgressCheck)

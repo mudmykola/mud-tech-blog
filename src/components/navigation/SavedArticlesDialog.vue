@@ -70,7 +70,7 @@
     return useOptimizedImage(imageUrl, article.image?.altText || article.title, 760, {
       sizes: '(max-width: 600px) 76px, 100px',
       style: 'width:100%;height:100%;display:block;object-fit:cover;border-radius:inherit;',
-    }).attributes
+    }).attributes.value
   }
 
   const readTime = article => estimateReadingMinutes(article.contentHtml)

@@ -13,7 +13,6 @@
 
   import { getBlogArticles } from '@/services/shopifyApi'
   import { useArticleFilters } from '@/composables/useArticleFilters'
-  import { useMetaTags } from '@/composables/useMetaTags'
   import { useJsonLd } from '@/composables/useJsonLd'
   import {
     generateCollectionPageJsonLd,
@@ -46,10 +45,7 @@
   }
 
   const articles = ref([])
-  const {
-    savedArticleHandles,
-    toggleSavedArticle: toggleSavedArticleInStore,
-  } = useSavedArticles()
+  const { savedArticleHandles, toggleSavedArticle: toggleSavedArticleInStore } = useSavedArticles()
   const router = useRouter()
   const loading = ref(true)
   const searchQuery = ref('')
@@ -62,6 +58,7 @@
   const discoveryPanel = ref('search')
   const displayedArticleLimit = ref(HOME_INITIAL_BATCH_SIZE)
   let searchTrackTimeout = null
+  let isActive = true
 
   const buildHomeSchemas = list => {
     const articleItems = list.slice(0, 12).map(item => ({
@@ -87,9 +84,10 @@
 
   onMounted(async () => {
     lastReadHandle.value = getLastReadArticle()
-    articles.value = await getBlogArticles()
+    const fetchedArticles = await getBlogArticles()
+    if (!isActive) return
+    articles.value = fetchedArticles
     loading.value = false
-    useMetaTags()
     useJsonLd(buildHomeSchemas(articles.value))
   })
 
@@ -252,6 +250,7 @@
   })
 
   onBeforeUnmount(() => {
+    isActive = false
     if (searchTrackTimeout) clearTimeout(searchTrackTimeout)
   })
 </script>
