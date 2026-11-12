@@ -1,5 +1,62 @@
 export const devLogEntries = [
   {
+    id: 'devlog-160',
+    date: '2026-11-12T17:00:00+02:00',
+    type: 'Improvement',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.about.hero.seasonal.title',
+    summaryKey: 'updates.about.hero.seasonal.summary',
+    title: 'Узгоджено сезонний фон about header',
+    summary:
+      'About header тепер використовує той самий осінній Figma-фон, overlay та accent-ритм, що й блог і сторінка статті.',
+    details: [
+      'Збережено аватар, specialties та proof-блок без змін у структурі компонента.',
+      'Додано контрастний overlay для читабельності у світлій і темній темах.',
+      'Вирівняно декоративний accent-патерн із BlogPost hero.',
+    ],
+    route: '/about',
+    routeLabelKey: 'nav.about',
+    githubIssue: '#183',
+  },
+  {
+    id: 'devlog-159',
+    date: '2026-11-12T16:55:00+02:00',
+    type: 'Improvement',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.blog.hero.seasonal.title',
+    summaryKey: 'updates.blog.hero.seasonal.summary',
+    title: 'Додано сезонний фон до hero блогу',
+    summary:
+      'Сторінка блогу тепер використовує той самий осінній Figma-фон і accent-патерн, що й сторінка статті.',
+    details: [
+      'Додано сезонний WebP-фон без змін у логіці фільтрів і статистики.',
+      'Налаштовано затемнення для читабельності заголовка, підзаголовка та показників.',
+      'Збережено компактну mobile-розкладку hero.',
+    ],
+    route: '/blog',
+    routeLabelKey: 'nav.blog',
+    githubIssue: '#183',
+  },
+  {
+    id: 'devlog-158',
+    date: '2026-11-12T16:49:46+02:00',
+    type: 'Improvement',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.blogpost.hero.about-style.title',
+    summaryKey: 'updates.blogpost.hero.about-style.summary',
+    title: 'Узгоджено hero статті зі стилем about header',
+    summary:
+      'Hero BlogPost отримав спільну з about header surface-структуру, accent-індикатор, тіні та компактніші мета-чипи.',
+    details: [
+      'Вирівняно радіуси, тіні та верхній accent-патерн між сторінками.',
+      'Посилено типографічну ієрархію заголовка без зміни контентної структури.',
+      'Збережено сезонний Figma-фон і mobile-адаптацію.',
+    ],
+    route: '/blog/:slug',
+    routeLabelKey: 'nav.blog',
+    githubIssue: '#183',
+  },
+  {
     id: 'devlog-157',
     date: '2026-11-12T09:12:00+02:00',
     type: 'Fix',

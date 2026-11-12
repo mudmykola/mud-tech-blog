@@ -5,15 +5,53 @@
 }
 
 .mm-blog__hero {
-  border-radius: 24px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 190px;
+  border-radius: 26px;
   padding: 16px 18px;
-  background: var(--surface-grad-2);
+  background:
+    url('/images/article-hero-autumn-editorial.webp') center / cover no-repeat,
+    var(--surface-grad-2);
   border: 1px solid var(--border-soft);
-  box-shadow:
-    12px 12px 24px rgba(29, 31, 36, 0.86),
-    -6px -6px 14px rgba(83, 88, 98, 0.32);
+  box-shadow: var(--shadow-strong);
   display: grid;
   gap: 10px;
+}
+
+.mm-blog__hero::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(4, 7, 17, 0.96) 0%,
+      rgba(5, 8, 18, 0.8) 44%,
+      rgba(5, 8, 18, 0.28) 100%
+    ),
+    radial-gradient(ellipse at 96% 4%, rgba(216, 60, 19, 0.22), transparent 34%);
+  content: '';
+  pointer-events: none;
+}
+
+.mm-blog__hero::after {
+  position: absolute;
+  z-index: 2;
+  top: -1px;
+  left: 22px;
+  width: 72px;
+  height: 3px;
+  border-radius: 0 0 4px 4px;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-light));
+  content: '';
+  pointer-events: none;
+}
+
+.mm-blog__hero > * {
+  position: relative;
+  z-index: 1;
 }
 
 .mm-blog__hero-main {
@@ -56,6 +94,7 @@
   gap: 8px;
   font-size: clamp(1.2rem, 2.4vw, 1.65rem);
   line-height: 1.16;
+  color: #fff;
 }
 
 .mm-blog__filter-toggle {
@@ -74,7 +113,7 @@
 
 .mm-blog__hero-subtitle {
   margin: 0;
-  color: var(--color-text-soft);
+  color: rgba(255, 255, 255, 0.76);
   font-size: 0.86rem;
   line-height: 1.4;
 }
@@ -890,6 +929,7 @@
   .mm-blog__hero {
     border-radius: 18px;
     padding: 14px;
+    min-height: 0;
   }
 
   .mm-blog__hero-main {
