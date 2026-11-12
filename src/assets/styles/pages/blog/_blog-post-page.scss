@@ -38,15 +38,63 @@
 }
 
 .mm-post__hero {
+  position: relative;
+  isolation: isolate;
+  min-height: clamp(240px, 18vw, 280px);
+  overflow: hidden;
   border-radius: 24px;
   border: 1px solid var(--border-soft);
   background: var(--surface-grad-2);
   box-shadow:
     12px 12px 24px rgba(29, 31, 36, 0.86),
     -6px -6px 14px rgba(83, 88, 98, 0.32);
-  padding: 16px;
-  display: grid;
-  gap: 12px;
+  padding: 20px 32px 26px;
+  display: flex;
+}
+
+.mm-post__hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.mm-post__hero-media,
+.mm-post__hero-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.mm-post__hero-media {
+  z-index: 0;
+  margin: 0;
+  background: var(--surface-grad-1);
+}
+
+.mm-post__hero-media-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: saturate(0.94) contrast(1.06);
+}
+
+.mm-post__hero-overlay {
+  z-index: 1;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(4, 7, 17, 0.98) 0%,
+      rgba(5, 8, 18, 0.86) 35%,
+      rgba(5, 8, 18, 0.2) 78%,
+      rgba(5, 8, 18, 0.3) 100%
+    ),
+    linear-gradient(0deg, rgba(4, 7, 17, 0.42), transparent 48%);
 }
 
 .mm-post__breadcrumbs {
@@ -58,7 +106,7 @@
 
   a,
   span {
-    color: var(--color-text-muted);
+    color: color-mix(in srgb, #fff 78%, transparent);
     text-decoration: none;
     max-width: 220px;
     white-space: nowrap;
@@ -67,7 +115,7 @@
   }
 
   a:hover {
-    color: var(--color-text-soft);
+    color: #fff;
   }
 }
 
@@ -129,8 +177,9 @@
   min-height: 30px;
   border-radius: 999px;
   border: 1px solid var(--border-default);
-  background: var(--surface-grad-4);
-  color: var(--color-text-soft);
+  background: rgba(30, 37, 52, 0.84);
+  color: rgba(255, 255, 255, 0.9);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
   font-size: 0.76rem;
   font-weight: 700;
   display: inline-flex;
@@ -142,12 +191,13 @@
 .mm-post__title {
   position: relative;
   margin: 0;
-  max-width: 40ch;
+  max-width: min(720px, 58ch);
+  margin-top: auto;
   font-size: clamp(1.28rem, 2.34vw, 1.72rem);
   line-height: 1.14;
   letter-spacing: -0.018em;
   font-weight: 800;
-  color: var(--color-text);
+  color: #fff;
   text-wrap: pretty;
   padding-left: 12px;
 }
@@ -176,37 +226,6 @@
 
 .mm-post__summary {
   display: none;
-}
-
-.mm-post__hero-image {
-  margin: 0;
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid var(--border-soft);
-  background:
-    radial-gradient(
-      circle at 18% 22%,
-      color-mix(in srgb, var(--color-accent) 16%, transparent),
-      transparent 50%
-    ),
-    var(--surface-grad-1);
-  min-height: clamp(220px, 32vw, 400px);
-  display: grid;
-
-  .mm-post__hero-image-el {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    object-position: center;
-    padding: clamp(6px, 1.2vw, 14px);
-    filter: contrast(1.02) saturate(1.04);
-  }
-}
-
-.mm-post__hero-image--sidebar {
-  min-height: clamp(200px, 22vw, 330px);
-  margin-bottom: 12px;
 }
 
 .mm-post__layout {
@@ -811,6 +830,26 @@ html[data-theme-palette='light'] {
     padding: 12px;
   }
 
+  .mm-post__hero {
+    min-height: 232px;
+    padding: 14px 14px 18px;
+  }
+
+  .mm-post__hero-overlay {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(4, 7, 17, 0.78) 0%,
+        rgba(4, 7, 17, 0.32) 40%,
+        rgba(4, 7, 17, 0.96) 100%
+      ),
+      linear-gradient(90deg, rgba(4, 7, 17, 0.24), transparent);
+  }
+
+  .mm-post__hero-content {
+    gap: 10px;
+  }
+
   .mm-post__meta-row {
     flex-direction: row;
     align-items: flex-start;
@@ -853,28 +892,12 @@ html[data-theme-palette='light'] {
     line-height: 1.18;
     letter-spacing: -0.014em;
     padding-left: 10px;
+    max-width: 100%;
+    color: #fff;
   }
 
   .mm-post__title::before {
     width: 3px;
-  }
-
-  .mm-post__hero-image {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    height: clamp(180px, 54vw, 250px);
-    min-height: 0;
-  }
-
-  .mm-post__hero-image-el {
-    min-width: 0;
-    max-width: 100%;
-    max-height: 100%;
-  }
-
-  .mm-post__hero-image--sidebar {
-    margin-bottom: 0;
   }
 
   .mm-post__content-inner {
