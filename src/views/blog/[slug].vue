@@ -8,7 +8,6 @@
   import ScrollProgressBar from '@/components/ui/ScrollProgressBar.vue'
   import BlogPostSkeleton from '@/components/skeleton/BlogPostSkeleton.vue'
   import { getBlogArticles } from '@/services/shopifyApi'
-  import { useOptimizedImage } from '@/composables/useOptimizedImage'
   import { buildCanonicalUrl, getCanonicalOrigin } from '@/utils/canonical'
   import { ANALYTICS_EVENTS, ANALYTICS_PARAMS } from '@/analytics/events'
   import { trackEvent } from '@/firebase'
@@ -42,6 +41,7 @@
   const readHalfReached = ref(false)
   const readCompleted = ref(false)
   let loadRequestId = 0
+  let scrollRefreshTimeout = null
   let disqusObserver = null
   let readProgressRaf = null
 
@@ -107,19 +107,6 @@
 
   const encodedShareUrl = computed(() => encodeURIComponent(canonicalUrl.value))
   const encodedShareTitle = computed(() => encodeURIComponent(article.value?.title || ''))
-  const heroImageAttrs = computed(() => {
-    const src = article.value?.image?.url || ''
-    const alt = article.value?.image?.altText || article.value?.title || 'Hero image'
-
-    return useOptimizedImage(src, alt, 1600, {
-      loading: 'eager',
-      decoding: 'async',
-      fetchpriority: 'high',
-      sizes: '(max-width: 600px) 100vw, (max-width: 960px) 94vw, (max-width: 1400px) 74vw, 1120px',
-      style: 'width:100%;height:100%;display:block;',
-    }).attributes
-  })
-
   const nextArticle = computed(() => {
     if (!article.value || !articles.value.length) return null
     const currentIndex = articles.value.findIndex(item => item.handle === article.value.handle)
@@ -188,7 +175,8 @@
         article.value = cachedArticle
         loading.value = false
         window.scrollTo({ top: 0, behavior: 'auto' })
-        setTimeout(() => {
+        clearTimeout(scrollRefreshTimeout)
+        scrollRefreshTimeout = setTimeout(() => {
           scrollBarRef.value?.updateScroll()
         }, 120)
         return
@@ -203,7 +191,8 @@
     loading.value = false
 
     window.scrollTo({ top: 0, behavior: 'auto' })
-    setTimeout(() => {
+    clearTimeout(scrollRefreshTimeout)
+    scrollRefreshTimeout = setTimeout(() => {
       scrollBarRef.value?.updateScroll()
     }, 120)
   }
@@ -418,6 +407,8 @@
   })
 
   onBeforeUnmount(() => {
+    loadRequestId += 1
+    clearTimeout(scrollRefreshTimeout)
     resetDisqusObserver()
     window.removeEventListener('scroll', queueReadProgressCheck)
     window.removeEventListener('resize', queueReadProgressCheck)
@@ -448,57 +439,68 @@
 
     <section v-else class="mm-post">
       <header class="mm-post__hero">
-        <div class="mm-post__breadcrumb-row">
-          <nav class="mm-post__breadcrumbs" aria-label="Breadcrumbs">
-            <template v-for="(crumb, index) in breadcrumbs" :key="`${crumb.title}-${index}`">
-              <router-link v-if="crumb.to" :to="crumb.to">{{ crumb.title }}</router-link>
-              <span v-else>{{ crumb.title }}</span>
-              <v-icon v-if="index < breadcrumbs.length - 1" icon="mdi-chevron-right" size="14" />
-            </template>
-          </nav>
-          <button
-            class="mm-post__bookmark"
-            type="button"
-            :aria-pressed="isArticleSaved"
-            :aria-label="articleSaveLabel"
-            :title="articleSaveTitle"
-            @click="toggleSavedArticle(article.handle)"
-          >
-            <v-icon
-              :icon="isArticleSaved ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
-              size="18"
-              aria-hidden="true"
-            />
-          </button>
-        </div>
+        <figure class="mm-post__hero-media">
+          <img
+            src="/images/article-hero-autumn-editorial.webp"
+            class="mm-post__hero-media-image"
+            alt=""
+            aria-hidden="true"
+            width="1440"
+            height="370"
+            fetchpriority="high"
+          />
+        </figure>
+        <div class="mm-post__hero-overlay" aria-hidden="true" />
 
-        <div class="mm-post__meta-row">
-          <div class="mm-post__chips">
-            <span v-if="article.tags?.length" class="mm-post-chip">
-              <v-icon icon="mdi-tag-multiple-outline" size="14" />
-              {{ article.tags[0] }}
-            </span>
-            <span class="mm-post-chip">
-              <v-icon icon="mdi-calendar-month-outline" size="14" />
-              {{ formattedDate }}
-            </span>
-            <span class="mm-post-chip">
-              <v-icon icon="mdi-timer-sand" size="14" />
-              ~{{ readingTime }} хв
-            </span>
+        <div class="mm-post__hero-content">
+          <div class="mm-post__breadcrumb-row">
+            <nav class="mm-post__breadcrumbs" aria-label="Breadcrumbs">
+              <template v-for="(crumb, index) in breadcrumbs" :key="`${crumb.title}-${index}`">
+                <router-link v-if="crumb.to" :to="crumb.to">{{ crumb.title }}</router-link>
+                <span v-else>{{ crumb.title }}</span>
+                <v-icon v-if="index < breadcrumbs.length - 1" icon="mdi-chevron-right" size="14" />
+              </template>
+            </nav>
+            <button
+              class="mm-post__bookmark"
+              type="button"
+              :aria-pressed="isArticleSaved"
+              :aria-label="articleSaveLabel"
+              :title="articleSaveTitle"
+              @click="toggleSavedArticle(article.handle)"
+            >
+              <v-icon
+                :icon="isArticleSaved ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
+                size="18"
+                aria-hidden="true"
+              />
+            </button>
           </div>
 
-          <button class="mm-post-action" @click="router.push('/blog')">
-            <v-icon icon="mdi-arrow-left" size="16" />
-            До блогу
-          </button>
+          <div class="mm-post__meta-row">
+            <div class="mm-post__chips">
+              <span v-if="article.tags?.length" class="mm-post-chip">
+                <v-icon icon="mdi-tag-multiple-outline" size="14" />
+                {{ article.tags[0] }}
+              </span>
+              <span class="mm-post-chip">
+                <v-icon icon="mdi-calendar-month-outline" size="14" />
+                {{ formattedDate }}
+              </span>
+              <span class="mm-post-chip">
+                <v-icon icon="mdi-timer-sand" size="14" />
+                ~{{ readingTime }} хв
+              </span>
+            </div>
+
+            <button class="mm-post-action" @click="router.push('/blog')">
+              <v-icon icon="mdi-arrow-left" size="16" />
+              До блогу
+            </button>
+          </div>
+
+          <h1 class="mm-post__title">{{ article.title }}</h1>
         </div>
-
-        <h1 class="mm-post__title">{{ article.title }}</h1>
-
-        <figure v-if="article.image" class="mm-post__hero-image d-md-none">
-          <img v-bind="heroImageAttrs" class="mm-post__hero-image-el" />
-        </figure>
       </header>
 
       <div class="mm-post__layout">
@@ -559,13 +561,6 @@
         </article>
 
         <aside class="mm-post__sidebar">
-          <figure
-            v-if="article.image"
-            class="mm-post__hero-image mm-post__hero-image--sidebar d-none d-md-block"
-          >
-            <img v-bind="heroImageAttrs" class="mm-post__hero-image-el" />
-          </figure>
-
           <section class="mm-post-card d-none d-md-block">
             <div class="mm-post__section-head">
               <v-icon icon="mdi-share-variant-outline" size="20" />

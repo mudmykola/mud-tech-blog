@@ -12,9 +12,21 @@ const makeArticle = (idx, overrides = {}) => ({
 
 test('useArticleFilters: filters by query in title/excerpt and sorts by newest', () => {
   const articles = ref([
-    makeArticle(1, { title: 'Vue Patterns', excerpt: 'UI composition', publishedAt: '2026-02-10T10:00:00+02:00' }),
-    makeArticle(2, { title: 'Shopify API', excerpt: 'GraphQL tricks', publishedAt: '2026-02-14T10:00:00+02:00' }),
-    makeArticle(3, { title: 'Automation', excerpt: 'Vue workflow', publishedAt: '2026-02-12T10:00:00+02:00' }),
+    makeArticle(1, {
+      title: 'Vue Patterns',
+      excerpt: 'UI composition',
+      publishedAt: '2026-02-10T10:00:00+02:00',
+    }),
+    makeArticle(2, {
+      title: 'Shopify API',
+      excerpt: 'GraphQL tricks',
+      publishedAt: '2026-02-14T10:00:00+02:00',
+    }),
+    makeArticle(3, {
+      title: 'Automation',
+      excerpt: 'Vue workflow',
+      publishedAt: '2026-02-12T10:00:00+02:00',
+    }),
   ])
   const searchQuery = ref('vue')
   const sortBy = ref('date_desc')
@@ -62,5 +74,22 @@ test('useArticleFilters: sorts by title desc', () => {
   assert.deepEqual(
     filtered.value.map(item => item.title),
     ['Gamma', 'Beta', 'Alpha']
+  )
+})
+
+test('useArticleFilters: trims and normalizes a query once while tolerating empty titles', () => {
+  const articles = ref([
+    makeArticle(1, { title: 'Vue Basics', excerpt: null }),
+    makeArticle(2, { title: '', excerpt: '  Vue in practice  ' }),
+    makeArticle(3, { title: 'React', excerpt: 'Components' }),
+  ])
+  const searchQuery = ref('  VUE ')
+  const sortBy = ref('unknown')
+
+  const filtered = useArticleFilters(articles, searchQuery, sortBy, { limit: false })
+
+  assert.deepEqual(
+    filtered.value.map(item => item.title),
+    ['Vue Basics', '']
   )
 })

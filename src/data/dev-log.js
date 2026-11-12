@@ -1,5 +1,58 @@
 export const devLogEntries = [
   {
+    id: 'devlog-157',
+    date: '2026-11-12T09:12:00+02:00',
+    type: 'Fix',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.blogpost.hero.seasonal.title',
+    summaryKey: 'updates.blogpost.hero.seasonal.summary',
+    title: 'Виправлено сезонний фон hero статті',
+    summary:
+      'Hero статті тепер використовує компактний сезонний фон, експортований з Figma, замість зображення конкретної статті.',
+    details: [
+      'Додано оптимізований WebP-asset Autumn editorial із Figma розміром 1440x370.',
+      'Зменшено висоту hero для desktop і mobile, щоб швидше переходити до тексту статті.',
+      'Фото статті більше не використовується як фонове зображення hero.',
+    ],
+    route: '/blog/:slug',
+    routeLabelKey: 'nav.blog',
+    githubIssue: '#183',
+  },
+  {
+    id: 'devlog-156',
+    date: '2026-11-12T09:00:14+02:00',
+    type: 'Improvement',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.blogpost.hero.figma.title',
+    summaryKey: 'updates.blogpost.hero.figma.summary',
+    title: 'Перероблено hero статті за Figma-макетом',
+    summary:
+      'Hero BlogPost переведено на повноцінну responsive-обкладинку з фоновим зображенням, градієнтним затемненням, мета-чипами та компактною ієрархією заголовка для desktop і mobile.',
+    details: [
+      'Прибрано дублююче hero-зображення із sidebar, збережено bookmark, перехід до блогу та доступний alt текст зображення.',
+    ],
+    route: '/blog/:slug',
+    routeLabelKey: 'nav.blog',
+    githubIssue: '#183',
+  },
+  {
+    id: 'devlog-155',
+    date: '2026-11-04T18:38:05+02:00',
+    type: 'Fix',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.core.composables.harden.title',
+    summaryKey: 'updates.core.composables.harden.summary',
+    title: 'Підвищено надійність composables і асинхронних маршрутів',
+    summary:
+      'Захищено перемикання теми від недоступного localStorage, прибрано застарілі SEO-оновлення після переходу зі сторінки та виправлено оновлення оптимізованих зображень при заміні статті.',
+    details: [
+      'Фільтрацію статей оптимізовано без зміни результатів, додано регресійні тести для storage, зображень і пошукових параметрів.',
+    ],
+    route: 'app runtime',
+    routeLabelKey: 'nav.home',
+    githubIssue: '#182',
+  },
+  {
     id: 'devlog-154',
     date: '2026-11-04T18:18:37+02:00',
     type: 'Refactor',

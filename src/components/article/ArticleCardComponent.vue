@@ -31,9 +31,15 @@
   })
   const readingMinutes = computed(() => estimateReadingMinutes(props.article.contentHtml))
 
-  const img = useOptimizedImage(props.article?.image?.url, props.article?.title, 1200, {
-    sizes: '(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 33vw',
-  })
+  const img = computed(
+    () =>
+      useOptimizedImage(
+        () => props.article?.image?.url,
+        () => props.article?.title,
+        1200,
+        { sizes: '(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 33vw' }
+      ).attributes.value
+  )
 </script>
 
 <template>
@@ -58,7 +64,7 @@
       </div>
 
       <div class="mm-article2__image-wrapper">
-        <img class="mm-article2__image" v-bind="img.attributes" />
+        <img class="mm-article2__image" v-bind="img" />
       </div>
 
       <div class="mm-article2__content">

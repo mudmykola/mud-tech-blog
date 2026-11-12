@@ -13,6 +13,25 @@ let initialized = false
 const isValidPalette = key => THEME_PALETTES.some(item => item.key === key)
 const normalizePalette = key => (key === 'default' ? 'dark' : key)
 
+const readSavedPalette = () => {
+  try {
+    return globalThis.localStorage?.getItem(STORAGE_KEY) ?? null
+  } catch {
+    return null
+  }
+}
+
+const savePalette = key => {
+  try {
+    const storage = globalThis.localStorage
+    if (!storage) return false
+    storage.setItem(STORAGE_KEY, key)
+    return true
+  } catch {
+    return false
+  }
+}
+
 const applyPaletteToDom = key => {
   if (typeof document === 'undefined') return
   document.documentElement.setAttribute('data-theme-palette', key)
@@ -21,7 +40,7 @@ const applyPaletteToDom = key => {
 export const initThemePalette = () => {
   if (initialized) return
 
-  const saved = typeof localStorage !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null
+  const saved = readSavedPalette()
   const nextPalette = normalizePalette(saved)
   currentPalette.value = isValidPalette(nextPalette) ? nextPalette : 'dark'
 
@@ -31,14 +50,12 @@ export const initThemePalette = () => {
 
 export const useThemePalette = () => {
   const setPalette = key => {
-    if (!isValidPalette(key)) return
+    if (!isValidPalette(key)) return false
 
     currentPalette.value = key
     applyPaletteToDom(key)
 
-    if (typeof localStorage !== 'undefined') {
-      localStorage.setItem(STORAGE_KEY, key)
-    }
+    return savePalette(key)
   }
 
   return {

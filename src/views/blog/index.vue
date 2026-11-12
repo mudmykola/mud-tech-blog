@@ -76,6 +76,7 @@
   let resetFeedbackTimeout = null
   let previousBodyOverflow = ''
   let filterMediaQuery = null
+  let isActive = true
   const { savedArticleHandles } = useSavedArticles()
   const { followedTopics, isFollowedTopic, toggleFollowedTopic } = useFollowedTopics()
   let applyingRouteState = false
@@ -106,7 +107,9 @@
     lastReadHandle.value = getLastReadArticle()
     readArticleHandles.value = getReadArticleHandles()
     filterPresets.value = getBlogFilterPresets()
-    articles.value = (await getBlogArticles()).map(article => ({
+    const fetchedArticles = await getBlogArticles()
+    if (!isActive) return
+    articles.value = fetchedArticles.map(article => ({
       ...article,
       readingMinutes: estimateReadingMinutes(article.contentHtml),
     }))
@@ -673,6 +676,7 @@
   })
 
   onBeforeUnmount(() => {
+    isActive = false
     if (searchTrackTimeout) clearTimeout(searchTrackTimeout)
     if (resetFeedbackTimeout) clearTimeout(resetFeedbackTimeout)
     if (filterMediaQuery) filterMediaQuery.removeEventListener('change', handleFilterBreakpoint)
