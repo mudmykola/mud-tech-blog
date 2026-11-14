@@ -698,7 +698,7 @@
       <header
         class="mm-blog__hero"
         :aria-hidden="isFilterSheet && mobileFiltersOpen ? 'true' : undefined"
-        :inert="isFilterSheet && mobileFiltersOpen"
+        :inert="isFilterSheet && mobileFiltersOpen ? true : undefined"
       >
         <div class="mm-blog__hero-main">
           <div class="mm-blog__hero-copy">
@@ -866,7 +866,7 @@
         <section
           class="mm-blog__surface"
           :aria-hidden="isFilterSheet && mobileFiltersOpen ? 'true' : undefined"
-          :inert="isFilterSheet && mobileFiltersOpen"
+          :inert="isFilterSheet && mobileFiltersOpen ? true : undefined"
         >
           <div class="mm-blog__controls">
             <label class="mm-blog-control mm-blog-control--search">
@@ -969,7 +969,7 @@
           :aria-modal="isFilterSheet && mobileFiltersOpen ? 'true' : undefined"
           :aria-labelledby="isFilterSheet ? 'mm-blog-sidebar-title' : undefined"
           :aria-hidden="isFilterSheet && !mobileFiltersOpen ? 'true' : undefined"
-          :inert="isFilterSheet && !mobileFiltersOpen"
+          :inert="isFilterSheet && !mobileFiltersOpen ? true : undefined"
         >
           <div class="mm-blog__sidebar-head">
             <div>
