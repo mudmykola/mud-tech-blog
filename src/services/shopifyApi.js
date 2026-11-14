@@ -2,117 +2,168 @@ import axios from 'axios'
 
 const API_URL = import.meta.env.VITE_SHOPIFY_API_URL
 const API_KEY = import.meta.env.VITE_SHOPIFY_ACCESS_TOKEN
+const BLOG_HANDLE = 'news'
+const ARTICLES_PER_PAGE = 250
 const CACHE_TTL_MS = 5 * 60 * 1000
 const REQUEST_TIMEOUT_MS = 15000
+
+const ARTICLES_QUERY = `
+  query BlogArticles(
+    $blogHandle: String!
+    $first: Int!
+    $after: String
+    $articleQuery: String
+  ) {
+    blogByHandle(handle: $blogHandle) {
+      articles(first: $first, after: $after, query: $articleQuery) {
+        edges {
+          cursor
+          node {
+            id
+            title
+            handle
+            publishedAt
+            authorV2 {
+              name
+            }
+            excerpt
+            contentHtml
+            image {
+              url
+              altText
+            }
+            tags
+            seo {
+              title
+              description
+            }
+          }
+        }
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+      }
+    }
+  }
+`
+
+const shopifyClient = API_URL
+  ? axios.create({
+      baseURL: API_URL,
+      timeout: REQUEST_TIMEOUT_MS,
+      headers: {
+        'X-Shopify-Storefront-Access-Token': API_KEY,
+        'Content-Type': 'application/json',
+      },
+    })
+  : null
 
 let articlesCache = null
 let cacheUpdatedAt = 0
 let inFlightRequest = null
 
-// Передаємо `latestDate` як параметр, щоб завантажувати лише нові статті
-export const getBlogArticles = async latestDate => {
-  if (!latestDate && articlesCache && Date.now() - cacheUpdatedAt < CACHE_TTL_MS) {
-    return [...articlesCache]
+const cloneArticles = articles =>
+  articles.map(article => ({
+    ...article,
+    tags: Array.isArray(article.tags) ? [...article.tags] : [],
+    image: article.image ? { ...article.image } : article.image,
+    seo: article.seo ? { ...article.seo } : article.seo,
+  }))
+
+const normalizeLatestDate = latestDate => {
+  if (latestDate == null) return null
+
+  const normalized = latestDate instanceof Date ? latestDate : new Date(latestDate)
+  if (Number.isNaN(normalized.getTime())) {
+    throw new TypeError('latestDate має бути коректною датою')
   }
 
-  if (!latestDate && inFlightRequest) {
-    return inFlightRequest
+  return normalized
+}
+
+const getGraphqlError = errors => {
+  if (!Array.isArray(errors) || !errors.length) return null
+  return errors.map(error => error?.message || 'Невідома GraphQL помилка').join('; ')
+}
+
+const fetchArticlesPage = async ({ after, latestDate }) => {
+  if (!shopifyClient || !API_KEY) {
+    throw new Error('Shopify API configuration is missing')
   }
 
-  const requestPromise = (async () => {
-    const allArticles = []
-    let hasNextPage = true
-    let endCursor = null
+  const response = await shopifyClient.post('', {
+    query: ARTICLES_QUERY,
+    variables: {
+      blogHandle: BLOG_HANDLE,
+      first: ARTICLES_PER_PAGE,
+      after: after || null,
+      articleQuery: latestDate ? `published_at:>${latestDate.toISOString()}` : null,
+    },
+  })
 
-    try {
-      while (hasNextPage) {
-        const query = `
-        {
-          blogByHandle(handle: "news") {
-            articles(first: 250, ${
-              latestDate ? `query: "published_at:>${latestDate.toISOString()}"` : ''
-            }${endCursor ? `, after: "${endCursor}"` : ''}) {
-              edges {
-                cursor
-                node {
-                  id
-                  title
-                  handle
-                  publishedAt
-                  authorV2 {
-                    name
-                  }
-                  excerpt
-                  contentHtml
-                  image {
-                    url
-                    altText
-                  }
-                  tags
-                  seo {
-                    title
-                    description
-                  }
-                }
-              }
-              pageInfo {
-                hasNextPage
-                endCursor
-              }
-            }
-          }
-        }
-      `
+  const graphqlError = getGraphqlError(response.data?.errors)
+  if (graphqlError) throw new Error(graphqlError)
 
-        const response = await axios.post(
-          API_URL,
-          { query },
-          {
-            timeout: REQUEST_TIMEOUT_MS,
-            headers: {
-              'X-Shopify-Storefront-Access-Token': API_KEY,
-              'Content-Type': 'application/json',
-            },
-          }
-        )
+  const articles = response.data?.data?.blogByHandle?.articles
+  if (!articles || !Array.isArray(articles.edges) || !articles.pageInfo) {
+    throw new Error('Shopify API returned an invalid articles response')
+  }
 
-        const data = response.data?.data?.blogByHandle?.articles
-        if (!data) {
-          console.error('❌ Shopify API не повернув дані.')
-          break
-        }
+  return articles
+}
 
-        const articles = data.edges.map(edge => edge.node)
-        allArticles.push(...articles)
+const fetchAllArticles = async latestDate => {
+  const allArticles = []
+  let after = null
 
-        hasNextPage = data.pageInfo.hasNextPage
-        endCursor = data.pageInfo.endCursor
-      }
+  while (true) {
+    const page = await fetchArticlesPage({ after, latestDate })
+    allArticles.push(...page.edges.map(edge => edge.node).filter(Boolean))
 
-      // Відсортуємо всі статті за датою у порядку спадання
-      allArticles.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
+    if (!page.pageInfo.hasNextPage) break
 
-      if (!latestDate) {
-        articlesCache = allArticles
-        cacheUpdatedAt = Date.now()
-      }
-
-      return allArticles
-    } catch (error) {
-      console.error('❌ Помилка отримання статей:', error.response?.data || error.message)
-      return []
+    const nextCursor = page.pageInfo.endCursor
+    if (!nextCursor || nextCursor === after) {
+      throw new Error('Shopify pagination returned an invalid cursor')
     }
-  })()
 
-  if (!latestDate) {
-    inFlightRequest = requestPromise
+    after = nextCursor
   }
+
+  return allArticles.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
+}
+
+const getCachedArticles = () => (articlesCache ? cloneArticles(articlesCache) : [])
+
+export const getBlogArticles = async latestDate => {
+  const normalizedLatestDate = normalizeLatestDate(latestDate)
+  const isFullCatalogRequest = !normalizedLatestDate
+  const hasFreshCache =
+    isFullCatalogRequest && articlesCache && Date.now() - cacheUpdatedAt < CACHE_TTL_MS
+
+  if (hasFreshCache) return getCachedArticles()
+  if (isFullCatalogRequest && inFlightRequest) return inFlightRequest
+
+  const requestPromise = fetchAllArticles(normalizedLatestDate)
+
+  if (isFullCatalogRequest) inFlightRequest = requestPromise
 
   try {
-    return await requestPromise
-  } finally {
-    if (!latestDate) {
-      inFlightRequest = null
+    const articles = await requestPromise
+
+    if (isFullCatalogRequest) {
+      articlesCache = articles
+      cacheUpdatedAt = Date.now()
     }
+
+    return cloneArticles(articles)
+  } catch (error) {
+    console.error('[shopify] Failed to fetch articles:', error.message)
+
+    // Keep the last known catalog available during temporary API failures.
+    return isFullCatalogRequest ? getCachedArticles() : []
+  } finally {
+    if (isFullCatalogRequest) inFlightRequest = null
   }
 }
