@@ -15,6 +15,13 @@ const createStorage = initial => {
   }
 }
 
+const createFailingStorage = source => ({
+  getItem: key => source.getItem(key),
+  setItem: () => {
+    throw new Error('storage unavailable')
+  },
+})
+
 test('filter presets save, normalize, load, and delete local filter states', () => {
   globalThis.localStorage = createStorage()
   const first = saveBlogFilterPreset(
@@ -48,4 +55,23 @@ test('filter presets tolerate malformed storage and enforce safe bounds', () => 
 test('filter presets report failures when local storage is unavailable', () => {
   delete globalThis.localStorage
   assert.equal(saveBlogFilterPreset('test', {}, 10).saved, false)
+})
+
+test('filter presets report failed deletes without claiming deletion', () => {
+  globalThis.localStorage = createStorage()
+  const saved = saveBlogFilterPreset('test', {}, 10)
+  globalThis.localStorage = createFailingStorage(globalThis.localStorage)
+
+  const deleted = deleteBlogFilterPreset(saved.presets[0].id)
+  assert.equal(deleted.deleted, false)
+  assert.equal(deleted.presets.length, 1)
+})
+
+test('filter presets normalize invalid state and avoid duplicate ids', () => {
+  globalThis.localStorage = createStorage()
+  const first = saveBlogFilterPreset('first', [], 10)
+  const second = saveBlogFilterPreset('second', { topics: ['Vue'] }, 10)
+
+  assert.deepEqual(first.presets[0].state, {})
+  assert.notEqual(first.presets[0].id, second.presets[0].id)
 })

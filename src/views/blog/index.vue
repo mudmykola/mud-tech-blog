@@ -24,6 +24,7 @@
   import { estimateReadingMinutes, getLastReadArticle } from '@/utils/homeReadingState'
   import { BLOG_READING_HISTORY_KEY, getReadArticleHandles } from '@/utils/blogReadingHistory'
   import {
+    BLOG_FILTER_PRESETS_KEY,
     deleteBlogFilterPreset,
     getBlogFilterPresets,
     saveBlogFilterPreset,
@@ -533,8 +534,13 @@
   }
 
   const handleBlogStorageChange = event => {
-    if (event.key === BLOG_READING_HISTORY_KEY || event.key === null) {
+    if (
+      event.key === BLOG_READING_HISTORY_KEY ||
+      event.key === BLOG_FILTER_PRESETS_KEY ||
+      event.key === null
+    ) {
       readArticleHandles.value = getReadArticleHandles()
+      filterPresets.value = getBlogFilterPresets()
     }
   }
 

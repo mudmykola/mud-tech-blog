@@ -1,5 +1,24 @@
 export const devLogEntries = [
   {
+    id: 'devlog-165',
+    date: '2026-11-14T00:00:00+02:00',
+    type: 'Fix',
+    author: 'Mykola Mud`',
+    titleKey: 'updates.blog.filters.presets.hardening.title',
+    summaryKey: 'updates.blog.filters.presets.hardening.summary',
+    title: 'Посилено збережені preset-фільтри блогу',
+    summary:
+      'Filter presets отримали безпечну нормалізацію state, захист ID від колізій і коректну поведінку при помилках localStorage.',
+    details: [
+      'Виправлено false-positive deleted при невдалому записі в storage.',
+      'Додано regression-тести для storage failure, invalid state та duplicate IDs.',
+      'Preset-список синхронізується між вкладками через storage event.',
+    ],
+    route: '/blog',
+    routeLabelKey: 'nav.blog',
+    githubIssue: '#183',
+  },
+  {
     id: 'devlog-164',
     date: '2026-11-14T00:00:00+02:00',
     type: 'Refactor',
